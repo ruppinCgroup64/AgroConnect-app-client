@@ -91,6 +91,7 @@ export default function StackNavigator() {
   return (
     <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
       <NavigationContainer theme={darkMode === true ? DarkTheme : DefaultTheme}>
+        
         <StatusBar
           backgroundColor={darkMode === true ? Colors.active : Colors.secondary}
           barStyle={darkMode === true ? "light-content" : "dark-content"}

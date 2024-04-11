@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import StackNavigator from './src/navigator/StackNavigator';
 
 
-// SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync(); prevent the splash to disappear after full loading 
 
 export default function App() {
   const [fontsLoaded] = useFonts({
