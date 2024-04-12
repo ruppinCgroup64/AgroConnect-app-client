@@ -106,9 +106,20 @@ export default function StackNavigator() {
             />
           ) : null}
 
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Introduction"
             component={Introduction}
+            options={{ headerShown: false }}
+          /> */}
+           {/* <Stack.Screen
+            name="Letsin"
+            component={Letsin}
+            options={{ headerShown: false }}
+          /> */}
+          
+          <Stack.Screen
+            name="Login"
+            component={Login}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -199,6 +210,7 @@ export default function StackNavigator() {
             component={ConfirmPin}
             options={{ headerShown: false }}
           /> */}
+
           <Stack.Screen
             name="Payment1"
             component={Payment1}
@@ -328,17 +340,6 @@ export default function StackNavigator() {
           <Stack.Screen
             name="CreateAccount"
             component={CreateAccount}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Letsin"
-            component={Letsin}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

@@ -19,7 +19,7 @@ const theme = {
 
         c1: require('../../assets/image/c1.png'),
         s10: require('../../assets/image/s10.png'),
-
+        fruits_bgr: require('../../assets/image/fruits_bgr.png'),
         a: require('../../assets/image/a.png'),
         a1: require('../../assets/image/a1.png'),
         apple: require('../../assets/image/Appled.png'),

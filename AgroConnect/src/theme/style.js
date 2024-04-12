@@ -16,113 +16,113 @@ export default StyleSheet.create({
     title: {
         fontSize: 40,
         color: Colors.active,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Bold'
     },
     subtitle: {
         fontSize: 32,
         color: Colors.active,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-SemiBold'
     },
     apptitle: {
         fontSize: 24,
         color: Colors.active,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Thin'
     },
     t1: {
         fontSize: 20,
         color: Colors.active,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Bold'
     },
     b10: {
         fontSize: 10,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
     },
     s10: {
         fontSize: 10,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
     },
     r12: {
         fontSize: 12,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Regular',
+        fontFamily: 'Heebo-Regular',
     },
     s12: {
         fontSize: 12,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
     },
     m12: {
         fontSize: 12,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: 'Heebo-Medium',
     },
     b12: {
         fontSize: 12,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: 'Heebo-Bold',
     },
 
     r14: {
         fontSize: 14,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Regular',
+        fontFamily: 'Heebo-Thin',
     },
     m14: {
         fontSize: 14,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: 'Heebo-Medium',
     },
     s14: {
         fontSize: 14,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-Medium',
     },
     b14: {
         fontSize: 14,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     r16: {
         fontSize: 16,
         color: Colors.disable,
-        // fontFamily: 'Urbanist-Regular'
+        // fontFamily: 'Heebo-Regular'
     },
     s16: {
         fontSize: 16,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
     },
     m16: {
         fontSize: 16,
         color: Colors.disable,
-        // fontFamily: 'Urbanist-Medium'
+        // fontFamily: 'Heebo-Medium'
     },
     b16: {
         fontSize: 16,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Bold'
     },
     r18: {
         fontSize: 18,
         color: Colors.disable,
-        // fontFamily: 'Urbanist-Regular'
+        // fontFamily: 'Heebo-Regular'
     },
     m18: {
         fontSize: 18,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: 'Heebo-Medium',
     },
     s18: {
         fontSize: 18,
         color: Colors.disable,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
     },
     b18: {
         fontSize: 18,
         color: Colors.disable,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Bold'
 
     },
 
@@ -136,7 +136,7 @@ export default StyleSheet.create({
     btntxt: {
         fontSize: 16,
         color: Colors.secondary,
-        fontFamily: 'Urbanist-Bold'
+        fontFamily: 'Heebo-Bold'
     },
     indicator: {
         borderColor: '#BDBDBD',
@@ -264,7 +264,7 @@ export default StyleSheet.create({
     },
     ctext: {
         fontSize: 16,
-        fontFamily: 'Urbanist-SemiBold',
+        fontFamily: 'Heebo-SemiBold',
         color: Colors.primary,
     },
     cts: {
@@ -280,7 +280,7 @@ export default StyleSheet.create({
         backgroundColor: Colors.primary,
         borderColor: Colors.primary,
         color: Colors.secondary,
-        fontFamily: 'Urbanist-SemiBold'
+        fontFamily: 'Heebo-SemiBold'
     },
     categoryText: {
         fontSize: 16,
@@ -292,7 +292,7 @@ export default StyleSheet.create({
         paddingTop: 7,
         paddingHorizontal: 12,
         marginHorizontal: 5,
-        fontFamily: 'Urbanist-SemiBold'
+        fontFamily: 'Heebo-SemiBold'
     },
     categorycontainer: {
         flexDirection: 'row',
@@ -306,7 +306,7 @@ export default StyleSheet.create({
         flexDirection:'row',alignItems:'center',justifyContent:'space-between',backgroundColor:Colors.primary
     },
     otp:{
-        height: 50, width: 50, borderRadius: 10,  textAlign: 'center',fontSize:18,fontFamily: 'Urbanist-Bold', color:theme.txt
+        height: 50, width: 50, borderRadius: 10,  textAlign: 'center',fontSize:18,fontFamily: 'Heebo-Bold', color:theme.txt
     }
 
 }

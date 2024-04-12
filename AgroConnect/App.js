@@ -12,6 +12,13 @@ export default function App() {
     'Urbanist-Medium': require('./assets/fonts/Urbanist-Medium.ttf'),
     'Urbanist-Regular': require('./assets/fonts/Urbanist-Regular.ttf'),
     'Urbanist-SemiBold': require('./assets/fonts/Urbanist-SemiBold.ttf'),
+    'Heebo-SemiBold': require('./assets/fonts/Heebo-SemiBold.ttf'),
+    'Heebo-Thin': require('./assets/fonts/Heebo-Thin.ttf'),
+    'Heebo-ExtraBold': require('./assets/fonts/Heebo-ExtraBold.ttf'),
+    'Heebo-Bold': require('./assets/fonts/Heebo-Bold.ttf'),
+    'Heebo-Regular': require('./assets/fonts/Heebo-Regular.ttf'),
+    'Heebo-Light': require('./assets/fonts/Heebo-Light.ttf'),
+    'Heebo-Medium': require('./assets/fonts/Heebo-Medium.ttf'),
   });
 
   if (!fontsLoaded) {

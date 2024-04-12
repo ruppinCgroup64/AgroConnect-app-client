@@ -19,7 +19,7 @@ export default function Profilefill() {
     const navigation = useNavigation();
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
-    const [selectDate, setSelectDate] = useState('Select Date');
+    const [selectDate, setSelectDate] = useState('');
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -44,15 +44,16 @@ export default function Profilefill() {
                 <View style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}>
                     <AppBar
                         color={theme.bg}
-                        title='Fill Your Profile'
-                        titleStyle={[style.apptitle, { color: theme.txt, }]}
+                        title='הרשמה'
+                        titleStyle={[style.apptitle, { color: theme.txt, textAlign:'center'}]}
                         elevation={0}
-                        leading={<TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        leading={<TouchableOpacity onPress={() => navigation.navigate('Login')}>
                             <Icon name="arrow-back"
                                 color={theme.txt} size={30}
                             />
-                        </TouchableOpacity>
-                        } />
+                        </TouchableOpacity>}
+                        trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
+                         />
 
                     <ScrollView showsVerticalScrollIndicator={false}>
 
@@ -60,7 +61,8 @@ export default function Profilefill() {
                             style={{ height: height / 8, width: width / 3.2, resizeMode: 'stretch', alignSelf: 'center', marginTop: 15 }}></Image>
 
                         <View style={[style.txtinput, { borderColor: theme.input, backgroundColor: theme.input, marginTop: 20 }]}>
-                            <TextInput placeholder='Full Name'
+                            <TextInput placeholder='שם פרטי'
+                                textAlign= 'right'
                                 selectionColor={Colors.primary}
                                 placeholderTextColor={Colors.disable}
                                 style={[style.s14, { paddingHorizontal: 10, color: theme.txt, flex: 1 }]}
@@ -68,7 +70,8 @@ export default function Profilefill() {
                         </View>
 
                         <View style={[style.txtinput, { borderColor: theme.input, backgroundColor: theme.input, marginTop: 20 }]}>
-                            <TextInput placeholder='Nickname'
+                            <TextInput placeholder='שם משפחה'
+                                textAlign= 'right'
                                 selectionColor={Colors.primary}
                                 placeholderTextColor={Colors.disable}
                                 style={[style.s14, { paddingHorizontal: 10, color: theme.txt, flex: 1 }]}
@@ -77,6 +80,8 @@ export default function Profilefill() {
 
                         <View style={[style.inputContainer, { borderColor: theme.input, borderWidth: 1, backgroundColor: theme.input, marginTop: 20 }]}>
                             <TextInput
+                                placeholder='תאריך לידה'
+                                textAlign= 'right'
                                 selectionColor={Colors.primary}
                                 placeholderTextColor={Colors.disable}
                                 value={selectDate}
@@ -94,7 +99,7 @@ export default function Profilefill() {
                         </View>
 
                         <View style={[style.inputContainer, { borderColor: theme.input, borderWidth: 1, backgroundColor: theme.input, marginTop: 20 }]}>
-                            <TextInput placeholder='Email'
+                            <TextInput placeholder='אימייל'
                                 selectionColor={Colors.primary}
                                 placeholderTextColor={Colors.disable}
                                 style={[style.s14, { paddingHorizontal: 10, color: theme.txt, flex: 1 }]}
@@ -105,7 +110,7 @@ export default function Profilefill() {
                         </View>
 
                         <View style={[style.inputContainer, { borderColor: theme.input, borderWidth: 1, backgroundColor: theme.input, marginTop: 20 }]}>
-                            <TextInput placeholder='Gender'
+                            <TextInput placeholder='מין'
                                 selectionColor={Colors.primary}
                                 placeholderTextColor={Colors.disable}
                                 style={[style.s14, { paddingHorizontal: 10, color: theme.txt, flex: 1 }]}
@@ -118,7 +123,7 @@ export default function Profilefill() {
                         <View style={{ marginTop: 40, marginBottom: 20 }}>
                             <TouchableOpacity onPress={() => navigation.navigate('Otp')}
                                 style={style.btn}>
-                                <Text style={[style.btntxt, { }]}>Continue</Text>
+                                <Text style={[style.btntxt, { }]}>המשך</Text>
                             </TouchableOpacity>
                         </View>
 

@@ -27,7 +27,7 @@ export default function Splash() {
             <View style={{
                 flex: 3, alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
             }}>
-                <Image source={require('../../assets/image/Logo.png')} style={{ height:  height/8, width:width/ 3.5, resizeMode: 'stretch' }} />
+                <Image source={require('../../assets/image/a.png')} style={{ height:  height/8, width:width/ 3.5, resizeMode: 'stretch' }} />
             </View>
             <View style={{
                 flex: 1, alignItems: 'center',

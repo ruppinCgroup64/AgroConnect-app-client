@@ -23,30 +23,30 @@ export default function Login() {
   const [isFocused, setIsFocused] = useState(false)
 
   return (
-    <SafeAreaView style={[style.area, { backgroundColor: theme.bg, }]}>
+    <SafeAreaView style={[style.area, { backgroundColor: theme.bg,  }]}>
       <KeyboardAvoidingView style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
       >
         <View style={[style.main, { backgroundColor: theme.bg,marginTop:15 }]}>
-          <AppBar
+          {/* <AppBar
             color={theme.bg}
             elevation={0}
             leading={<TouchableOpacity onPress={() => navigation.navigate('Letsin')}>
               <Icon name="arrow-back"  color={theme.txt} size={30}/>
             </TouchableOpacity>
-            } />
-
-          <ScrollView showsVerticalScrollIndicator={false} >
-
-            <Image source={theme.a} resizeMode='stretch' style={{height:height/14,width:width/3,alignSelf:'center'}}></Image>
+            } /> */}
+          <Image source={theme.fruits_bgr} resizeMode='stretch' style={{height:height/5,width:width,alignSelf:'center'}}></Image>
+          <ScrollView>
+            <Image source={theme.a} resizeMode='stretch' style={{height:height/9,width:width/1.8,alignSelf:'center'}}></Image>
 
             <View style={{ marginVertical: 20 }}>
-              <Text style={[style.subtitle, { color: theme.txt,textAlign:'center'}]}>Login to your Account</Text>
+              <Text style={[style.subtitle, { color: theme.txt,textAlign:'center'}]}>ברוכים השבים!</Text>
+              {/* <Text style={[style.b1, { color: theme.txt,textAlign:'center'}]}>התחברו לחשבון שלכם</Text> */}
             </View>
 
-            <View style={[style.inputContainer, { marginTop: 40, borderColor: isFocused === 'Email' ? Colors.primary : theme.input, backgroundColor: isFocused === 'Email' ? theme.btn : theme.input }]}>
+            <View style={[style.inputContainer, { marginTop: 20, borderColor: isFocused === 'Email' ? Colors.primary : theme.input, backgroundColor: isFocused === 'Email' ? theme.btn : theme.input }]}>
               <Icon name='mail' size={25} color={isFocused === 'Email' ? Colors.primary : Colors.disable}></Icon>
-              <TextInput placeholder='Email'
+              <TextInput placeholder='אימייל'
                 selectionColor={Colors.primary}
                 onFocus={() => setIsFocused('Email')}
                 onBlur={() => setIsFocused(false)}
@@ -57,7 +57,7 @@ export default function Login() {
 
             <View style={[style.inputContainer, { borderColor: isFocused === 'Password' ? Colors.primary : theme.input, backgroundColor: isFocused === 'Password' ? theme.btn : theme.input }]}>
               <Icon name='lock-closed' size={25} color={isFocused === 'Password' ? Colors.primary : Colors.disable}></Icon>
-              <TextInput placeholder='Password'
+              <TextInput placeholder='סיסמא'
                 secureTextEntry={isPasswordVisible}
                 onFocus={() => setIsFocused('Password')}
                 onBlur={() => setIsFocused(false)}
@@ -70,7 +70,7 @@ export default function Login() {
               </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row', marginVertical: 20, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', marginVertical: 20, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
 
                <Checkbox
                   // style={styles.checkbox}
@@ -82,29 +82,29 @@ export default function Login() {
                 <Text style={[style.s14, { lineHeight: 14, marginLeft: 5, color: theme.txt }]}>Remember me</Text>
               </View>
 
-            </View>
+            </View> */}
 
-            <View style={{}}>
+            <View style={{ marginVertical: 30}}>
               <TouchableOpacity onPress={() => navigation.navigate('MyTabs')}
                 style={style.btn}>
-                <Text style={style.btntxt}>Sign In</Text>
+                <Text style={style.btntxt}>התחבר</Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
               <View style={{ marginTop: 20, alignItems: 'center' }}>
                 <Text style={[style.s16, { color: Colors.primary }]}>Forgot the password?</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginVertical: 50 }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginVertical: 50 }}>
               <View style={[style.divider, { flex: 1, backgroundColor: theme.border }]}></View>
               <Text style={[style.s18, { color: theme.txt2, marginHorizontal: 10, }]}>or continue with</Text>
               <View style={[style.divider, { flex: 1, backgroundColor: theme.border }]}></View>
-            </View>
+            </View> */}
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
               <TouchableOpacity style={[style.btnoutline, { borderColor: theme.border, backgroundColor: theme.input }]}>
                 <Image source={require('../../assets/image/Fb.png')}
                   resizeMode='stretch'
@@ -120,13 +120,13 @@ export default function Login() {
                   resizeMode='stretch'
                   style={{ height: height / 25, width: width / 11 }}></Image>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 40, marginBottom: 10 }}>
-              <Text style={[style.r14, { color: theme.txt3 }]}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('CreateAccount')}>
-                <Text style={[style.s14, { color: Colors.primary }]}> Sign Up</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20, marginBottom: 10 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profilefill')}>
+                <Text style={[style.s14, { color: Colors.primary }]}> הירשם עכשיו</Text>
               </TouchableOpacity>
+              <Text style={[style.r14, { color: theme.txt3 }]}>אין לך חשבון?</Text>
             </View>
           </ScrollView>
         </View>
