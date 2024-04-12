@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import StackNavigator from './src/navigator/StackNavigator';
 
 
-// SplashScreen.preventAutoHideAsync(); prevent the splash to disappear after full loading 
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -15,19 +14,10 @@ export default function App() {
     'Urbanist-SemiBold': require('./assets/fonts/Urbanist-SemiBold.ttf'),
   });
 
-  // useEffect( () => {
-  //   async function prepare() {
-  //     await SplashScreen.preventAutoHideAsync();
-  //   }
-  //   prepare();
-  // }, []);
-
   if (!fontsLoaded) {
     return undefined;
   }
-  // else{
-  //   SplashScreen.hideAsync();
-  // }
+
   return (
     <StackNavigator/>
   );

@@ -25,39 +25,12 @@ export default function MyTabs() {
 
   return (
     <Tab.Navigator
+    initialRouteName="Home"
       screenOptions={{
         // BottomTabBarHeight:30,
         tabBarStyle: { position: "absolute", height: 60, paddingBottom: 5 },
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{exptabBarShowLabel: true,
-          tabBarLabel: ({ focused, color }) => (
-            <Text
-              style={{
-                color: focused ? Colors.primary : Colors.disable,
-                fontFamily: "Urbanist-Medium",
-                fontSize: 10,
-              }}
-            >
-              Home
-            </Text>
-          ),
-          tabBarIcon: ({ focused, color }) => {
-            return (
-              <Icons
-                name={focused ? "home" : "home-outline"}
-                size={30}
-                color={focused ? Colors.primary : Colors.disable}
-              />
-            );
-          },
-          headerShown: false,
-        }}
-      />
-
       <Tab.Screen
         name="MyCart"
         component={MyCart}
@@ -71,7 +44,7 @@ export default function MyTabs() {
                 fontSize: 10,
               }}
             >
-              Cart
+              {focused ? "" : ""}
             </Text>
           ),
           tabBarIcon: ({ focused, color }) => {
@@ -106,7 +79,7 @@ export default function MyTabs() {
                 fontSize: 10,
               }}
             >
-              Orders
+              {focused ? "" : ""}
             </Text>
           ),
           tabBarIcon: ({ focused, color }) => {
@@ -114,6 +87,34 @@ export default function MyTabs() {
               <Ionicons
                 name={focused ? "cart" : "cart-outline"}
                 size={28}
+                color={focused ? Colors.primary : Colors.disable}
+              />
+            );
+          },
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          exptabBarShowLabel: true,
+          tabBarLabel: ({ focused, color }) => (
+            <Text
+              style={{
+                color: focused ? Colors.primary : Colors.disable,
+                fontFamily: "Urbanist-Medium",
+                fontSize: 10,
+              }}
+            >
+              {focused ? "" : ""}
+            </Text>
+          ),
+          tabBarIcon: ({ focused, color }) => {
+            return (
+              <Icons
+                name={focused ? "home" : "home-outline"}
+                size={30}
                 color={focused ? Colors.primary : Colors.disable}
               />
             );
@@ -135,7 +136,7 @@ export default function MyTabs() {
                 fontSize: 10,
               }}
             >
-              Wallet
+              {focused ? "" : ""}
             </Text>
           ),
           tabBarIcon: ({ focused, color }) => {
@@ -164,7 +165,7 @@ export default function MyTabs() {
                 fontSize: 10,
               }}
             >
-              Profile
+              {focused ? "" : ""}
             </Text>
           ),
           tabBarIcon: ({ focused, color }) => {
