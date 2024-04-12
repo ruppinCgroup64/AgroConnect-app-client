@@ -26,6 +26,7 @@ export default function MyTabs() {
   return (
     <Tab.Navigator
     initialRouteName="Home"
+    
       screenOptions={{
         // BottomTabBarHeight:30,
         tabBarStyle: { position: "absolute", height: 60, paddingBottom: 5 },
