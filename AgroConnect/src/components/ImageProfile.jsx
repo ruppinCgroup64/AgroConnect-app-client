@@ -1,10 +1,14 @@
+//Get a image uri (its not must) and show circle frame with image or option to add image.
+//If there is an image it will appear at the circle frame, if not, it will allow to add an image.
+//Call it in this way- <ImageProfile userImageURI={the user image uri}/>
+
 import React, { useState, useContext } from 'react';
 import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function ImageProfile() {
-  const [selectedImage, setSelectedImage] = useState(null);
+export default function ImageProfile({userImageURI}) {
+  const [selectedImage, setSelectedImage] = useState(() => userImageURI || null);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
