@@ -1,4 +1,6 @@
-//Get a image uri (its not must) and show circle frame with image or option to add image.
+//1. Get a image uri (its not must) and setImg of the user (must!)
+//2. Show circle frame with image or option to add image
+//3. setImg of the user only if it changed
 //If there is an image it will appear at the circle frame, if not, it will allow to add an image.
 //Call it in this way- <ImageProfile userImageURI={the user image uri}/>
 
@@ -7,7 +9,7 @@ import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function ImageProfile({userImageURI}) {
+export default function ImageProfile({userImageURI, setImg}) {
   const [selectedImage, setSelectedImage] = useState(() => userImageURI || null);
 
   const pickImage = async () => {
@@ -20,6 +22,7 @@ export default function ImageProfile({userImageURI}) {
 
     if (!result.cancelled && result.assets && result.assets.length > 0) {
       setSelectedImage(result.assets[0].uri);
+      setImg(result.assets[0].uri)
     }
   };
 

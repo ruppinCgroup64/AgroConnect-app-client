@@ -190,7 +190,7 @@ export default function Profilefill() {
                 marginTop: 15,
               }}
             ></Image> */}
-            <ImageProfile/>
+            <ImageProfile setImg={setImg}/>
             <View
               style={[
                 style.txtinput,
