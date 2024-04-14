@@ -3,8 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import StackNavigator from './src/navigator/StackNavigator';
+import { I18nManager } from 'react-native';
 
-
+I18nManager.allowRTL(true);
+I18nManager.forceRTL(true);
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,10 +23,11 @@ export default function App() {
     'Heebo-Medium': require('./assets/fonts/Heebo-Medium.ttf'),
   });
 
+
   if (!fontsLoaded) {
     return undefined;
   }
-
+  
   return (
     <StackNavigator/>
   );

@@ -9,6 +9,7 @@ import { AppBar, } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
+
 // import Demo from './Demo';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height

@@ -27,13 +27,13 @@ export default function Splash() {
             <View style={{
                 flex: 3, alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
             }}>
-                <Image source={require('../../assets/image/a.png')} style={{ height:  height/8, width:width/ 3.5, resizeMode: 'stretch' }} />
+                <Image source={require('../../assets/image/a.png')} style={{ height:  height/9, width:width/1.8, resizeMode: 'stretch' }} />
             </View>
             <View style={{
                 flex: 1, alignItems: 'center',
             }}>
-                <View style={{marginBottom:50}}>
-                <BallIndicator size={30} color={Colors.primary} />
+                <View style={{marginBottom:200}}>
+                <BallIndicator size={50} color={Colors.primary} />
                 </View>
             </View>
         </SafeAreaView>

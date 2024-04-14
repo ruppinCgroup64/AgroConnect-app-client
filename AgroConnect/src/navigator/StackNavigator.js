@@ -46,6 +46,7 @@ import ConfirmPin from "../screens/ConfirmPin";
 import Payment1 from "../screens/Payment1";
 import MyCart from '../screens/MyCart';
 import Profilefill from '../screens/Profilefill'
+import ProfilefillFarmer from '../screens/ProfilefillFarmer'
 import Otp from '../screens/Otp';
 import Mywishlist from '../screens/Mywishlist'
 import MyTabs from "./BottomNavigator";
@@ -316,7 +317,14 @@ export default function StackNavigator() {
             name="Profilefill"
             component={Profilefill}
             options={{ headerShown: false }}
+            
           />
+          <Stack.Screen
+            name="ProfilefillFarmer"
+            component={ProfilefillFarmer}
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen
             name="Otp"
             component={Otp}

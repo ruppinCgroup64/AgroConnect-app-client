@@ -10,8 +10,6 @@ import {
   ScrollView,
   Dimensions,
   KeyboardAvoidingView,
-  Modal,
-  Button,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import theme from "../theme/theme";
@@ -24,7 +22,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -62,8 +59,6 @@ export default function Profilefill() {
     { label: "אחר", value: "other" },
   ]);
 
-  const [addressText, setAddressText] = useState("");
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birth, setBirth] = useState("");
@@ -77,12 +72,11 @@ export default function Profilefill() {
   const [isFarmer, setIsFarmer] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   const handleSubmit = () => {
     if (validateForm()) {
       console.log("submitted"); //API place
-      if (isChecked == true) setIsFarmer(true);
+      if(isChecked==true) isFarmer=true;
       user = {
         firstName,
         lastName,
@@ -99,8 +93,7 @@ export default function Profilefill() {
       setEmail("");
       setPassword("");
       setErrors({});
-      if (isChecked == true) navigation.navigate("ProfilefillFarmer");
-      else console.log("modalSuccess reg");
+      navigation.navigate("Otp");
     }
   };
   //checking every field according to the rules and add to the errors object
@@ -130,22 +123,16 @@ export default function Profilefill() {
     // } else if (!password) errors.password = "שדה חובה";
     if (!password) errors.password = "שדה חובה";
     //confirm password
-    if (!confirmPassword) errors.confirmPassword = "שדה חובה";
-    else if (password != confirmPassword) {
+    if (password != confirmPassword) {
       errors.confirmPassword = "הסיסמאות חייבות להיות זהות";
-    }
+    } else if (!firstName) errors.confirmPassword = "שדה חובה";
     //email
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) errors.email = "שדה חובה";
     // else if (!regexEmail.test(email)) {
     //   errors.email = "כתובת מייל לא תקינה";
     // }
-    const regexPhone = /^05\d{8}$/;
     if (!phoneNum) errors.phoneNum = "שדה חובה";
-    else if (!regexPhone.test(phoneNum)) {
-      errors.phoneNum = "מספר טלפון לא תקין";
-    }
-    if (!address) errors.address = "שדה חובה";
     console.log(errors);
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -167,14 +154,7 @@ export default function Profilefill() {
             elevation={0}
             leading={
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Icon
-                  name="arrow-back"
-                  color={theme.txt}
-                  size={30}
-                  style={{
-                    transform: [{ scaleX: -1 }],
-                  }}
-                />
+                <Icon name="arrow-back" color={theme.txt} size={30} />
               </TouchableOpacity>
             }
             trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
@@ -191,6 +171,7 @@ export default function Profilefill() {
                 marginTop: 15,
               }}
             ></Image>
+
             <View
               style={[
                 style.txtinput,
@@ -206,7 +187,10 @@ export default function Profilefill() {
                 textAlign="right"
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
+                style={[
+                  style.s14,
+                  { paddingHorizontal: 10, color: theme.txt, flex: 1 },
+                ]}
                 onChangeText={setFirstName}
                 value={firstName}
               />
@@ -229,7 +213,10 @@ export default function Profilefill() {
                 textAlign="right"
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
+                style={[
+                  style.s14,
+                  { paddingHorizontal: 10, color: theme.txt, flex: 1 },
+                ]}
                 onChangeText={setLastName}
                 value={lastName}
               />
@@ -254,7 +241,10 @@ export default function Profilefill() {
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
                 value={selectDate}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
+                style={[
+                  style.s14,
+                  { paddingHorizontal: 10, color: theme.txt, flex: 1 },
+                ]}
               />
               <TouchableOpacity onPress={showDatePicker}>
                 <DateTimePickerModal
@@ -273,6 +263,7 @@ export default function Profilefill() {
             {errors.birth ? (
               <Text style={style.errorText}>{errors.birth}</Text>
             ) : null}
+
             <DropDownPicker
               listMode="MODAL"
               open={open}
@@ -293,6 +284,7 @@ export default function Profilefill() {
                   borderColor: theme.input,
                   borderWidth: 1,
                   backgroundColor: theme.input,
+                  paddingHorizontal: 10,
                   color: theme.txt,
                   flex: 1,
                   borderRadius: 15,
@@ -303,7 +295,7 @@ export default function Profilefill() {
               textStyle={[
                 style.s14,
                 {
-                  textAlign: "left",
+                  textAlign: "right",
                   color: theme.txt,
                 },
               ]}
@@ -334,11 +326,12 @@ export default function Profilefill() {
                 placeholderTextColor={Colors.disable}
                 style={[
                   style.s14,
-                  { color: theme.txt, flex: 1 },
+                  { paddingHorizontal: 10, color: theme.txt, flex: 1 },
                   { textAlign: email ? "left" : "right" },
                 ]}
                 onChangeText={setEmail}
               />
+              <Icon name="mail-outline" color={Colors.disable} size={20} />
             </View>
             {errors.email ? (
               <Text style={style.errorText}>{errors.email}</Text>
@@ -360,7 +353,7 @@ export default function Profilefill() {
                 placeholderTextColor={Colors.disable}
                 style={[
                   style.s14,
-                  { color: theme.txt, flex: 1 },
+                  { paddingHorizontal: 10, color: theme.txt, flex: 1 },
                   { textAlign: phoneNum ? "left" : "right" },
                 ]}
                 onChangeText={setPhoneNum}
@@ -371,89 +364,13 @@ export default function Profilefill() {
               <Text style={style.errorText}>{errors.phoneNum}</Text>
             ) : null}
             <View
-              style={[
-                style.inputContainer,
-                {
-                  borderColor: theme.input,
-                  borderWidth: 1,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="סיסמא"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[
-                  style.s14,
-                  { color: theme.txt, flex: 1 },
-                  { textAlign: password ? "left" : "right" },
-                ]}
-                onChangeText={setPassword}
-              />
-            </View>
-            {errors.password ? (
-              <Text style={style.errorText}>{errors.password}</Text>
-            ) : null}
-            <View
-              style={[
-                style.inputContainer,
-                {
-                  borderColor: theme.input,
-                  borderWidth: 1,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="אישור סיסמא"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[
-                  style.s14,
-                  { color: theme.txt, flex: 1 },
-                  { textAlign: confirmPassword ? "left" : "right" },
-                ]}
-                onChangeText={setConfirmPassword}
-              />
-            </View>
-            {errors.confirmPassword ? (
-              <Text style={style.errorText}>{errors.confirmPassword}</Text>
-            ) : null}
-            <View
-              style={[
-                style.inputContainer,
-                {
-                  borderColor: theme.input,
-                  borderWidth: 1,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="הוסף כתובת"
-                textAlign="right"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
-                onFocus={() => setPlacesModalVisible(true)}
-                value={addressText}
-              />
-            </View>
-            {errors.address ? (
-              <Text style={style.errorText}>{errors.address}</Text>
-            ) : null}
-            <View
               style={{
                 flexDirection: "row",
                 marginVertical: 20,
                 paddingLeft: 10,
                 alignItems: "center",
-                justifyContent: "flex-start",
-                marginRight: 5,
+                justifyContent: "flex-end",
+                marginRight: 5
               }}
             >
               <View>
@@ -462,86 +379,22 @@ export default function Profilefill() {
                     style.s14,
                     {
                       color: theme.txt,
+                      marginRight: 5
                     },
                   ]}
                 >
-                  <Checkbox
-                    // style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? Colors.primary : Colors.disable}
-                  />{" "}
                   אני חקלאי
                 </Text>
               </View>
+              <Checkbox
+                // style={styles.checkbox}
+                value={isChecked}
+                onValueChange={setChecked}
+                color={isChecked ? Colors.primary : Colors.disable}
+              />
+              
             </View>
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={isPlacesModalVisible}
-              onRequestClose={() => {
-                setPlacesModalVisible(!isPlacesModalVisible);
-              }}
-            >
-              <SafeAreaView style={style.modalView}>
-                <GooglePlacesAutocomplete
-                  placeholder="עיר, רחוב, מספר בית"
-                  onPress={(data, details = null) => {
-                    console.log(JSON.stringify(data));
-                    console.log(JSON.stringify(details?.geometry?.location));
-                    setAddress();
-                  }}
-                  query={{
-                    key: "AIzaSyCkv5saCxh1Fsr6xNiJatbWcq28VnmrxAA",
-                    language: "he",
-                  }}
-                  textInputProps={{
-                    selectionColor: Colors.primary,
-                    placeholderTextColor: Colors.disable,
-                    style: [
-                      style.s14,
-                      {
-                        color: theme.txt,
-                        flex: 1,
-                        textAlign: "right",
-                        height: 50,
-                      },
-                    ],
-                    onChangeText: (text) => setAddressText(text),
-                  }}
-                  styles={{
-                    textInputContainer: {
-                      backgroundColor: theme.input,
-                      borderTopWidth: 0,
-                      borderBottomWidth: 0,
-                      marginTop: 20,
-                    },
-                    textInput: {
-                      height: 40,
-                      borderWidth: 1,
-                      borderColor: theme.input,
-                      backgroundColor: theme.input,
-                    },
-                    predefinedPlacesDescription: {
-                      color: "#1faadb",
-                    },
-                  }}
-                  fetchDetails={true}
-                  nearbyPlacesAPI="GooglePlacesSearch"
-                  debounce={400}
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    setPlacesModalVisible(false);
-                    console.log(addressText);
-                  }}
-                  style={[style.btnSave, { alignSelf: "center" }]}
-                >
-                  <Text style={style.btntxt}>שמור</Text>
-                </TouchableOpacity>
-              </SafeAreaView>
-            </Modal>
             <View style={{ marginTop: 40, marginBottom: 20 }}>
               <TouchableOpacity onPress={handleSubmit} style={style.btn}>
                 <Text style={style.btntxt}>אישור</Text>
