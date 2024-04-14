@@ -25,6 +25,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import ImageProfile from "../components/ImageProfile";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -96,8 +97,6 @@ export default function Profilefill() {
         isFarmer,
       };
       // regPost(user);//API request
-      setEmail("");
-      setPassword("");
       setErrors({});
       if (isChecked == true) navigation.navigate("ProfilefillFarmer");
       else console.log("modalSuccess reg");
@@ -181,7 +180,7 @@ export default function Profilefill() {
           />
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Image
+            {/* <Image
               source={require("../../assets/image/User.png")}
               style={{
                 height: height / 8,
@@ -190,7 +189,8 @@ export default function Profilefill() {
                 alignSelf: "center",
                 marginTop: 15,
               }}
-            ></Image>
+            ></Image> */}
+            <ImageProfile/>
             <View
               style={[
                 style.txtinput,
@@ -406,6 +406,7 @@ export default function Profilefill() {
                 placeholder="סיסמא"
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
+                secureTextEntry={true}
                 style={[
                   style.s14,
                   { color: theme.txt, flex: 1 },
@@ -432,6 +433,7 @@ export default function Profilefill() {
                 placeholder="אישור סיסמא"
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
+                secureTextEntry={true}
                 style={[
                   style.s14,
                   { color: theme.txt, flex: 1 },

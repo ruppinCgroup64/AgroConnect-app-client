@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import { Image, TouchableOpacity, View, StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function ImageProfile() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      setSelectedImage(result.uri);
+    if (!result.cancelled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0].uri);
     }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -27,16 +29,17 @@ export default function ImageProfile() {
         {selectedImage ? (
           <Image source={{ uri: selectedImage }} style={styles.image} />
         ) : (
-          // Placeholder content like an icon or text
           <View style={styles.iconPlaceholder}>
-            {/* Insert your icon component here */}
-            {/* Example: <YourIconComponent /> */}
+            <Icon name="add" size={24} color="#000" />
+            <Text style={{fontFamily: "Heebo-Thin"}}>הוסף תמונה</Text>
           </View>
         )}
-        <View style={styles.overlayButton}>
-          {/* Your plus button component or icon */}
-        </View>
       </TouchableOpacity>
+      {selectedImage && (
+        <TouchableOpacity onPress={removeImage} style={styles.deleteIcon}>
+          <Icon name="delete" size={24} color="#000" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -48,24 +51,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imagePlaceholder: {
-    width: 200,
-    height: 200,
-    backgroundColor: '#ddd',
+    width: 150,
+    height: 150,
+    backgroundColor: '#DEEAD8',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
+    borderRadius: 100,
+    overflow: 'hidden',
+    borderWidth: 0.5,  
+    borderColor: '#000', 
+    borderStyle: 'solid'
   },
   image: {
     width: '100%',
     height: '100%',
   },
   iconPlaceholder: {
-    // Define your placeholder styles
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  overlayButton: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
-    // Define styles for your plus button or use an icon component
-  },
+  deleteIcon: {
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });

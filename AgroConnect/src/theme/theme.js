@@ -28,6 +28,7 @@ const theme = {
         a7: require('../../assets/image/a7.png'),
         a9: require('../../assets/image/a9.png'),
         a12: require('../../assets/image/a12.png'),
+        demoUser: require('../../assets/image/demoUser.png'),
     },
     dark: {
         theme: 'dark',
@@ -58,6 +59,7 @@ const theme = {
         a7: require('../../assets/image/a7d.png'),
         a9: require('../../assets/image/a9d.png'),
         a12: require('../../assets/image/a12d.png'),
+        demoUser: require('../../assets/image/demoUser.png'),
     },
 
 };
