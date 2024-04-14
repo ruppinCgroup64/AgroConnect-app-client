@@ -329,6 +329,27 @@ export default function Profilefill() {
               ]}
             >
               <TextInput
+                placeholder="כתובת מגורים"
+                textAlign="right"
+                selectionColor={Colors.primary}
+                placeholderTextColor={Colors.disable}
+                style={[style.s14, { color: theme.txt, flex: 1 }]}
+                onFocus={() => setPlacesModalVisible(true)}
+                value={addressText}
+              />
+            </View>
+            <View
+              style={[
+                style.inputContainer,
+                {
+                  borderColor: theme.input,
+                  borderWidth: 1,
+                  backgroundColor: theme.input,
+                  marginTop: 20,
+                },
+              ]}
+            >
+              <TextInput
                 placeholder="אימייל"
                 selectionColor={Colors.primary}
                 placeholderTextColor={Colors.disable}
@@ -422,27 +443,6 @@ export default function Profilefill() {
             {errors.confirmPassword ? (
               <Text style={style.errorText}>{errors.confirmPassword}</Text>
             ) : null}
-            <View
-              style={[
-                style.inputContainer,
-                {
-                  borderColor: theme.input,
-                  borderWidth: 1,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="הוסף כתובת"
-                textAlign="right"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
-                onFocus={() => setPlacesModalVisible(true)}
-                value={addressText}
-              />
-            </View>
             {errors.address ? (
               <Text style={style.errorText}>{errors.address}</Text>
             ) : null}
