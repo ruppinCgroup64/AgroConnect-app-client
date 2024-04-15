@@ -38,11 +38,13 @@ export default function Profilefill() {
     //if (validateForm()) 
     {
       console.log("submitted"); //API place
+      const consumerNum=-1;//צריך לערוך כשמגיע לקונטקסט
       farm = {
         farmName,
         address,
         socialNetworkLink,
-        mainPic
+        mainPic,
+        consumerNum
       };
       // העברת האוייקט לקונטקסט ורישום המשק+התייחסות למספר צרכן שנרשם בקונטקסט
       setErrors({});
