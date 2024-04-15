@@ -284,13 +284,13 @@ export default function Login() {
                 marginBottom: 10,
               }}
             >
+                <Text style={[style.r14, { color: theme.txt3 }]}>
+                אין לך חשבון? 
+              </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("Profilefill")}
                 style={{ flexDirection: 'row', alignItems: 'center' }} 
               >
-                <Text style={[style.r14, { color: theme.txt3 }]}>
-                אין לך חשבון? 
-              </Text>
                 <Text style={[style.s14, { color: Colors.primary }]}>
                   {" "}
                 הירשם עכשיו

@@ -21,7 +21,6 @@ import NewPass from "../screens/NewPass";
 import Notification from "../screens/Notification";
 // import Otp from '../screens/Otp';
 import Introduction from "../screens/Introduction";
-// import Profilefill from '../screens/Profilefill';
 import Fingerprint from "../screens/Fingerprint";
 import Search from "../screens/Search";
 import OrderTab from "../screens/OrderTab";
@@ -52,7 +51,7 @@ import Mywishlist from '../screens/Mywishlist'
 import MyTabs from "./BottomNavigator";
 import Popular from '../screens/Popular'
 import SearchR from '../screens/SearchR'
-// import Home from '../screens/Home';
+import Home from '../screens/Home';
 
 import ProDetail from '../screens/ProDetail';
 import Review from '../screens/Review';
@@ -66,6 +65,7 @@ import NewAddress from '../screens/NewAddress';
 import Otp1 from '../screens/Otp1';
 import ProDetail2 from "../screens/ProDetail2";
 import Profile1 from "../screens/Profile1";
+import Welcome from "../screens/Welcome";
 
 const Stack = createNativeStackNavigator();
 
@@ -201,11 +201,11 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
 
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Home"
             component={Home}
             options={{ headerShown: false }}
-          /> */}
+          />
           {/* <Stack.Screen
             name="ConfirmPin"
             component={ConfirmPin}
@@ -316,6 +316,12 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Profilefill"
             component={Profilefill}
+            options={{ headerShown: false }}
+            
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={Welcome}
             options={{ headerShown: false }}
             
           />

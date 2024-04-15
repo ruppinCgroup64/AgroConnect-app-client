@@ -4,17 +4,13 @@ import {
   Platform,
   SafeAreaView,
   TextInput,
-  StatusBar,
   TouchableOpacity,
-  Image,
   ScrollView,
   Dimensions,
   KeyboardAvoidingView,
   Modal,
-  Button,
 } from "react-native";
 import React, { useState, useContext } from "react";
-import theme from "../theme/theme";
 import themeContext from "../theme/themeContex";
 import style from "../theme/style";
 import { Colors } from "../theme/color";
@@ -26,6 +22,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -49,7 +46,7 @@ export default function Profilefill() {
     const x = dt.toISOString().split("T");
     const x1 = x[0].split("-");
     setSelectDate(x1[2] + "/" + x1[1] + "/" + x1[0]);
-    setBirth(selectDate);
+    setDateOfBirth(selectDate);
     hideDatePicker();
   };
 
@@ -58,48 +55,52 @@ export default function Profilefill() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "זכר", value: "male" },
-    { label: "נקבה", value: "female" },
-    { label: "אחר", value: "other" },
+    { label: "זכר", value: "M" },
+    { label: "נקבה", value: "F" },
+    { label: "אחר", value: "O" },
   ]);
 
   const [addressText, setAddressText] = useState("");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [birth, setBirth] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [img, setImg] = useState("");
+  const [profilePic, setProfilePic] = useState("");
   const [isFarmer, setIsFarmer] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   const handleSubmit = () => {
-    if (validateForm()) {
+    //if (validateForm()) 
+    {
       console.log("submitted"); //API place
       if (isChecked == true) setIsFarmer(true);
-      user = {
+      consumer = {
         firstName,
         lastName,
-        birth,
+        dateOfBirth,
         gender,
         email,
         phoneNum,
         address,
         password,
-        img,
+        profilePic,
         isFarmer,
       };
-      // regPost(user);//API request
+      // רישום צרכן לשרת
+      //const serverConsumer=התשובה מהשרת
+      //נבדוק אם התשובה תקינה. אם כן נחזיר לקונטקסט את היוזר, אם לא, נציג בהתאם. למשל קיים כבר מייל כזה
       setErrors({});
+      //רישום המשק ייגש ליוזר שנרשם בקונטקסט וייקח את המספר מזהה שלו ויעביר אותו גם
       if (isChecked == true) navigation.navigate("ProfilefillFarmer");
-      else console.log("modalSuccess reg");
+      else navigation.navigate("Welcome");
     }
   };
   //checking every field according to the rules and add to the errors object
@@ -117,8 +118,8 @@ export default function Profilefill() {
     //   errors.lastName = "שם משפחה לא תקין";
     // } else
     if (!firstName) errors.lastName = "שדה חובה";
-    //birth
-    if (!birth) errors.birth = "שדה חובה";
+    //dateOfBirth
+    if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
     if (!gender) errors.gender = "שדה חובה";
     //password
@@ -156,16 +157,18 @@ export default function Profilefill() {
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={{ flex: 1 }}
       >
-        <View
-          style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}
-        >
+      <View
+        style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}
+      >
+
           <AppBar
             color={theme.bg}
             title="הרשמה"
             titleStyle={[style.s18, { color: theme.txt, textAlign: "center" }]}
+            style={{paddingBottom:15}}
             elevation={0}
             leading={
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity onPress={() => this.RBSheet10.open()}>
                 <Icon
                   name="arrow-back"
                   color={theme.txt}
@@ -179,18 +182,68 @@ export default function Profilefill() {
             trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
           />
 
+          <RBSheet
+            ref={(ref) => {
+              this.RBSheet10 = ref;
+            }}
+            height={250}
+            openDuration={100}
+            customStyles={{
+              container: {
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                backgroundColor: theme.bg,
+              },
+            }}
+          >
+            <View style={{ marginHorizontal: 20, marginTop: 20 }}>
+              <Text
+                style={[
+                  style.apptitleSB,
+                  { textAlign: "center", color: "#F75555" },
+                ]}
+              >
+                ביטול
+              </Text>
+              <View
+                style={[
+                  style.divider,
+                  { marginVertical: 10, backgroundColor: "#EEEEEE" },
+                ]}
+              ></View>
+              <View style={{ paddingTop: 20 }}>
+                <Text
+                  style={[style.m18, { color: theme.txt, textAlign: "center" }]}
+                >
+                  במידה ותבחר לעזוב פרטיך יימחקו
+                </Text>
+              </View>
+              <View style={{ marginTop: 25, flexDirection: "row" }}>
+                <TouchableOpacity
+                  onPress={() => this.RBSheet10.close()}
+                  style={[style.btn, { backgroundColor: theme.btn, flex: 1 }]}
+                >
+                  <Text style={[style.btntxt, { color: theme.btntxt }]}>
+                    הישאר
+                  </Text>
+                </TouchableOpacity>
+                <View style={{ margin: 5 }}></View>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.RBSheet10.close(), navigation.navigate("Login");
+                  }}
+                  style={[style.btn, { flex: 1 }]}
+                >
+                  <Text style={[style.btntxt, { color: Colors.secondary }]}>
+                    מחק
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </RBSheet>
+
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* <Image
-              source={require("../../assets/image/User.png")}
-              style={{
-                height: height / 8,
-                width: width / 3.2,
-                resizeMode: "stretch",
-                alignSelf: "center",
-                marginTop: 15,
-              }}
-            ></Image> */}
-            <ImageProfile setImg={setImg}/>
+            <ImageProfile setProfilePic={setProfilePic} />
             <View
               style={[
                 style.txtinput,
@@ -270,8 +323,8 @@ export default function Profilefill() {
                 />
               </TouchableOpacity>
             </View>
-            {errors.birth ? (
-              <Text style={style.errorText}>{errors.birth}</Text>
+            {errors.dateOfBirth ? (
+              <Text style={style.errorText}>{errors.dateOfBirth}</Text>
             ) : null}
             <DropDownPicker
               listMode="MODAL"
@@ -335,9 +388,12 @@ export default function Profilefill() {
                 placeholderTextColor={Colors.disable}
                 style={[style.s14, { color: theme.txt, flex: 1 }]}
                 onFocus={() => setPlacesModalVisible(true)}
-                value={addressText}
+                value={address}
               />
             </View>
+            {errors.address ? (
+              <Text style={style.errorText}>{errors.address}</Text>
+            ) : null}
             <View
               style={[
                 style.inputContainer,
@@ -445,9 +501,6 @@ export default function Profilefill() {
             {errors.confirmPassword ? (
               <Text style={style.errorText}>{errors.confirmPassword}</Text>
             ) : null}
-            {errors.address ? (
-              <Text style={style.errorText}>{errors.address}</Text>
-            ) : null}
             <View
               style={{
                 flexDirection: "row",
@@ -510,7 +563,7 @@ export default function Profilefill() {
                         height: 50,
                       },
                     ],
-                    onChangeText: (text) => setAddressText(text),
+                    onChangeText: (text) => setAddress(text),
                   }}
                   styles={{
                     textInputContainer: {
@@ -536,7 +589,6 @@ export default function Profilefill() {
                 <TouchableOpacity
                   onPress={() => {
                     setPlacesModalVisible(false);
-                    console.log(addressText);
                   }}
                   style={[style.btnSave, { alignSelf: "center" }]}
                 >
