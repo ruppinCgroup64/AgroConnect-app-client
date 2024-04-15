@@ -28,6 +28,7 @@ export default function ImageProfile({userImageURI, setImg}) {
 
   const removeImage = () => {
     setSelectedImage(null);
+    setImg(null);
   };
 
   return (
