@@ -16,7 +16,7 @@ export default function Welcome() {
     useEffect(() => {
       const timer = setTimeout(() => {
         //מעבר לעמוד הבית המתאים לפי האם צרכן או חקלאי
-        navigation.navigate("Home"); 
+        navigation.navigate("MyTabs"); 
       }, 2000);
   
       return () => clearTimeout(timer);
