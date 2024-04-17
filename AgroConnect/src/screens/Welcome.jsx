@@ -18,8 +18,6 @@ export default function Welcome() {
         //מעבר לעמוד הבית המתאים לפי האם צרכן או חקלאי
         navigation.navigate("MyTabs"); 
       }, 2000);
-  
-      return () => clearTimeout(timer);
     }, [navigation]);
 
     return (

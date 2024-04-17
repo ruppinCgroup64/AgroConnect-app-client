@@ -43,7 +43,8 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   //submit
   const handleSubmit = () => {
-    if (validateForm()) {
+    //if (validateForm()) 
+    {
       console.log("submitted"); //API place
       // loginPOST(email);//API request
       setEmail("");

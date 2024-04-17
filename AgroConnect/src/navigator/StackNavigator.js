@@ -11,7 +11,7 @@ import theme from "../theme/theme";
 import themeContext from "../theme/themeContex";
 import { Colors } from "../theme/color";
 import Login from "../screens/Login";
-import Signup from "../screens/Signup";
+import Signup from "../screens/Signup-no";
 
 import Splash from "../screens/Splash";
 import Letsin from "../screens/Letsin";
@@ -46,6 +46,8 @@ import Payment1 from "../screens/Payment1";
 import MyCart from '../screens/MyCart';
 import Profilefill from '../screens/Profilefill'
 import ProfilefillFarmer from '../screens/ProfilefillFarmer'
+import EditProfileFarm from "../screens/EditProfileFarm";
+
 import Otp from '../screens/Otp';
 import Mywishlist from '../screens/Mywishlist'
 import MyTabs from "./BottomNavigator";
@@ -64,7 +66,7 @@ import Otp3 from '../screens/Otp3';
 import NewAddress from '../screens/NewAddress';
 import Otp1 from '../screens/Otp1';
 import ProDetail2 from "../screens/ProDetail2";
-import Profile1 from "../screens/Profile1";
+import EditProfile from "../screens/EditProfile";
 import Welcome from "../screens/Welcome";
 
 const Stack = createNativeStackNavigator();
@@ -129,8 +131,13 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Profile1"
-            component={Profile1}
+            name="EditProfile"
+            component={EditProfile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditProfileFarm"
+            component={EditProfileFarm}
             options={{ headerShown: false }}
           />
           <Stack.Screen
