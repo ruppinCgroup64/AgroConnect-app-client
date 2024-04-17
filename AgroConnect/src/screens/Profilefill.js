@@ -33,6 +33,7 @@ export default function Profilefill() {
     email: "adi@gmail.com",
     phoneNum: "0501234567",
     address: "בארותיים, הפלג, 200",
+    addressName: "בארותיים, הפלג, 200",
     password: "1234",
     confirmPassword: "1234",
     profilePic:
@@ -51,6 +52,7 @@ export default function Profilefill() {
     {
       setContent("הרשמתך בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
     }
+    console.log(updatedConsumer)
   }, [navContinue]);
 
   // useEffect(() => {

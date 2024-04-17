@@ -8,6 +8,14 @@ let local = true;
 const apiUrl = "https://localhost:7021/api/Users";
 if (!local) apiUrl = "hproj.ruppint:7075/api/Consumers";
 
+import { create } from "./api";
+
+async function register(user) {
+  let res = await create("api/user", user);
+  if (res.status) alert("user created");
+  else alert("something went wrong");
+}
+
 export default function UserContextProvider(props) {
   const [user, setUser] = useState(null);
 
@@ -36,40 +44,39 @@ export default function UserContextProvider(props) {
       );
   };
 
-  
   const getUser = () => {
     fetch(apiUrl, {
-      method: 'GET',//פעולה
+      method: "GET", //פעולה
       headers: new Headers({
-        'Content-Type': 'application/json; charset=UTF-8',//בתור מה מקבל
-        'Accept': 'application/json; charset=UTF-8',//שולח בגייסונית
-      })
+        "Content-Type": "application/json; charset=UTF-8", //בתור מה מקבל
+        Accept: "application/json; charset=UTF-8", //שולח בגייסונית
+      }),
     })
-    //כשיחזור
-      .then(res => {
-        console.log('res=', res);
-        console.log('res.status', res.status);//להסתכל על הסטטוס של התשובה-אולי קיבלנו שגיאה ואפעל בהתאם
-        console.log('res.ok', res.ok);
-        return res.json()//אם הכל טוב תביא את הבאדי
+      //כשיחזור
+      .then((res) => {
+        console.log("res=", res);
+        console.log("res.status", res.status); //להסתכל על הסטטוס של התשובה-אולי קיבלנו שגיאה ואפעל בהתאם
+        console.log("res.ok", res.ok);
+        return res.json(); //אם הכל טוב תביא את הבאדי
       })
       //קבלת המידע שיש בפנים והצגתו/פעולה עליו בהתאם לצורך
       .then(
         (result) => {
           console.log("fetch btnFetchGetStudents= ", result);
-          console.log('result.name=', result.name);
+          console.log("result.name=", result.name);
         },
         (error) => {
           console.log("err post=", error);
-        });
+        }
+      );
   };
 
   const updateUser = (id) => {
     setHobbies(hobbies.filter((hob) => hob.id !== id));
   };
 
-
   return (
-    <UserContext.Provider value={{ user, postUser,getUser, updateUser }}>
+    <UserContext.Provider value={{ user, postUser, getUser, updateUser }}>
       {props.children}
     </UserContext.Provider>
   );

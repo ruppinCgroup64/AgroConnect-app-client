@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
 import RBSheet from "react-native-raw-bottom-sheet";
+import AutoCompMap from "./AutoCompMap";
 
 export default function DetailsFarm(props) {
   const { farm, setFarm, setNavContinue } = props;
@@ -22,12 +23,13 @@ export default function DetailsFarm(props) {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   const [flag, setFlag] = useState(false);
+  const [addressName, setAddressName] = useState("")
   
   const [farmName, setFarmName] = useState(() =>
     farm && farm.farmName ? farm.farmName : ""
   );
   const [address, setAddress] = useState(
-    farm && farm.address ? farm.address : ""
+    farm && farm.address ? farm.address : {}
   );
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
@@ -47,6 +49,7 @@ export default function DetailsFarm(props) {
       const updatedFarm = {
         farmName,
         address,
+        addressName,//לשים לב שיש עוד שדה שזה השם עצמו- אולי להסיר אחרי שיודעת להמיר לשם
         socialNetworkLink,
         mainPic,
         consumerNum,
@@ -137,7 +140,7 @@ export default function DetailsFarm(props) {
                 placeholderTextColor={Colors.disable}
                 style={[style.s14, { color: theme.txt, flex: 1 }]}
                 onFocus={() => setPlacesModalVisible(true)}
-                value={address}
+                value={addressName}
               />
             </View>
             {errors.address ? (
@@ -153,7 +156,8 @@ export default function DetailsFarm(props) {
               }}
             >
               <SafeAreaView style={style.modalView}>
-                <GooglePlacesAutocomplete
+              <AutoCompMap setAddress={setAddress}/>
+                {/* <GooglePlacesAutocomplete
                   placeholder="עיר, רחוב, מספר משק"
                   onPress={(data, details = null) => {
                     console.log(JSON.stringify(data));
@@ -198,10 +202,14 @@ export default function DetailsFarm(props) {
                   fetchDetails={true}
                   nearbyPlacesAPI="GooglePlacesSearch"
                   debounce={400}
-                />
+                /> */}
                 <TouchableOpacity
                   onPress={() => {
                     setPlacesModalVisible(false);
+                    if(address!=[]){
+                      setAddressName(address[1].address.freeformAddress)
+                      setAddress(address[0].position)
+                    }
                   }}
                   style={[style.btnSave, { alignSelf: "center" }]}
                 >

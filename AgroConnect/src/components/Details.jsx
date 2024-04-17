@@ -23,6 +23,7 @@ import Checkbox from "expo-checkbox";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
 import RBSheet from "react-native-raw-bottom-sheet";
+import AutoCompMap from "./AutoCompMap";
 
 export default function Details(props) {
   const { consumer, setConsumer, setNavContinue, edit } = props;
@@ -50,9 +51,9 @@ export default function Details(props) {
   };
 
   const [isChecked, setChecked] = useState(() =>
-  consumer && consumer.isFarmer ? consumer.isFarmer : false
-);;
-const [flag, setFlag] = useState(false)
+    consumer && consumer.isFarmer ? consumer.isFarmer : false
+  );
+  const [flag, setFlag] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -61,6 +62,8 @@ const [flag, setFlag] = useState(false)
     { label: "נקבה", value: "נקבה" },
     { label: "אחר", value: "אחר" },
   ]);
+
+  const [addressName, setAddressName] = useState("")
 
   const [firstName, setFirstName] = useState(() =>
     consumer && consumer.firstName ? consumer.firstName : ""
@@ -81,7 +84,7 @@ const [flag, setFlag] = useState(false)
     consumer && consumer.phoneNum ? consumer.phoneNum : ""
   );
   const [address, setAddress] = useState(() =>
-    consumer && consumer.address ? consumer.address : ""
+    consumer && consumer.addressName ? consumer.addressName : {}
   );
   const [password, setPassword] = useState(() =>
     consumer && consumer.password ? consumer.password : ""
@@ -97,8 +100,7 @@ const [flag, setFlag] = useState(false)
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   useEffect(() => {
-    if(flag)
-    {
+    if (flag) {
       updatedConsumer = {
         firstName,
         lastName,
@@ -107,6 +109,7 @@ const [flag, setFlag] = useState(false)
         email,
         phoneNum,
         address,
+        addressName,//לשים לב שיש עוד שדה שזה השם עצמו- אולי להסיר אחרי שיודעת להמיר לשם
         password,
         profilePic,
         isFarmer: isChecked,
@@ -115,12 +118,12 @@ const [flag, setFlag] = useState(false)
     }
   }, [flag]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (flag) {
       setNavContinue(true);
     }
-    setFlag(false)
-  },[consumer])
+    setFlag(false);
+  }, [consumer]);
 
   const handleSubmit = () => {
     //if (validateForm())
@@ -322,7 +325,7 @@ const [flag, setFlag] = useState(false)
             placeholderTextColor={Colors.disable}
             style={[style.s14, { color: theme.txt, flex: 1 }]}
             onFocus={() => setPlacesModalVisible(true)}
-            value={address}
+            value={addressName}
           />
         </View>
         {errors.address ? (
@@ -477,7 +480,8 @@ const [flag, setFlag] = useState(false)
           }}
         >
           <SafeAreaView style={style.modalView}>
-            <GooglePlacesAutocomplete
+            <AutoCompMap setAddress={setAddress} />
+            {/* <GooglePlacesAutocomplete
               placeholder="עיר, רחוב, מספר בית"
               onPress={(data, details = null) => {
                 console.log(JSON.stringify(data));
@@ -522,10 +526,14 @@ const [flag, setFlag] = useState(false)
               fetchDetails={true}
               nearbyPlacesAPI="GooglePlacesSearch"
               debounce={400}
-            />
+            /> */}
             <TouchableOpacity
               onPress={() => {
                 setPlacesModalVisible(false);
+                if (address != []) {
+                  setAddressName(address[1].address.freeformAddress);
+                  setAddress(address[0].position);
+                }
               }}
               style={[style.btnSave, { alignSelf: "center" }]}
             >
