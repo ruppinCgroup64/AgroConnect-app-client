@@ -43,28 +43,28 @@ import Amount from "../screens/Amount";
 import MyWallet from "../screens/MyWallet";
 import ConfirmPin from "../screens/ConfirmPin";
 import Payment1 from "../screens/Payment1";
-import MyCart from '../screens/MyCart';
-import Profilefill from '../screens/Profilefill'
-import ProfilefillFarmer from '../screens/ProfilefillFarmer'
+import MyCart from "../screens/MyCart";
+import Profilefill from "../screens/Profilefill";
+import ProfilefillFarmer from "../screens/ProfilefillFarmer";
 import EditProfileFarm from "../screens/EditProfileFarm";
 
-import Otp from '../screens/Otp';
-import Mywishlist from '../screens/Mywishlist'
+import Otp from "../screens/Otp";
+import Mywishlist from "../screens/Mywishlist";
 import MyTabs from "./BottomNavigator";
-import Popular from '../screens/Popular'
-import SearchR from '../screens/SearchR'
-import Home from '../screens/Home';
+import Popular from "../screens/Popular";
+import SearchR from "../screens/SearchR";
+import Home from "../screens/Home";
 
-import ProDetail from '../screens/ProDetail';
-import Review from '../screens/Review';
-import Checkout from '../screens/Checkout';
-import ShippingAdd from '../screens/ShippingAdd';
-import ChooseShip from '../screens/ChooseShip';
-import Promo from '../screens/Promo';
-import Otp2 from '../screens/Otp2';
-import Otp3 from '../screens/Otp3';
-import NewAddress from '../screens/NewAddress';
-import Otp1 from '../screens/Otp1';
+import ProDetail from "../screens/ProDetail";
+import Review from "../screens/Review";
+import Checkout from "../screens/Checkout";
+import ShippingAdd from "../screens/ShippingAdd";
+import ChooseShip from "../screens/ChooseShip";
+import Promo from "../screens/Promo";
+import Otp2 from "../screens/Otp2";
+import Otp3 from "../screens/Otp3";
+import NewAddress from "../screens/NewAddress";
+import Otp1 from "../screens/Otp1";
 import ProDetail2 from "../screens/ProDetail2";
 import EditProfile from "../screens/EditProfile";
 import Welcome from "../screens/Welcome";
@@ -94,7 +94,6 @@ export default function StackNavigator() {
   return (
     <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
       <NavigationContainer theme={darkMode === true ? DarkTheme : DefaultTheme}>
-        
         <StatusBar
           backgroundColor={darkMode === true ? Colors.active : Colors.secondary}
           barStyle={darkMode === true ? "light-content" : "dark-content"}
@@ -114,12 +113,12 @@ export default function StackNavigator() {
             component={Introduction}
             options={{ headerShown: false }}
           /> */}
-           {/* <Stack.Screen
+          {/* <Stack.Screen
             name="Letsin"
             component={Letsin}
             options={{ headerShown: false }}
           /> */}
-          
+
           <Stack.Screen
             name="Login"
             component={Login}
@@ -128,7 +127,7 @@ export default function StackNavigator() {
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
-            options={{ headerShown: false }}
+            options={{ headerShown: false /*gestureEnabled: false*/ }}
           />
           <Stack.Screen
             name="EditProfile"
@@ -145,47 +144,56 @@ export default function StackNavigator() {
             component={ProDetail2}
             options={{ headerShown: false }}
           />
-          
           <Stack.Screen
             name="NewAddress"
             component={NewAddress}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Otp3"
             component={Otp3}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Otp2"
             component={Otp2}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Promo"
             component={Promo}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="ChooseShip"
             component={ChooseShip}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="ShippingAdd"
             component={ShippingAdd}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Checkout"
             component={Checkout}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Review"
             component={Review}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="ProDetail"
             component={ProDetail}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Otp1"
             component={Otp1}
-            options={{ headerShown: false }} />
+            options={{ headerShown: false }}
+          />
 
           <Stack.Screen
             name="SearchR"
@@ -320,17 +328,16 @@ export default function StackNavigator() {
             component={Fingerprint}
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
             name="Profilefill"
             component={Profilefill}
             options={{ headerShown: false }}
-            
           />
           <Stack.Screen
             name="Welcome"
             component={Welcome}
             options={{ headerShown: false }}
-            
           />
           <Stack.Screen
             name="ProfilefillFarmer"

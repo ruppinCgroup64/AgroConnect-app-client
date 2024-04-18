@@ -6,7 +6,7 @@ import theme from "../theme/theme"; // Ensure these are correctly imported
 import { Colors } from "../theme/color";
 import style from "../theme/style";
 
-export default function AutoCompMap({ setAddress, setPlacesModalVisible }) {
+export default function AutoCompMap({ setAddress, setLatitude, setLongitude, setPlacesModalVisible }) {
   const [inputValue, setInputValue] = useState(""); // For the input value of the autocomplete field
   const [latLon, setLatLon] = useState({ latitude: null, longitude: null }); // To store latitude and longitude
 
@@ -17,20 +17,14 @@ export default function AutoCompMap({ setAddress, setPlacesModalVisible }) {
         fetchDetails={true}
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
-        value={inputValue}
+        keepResultsAfterBlur={true}
         onPress={(data, details = null) => {
+          console.log(data)
           // This function is called when a dropdown item is selected
           if (details) {
-            const addressName = details.formatted_address;
-            const latitude = details.geometry.location.lat;
-            const longitude = details.geometry.location.lng;
-
-            setInputValue(addressName); // Set the text input to the full address
-            setAddress(addressName); // Save the address name
-            setLatLon({ latitude, longitude }); // Save latitude and longitude
-
-            console.log("Selected Address:", addressName);
-            console.log("Coordinates:", latitude, longitude);
+            setAddress(details.formatted_address)
+            setLatitude(details.geometry.location.lat)
+            setLongitude(details.geometry.location.lng)
           }
         }}
         onFail={error => console.error(error)}

@@ -1,5 +1,5 @@
 import { View, Text, Platform, SafeAreaView, ImageBackground,KeyboardAvoidingView, TextInput, StatusBar, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import theme from '../theme/theme';
 import themeContext from '../theme/themeContex';
 import style from '../theme/style';

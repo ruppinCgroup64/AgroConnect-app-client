@@ -63,7 +63,6 @@ export default function Details(props) {
     { label: "אחר", value: "אחר" },
   ]);
 
-  const [addressName, setAddressName] = useState("")
 
   const [firstName, setFirstName] = useState(() =>
     consumer && consumer.firstName ? consumer.firstName : ""
@@ -84,8 +83,15 @@ export default function Details(props) {
     consumer && consumer.phoneNum ? consumer.phoneNum : ""
   );
   const [address, setAddress] = useState(() =>
-    consumer && consumer.addressName ? consumer.addressName : {}
+    consumer && consumer.address ? consumer.address : {}
   );
+  
+  const [latitude, setLatitude] = useState(() =>
+  consumer && consumer.latitude ? consumer.latitude : "");
+
+  const [longitude, setLongitude] = useState(() =>
+  consumer && consumer.longitude ? consumer.longitude : "");
+
   const [password, setPassword] = useState(() =>
     consumer && consumer.password ? consumer.password : ""
   );
@@ -109,7 +115,8 @@ export default function Details(props) {
         email,
         phoneNum,
         address,
-        addressName,//לשים לב שיש עוד שדה שזה השם עצמו- אולי להסיר אחרי שיודעת להמיר לשם
+        latitude,
+        longitude,
         password,
         profilePic,
         isFarmer: isChecked,
@@ -183,7 +190,10 @@ export default function Details(props) {
 
   return (
     <View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps={"always"}
+      >
         <ImageProfile setProfilePic={setProfilePic} />
         <View
           style={[
@@ -325,7 +335,7 @@ export default function Details(props) {
             placeholderTextColor={Colors.disable}
             style={[style.s14, { color: theme.txt, flex: 1 }]}
             onFocus={() => setPlacesModalVisible(true)}
-            value={addressName}
+            value={address}
           />
         </View>
         {errors.address ? (
@@ -480,7 +490,12 @@ export default function Details(props) {
           }}
         >
           <SafeAreaView style={style.modalView}>
-            <AutoCompMap setAddress={setAddress} setPlacesModalVisible={setPlacesModalVisible}/>
+            <AutoCompMap
+              setAddress={setAddress}
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+              setPlacesModalVisible={setPlacesModalVisible}
+            />
             {/* <GooglePlacesAutocomplete
               placeholder="עיר, רחוב, מספר בית"
               onPress={(data, details = null) => {
@@ -527,7 +542,6 @@ export default function Details(props) {
               nearbyPlacesAPI="GooglePlacesSearch"
               debounce={400}
             /> */}
-           
           </SafeAreaView>
         </Modal>
         <View style={{ marginBottom: 50 }}>

@@ -23,14 +23,20 @@ export default function DetailsFarm(props) {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   const [flag, setFlag] = useState(false);
-  const [addressName, setAddressName] = useState("")
-  
+
   const [farmName, setFarmName] = useState(() =>
     farm && farm.farmName ? farm.farmName : ""
   );
   const [address, setAddress] = useState(
     farm && farm.address ? farm.address : {}
   );
+
+  const [latitude, setLatitude] = useState(() =>
+  farm && farm.latitude ? farm.latitude : "");
+
+  const [longitude, setLongitude] = useState(() =>
+  farm && farm.longitude ? farm.longitude : "");
+
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
   );
@@ -49,7 +55,8 @@ export default function DetailsFarm(props) {
       const updatedFarm = {
         farmName,
         address,
-        addressName,//לשים לב שיש עוד שדה שזה השם עצמו- אולי להסיר אחרי שיודעת להמיר לשם
+        latitude,
+        longitude,
         socialNetworkLink,
         mainPic,
         consumerNum,
@@ -96,68 +103,73 @@ export default function DetailsFarm(props) {
 
   return (
     <View>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
-            <View
-              style={[
-                style.txtinput,
-                {
-                  borderColor: theme.input,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="שם המשק"
-                textAlign="right"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
-                onChangeText={setFarmName}
-                value={farmName}
-              />
-            </View>
-            {errors.farmName ? (
-              <Text style={style.errorText}>{errors.farmName}</Text>
-            ) : null}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
+        <View
+          style={[
+            style.txtinput,
+            {
+              borderColor: theme.input,
+              backgroundColor: theme.input,
+              marginTop: 20,
+            },
+          ]}
+        >
+          <TextInput
+            placeholder="שם המשק"
+            textAlign="right"
+            selectionColor={Colors.primary}
+            placeholderTextColor={Colors.disable}
+            style={[style.s14, { color: theme.txt, flex: 1 }]}
+            onChangeText={setFarmName}
+            value={farmName}
+          />
+        </View>
+        {errors.farmName ? (
+          <Text style={style.errorText}>{errors.farmName}</Text>
+        ) : null}
 
-            <View
-              style={[
-                style.inputContainer,
-                {
-                  borderColor: theme.input,
-                  borderWidth: 1,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="כתובת המשק"
-                textAlign="right"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
-                onFocus={() => setPlacesModalVisible(true)}
-                value={addressName}
-              />
-            </View>
-            {errors.address ? (
-              <Text style={style.errorText}>{errors.address}</Text>
-            ) : null}
+        <View
+          style={[
+            style.inputContainer,
+            {
+              borderColor: theme.input,
+              borderWidth: 1,
+              backgroundColor: theme.input,
+              marginTop: 20,
+            },
+          ]}
+        >
+          <TextInput
+            placeholder="כתובת המשק"
+            textAlign="right"
+            selectionColor={Colors.primary}
+            placeholderTextColor={Colors.disable}
+            style={[style.s14, { color: theme.txt, flex: 1 }]}
+            onFocus={() => setPlacesModalVisible(true)}
+            value={address}
+          />
+        </View>
+        {errors.address ? (
+          <Text style={style.errorText}>{errors.address}</Text>
+        ) : null}
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={isPlacesModalVisible}
-              onRequestClose={() => {
-                setPlacesModalVisible(!isPlacesModalVisible);
-              }}
-            >
-              <SafeAreaView style={style.modalView}>
-              <AutoCompMap setAddress={setAddress} setPlacesModalVisible={setPlacesModalVisible}/>
-                {/* <GooglePlacesAutocomplete
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={isPlacesModalVisible}
+          onRequestClose={() => {
+            setPlacesModalVisible(!isPlacesModalVisible);
+          }}
+        >
+          <SafeAreaView style={style.modalView}>
+            <AutoCompMap
+              setAddress={setAddress}
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+              setPlacesModalVisible={setPlacesModalVisible}
+            />
+            {/* <GooglePlacesAutocomplete
                   placeholder="עיר, רחוב, מספר משק"
                   onPress={(data, details = null) => {
                     console.log(JSON.stringify(data));
@@ -203,38 +215,38 @@ export default function DetailsFarm(props) {
                   nearbyPlacesAPI="GooglePlacesSearch"
                   debounce={400}
                 /> */}
-              </SafeAreaView>
-            </Modal>
-            <View
-              style={[
-                style.txtinput,
-                {
-                  borderColor: theme.input,
-                  backgroundColor: theme.input,
-                  marginTop: 20,
-                },
-              ]}
-            >
-              <TextInput
-                placeholder="קישור לעמוד ברשת חברתית"
-                textAlign="right"
-                selectionColor={Colors.primary}
-                placeholderTextColor={Colors.disable}
-                style={[style.s14, { color: theme.txt, flex: 1 }]}
-                onChangeText={setSocialNetworkLink}
-                value={socialNetworkLink}
-              />
-            </View>
-            {errors.socialNetworkLink ? (
-              <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
-            ) : null}
+          </SafeAreaView>
+        </Modal>
+        <View
+          style={[
+            style.txtinput,
+            {
+              borderColor: theme.input,
+              backgroundColor: theme.input,
+              marginTop: 20,
+            },
+          ]}
+        >
+          <TextInput
+            placeholder="קישור לעמוד ברשת חברתית"
+            textAlign="right"
+            selectionColor={Colors.primary}
+            placeholderTextColor={Colors.disable}
+            style={[style.s14, { color: theme.txt, flex: 1 }]}
+            onChangeText={setSocialNetworkLink}
+            value={socialNetworkLink}
+          />
+        </View>
+        {errors.socialNetworkLink ? (
+          <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
+        ) : null}
 
-            <View style={{ marginTop: 40, marginBottom: 20 }}>
-              <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-                <Text style={style.btntxt}>אישור</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-          </View>
+        <View style={{ marginTop: 40, marginBottom: 20 }}>
+          <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+            <Text style={style.btntxt}>אישור</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
