@@ -1,99 +1,94 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  TextInput,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import axios from "axios";
-import debounce from "lodash.debounce";
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { googleAPI1 } from "../../googleAPI";
+import theme from "../theme/theme"; // Ensure these are correctly imported
+import { Colors } from "../theme/color";
 import style from "../theme/style";
-import theme from "../theme/theme";
 
-export default function AutoCompMap({ setAddress }) {
-  const [query, setQuery] = useState("");
-  const [addresses, setAddresses] = useState([]);
-
-  // Debounced function to handle search
-  const handleSearch = async (text) => {
-    if (text.length > 2) {
-      try {
-        const apiKey = "uGpXju6Fa1hGcV99GZdH4hbJsDCtjGAR"; // Replace with your TomTom API key
-        const response = await axios.get(
-          `https://api.tomtom.com/search/2/search/${text}.json?key=${apiKey}&limit=5`
-        );
-        setAddresses(response.data.results);
-        setAddress(response.data.results); // Assuming setAddress can handle array of results
-      } catch (error) {
-        console.error(error);
-        setAddresses([]); // Clear addresses on error
-        setAddress([]); // Clear address state on error
-      }
-    } else {
-      setAddresses([]);
-      setAddress([]);
-    }
-  };
-
-  // Debouncing the search input
-  const debouncedSearch = debounce(handleSearch, 300);
-
-  // Update query and trigger debounced search
-  const handleChange = (text) => {
-    setQuery(text);
-    debouncedSearch(text);
-  };
+export default function AutoCompMap({ setAddress, setPlacesModalVisible }) {
+  const [inputValue, setInputValue] = useState(""); // For the input value of the autocomplete field
+  const [latLon, setLatLon] = useState({ latitude: null, longitude: null }); // To store latitude and longitude
 
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
-        style={styles.input}
+      <GooglePlacesAutocomplete
         placeholder="עיר, רחוב, מספר"
-        value={query}
-        onChangeText={handleChange}
-        placeholderTextColor="grey" // Customize as needed
-        selectionColor="blue" // Customize as needed
+        fetchDetails={true}
+        nearbyPlacesAPI="GooglePlacesSearch"
+        debounce={400}
+        value={inputValue}
+        onPress={(data, details = null) => {
+          // This function is called when a dropdown item is selected
+          if (details) {
+            const addressName = details.formatted_address;
+            const latitude = details.geometry.location.lat;
+            const longitude = details.geometry.location.lng;
+
+            setInputValue(addressName); // Set the text input to the full address
+            setAddress(addressName); // Save the address name
+            setLatLon({ latitude, longitude }); // Save latitude and longitude
+
+            console.log("Selected Address:", addressName);
+            console.log("Coordinates:", latitude, longitude);
+          }
+        }}
+        onFail={error => console.error(error)}
+        query={{
+          key: googleAPI1,
+          language: "he", // Language of the results
+          types: "address", // Search only for addresses
+        }}
+        styles={{
+          textInputContainer: {
+            width: "100%",
+            borderColor: theme.input,
+            borderWidth: 1,
+            backgroundColor: theme.input,
+            marginTop: 20,
+            zIndex: 10 // Try setting a high zIndex
+          },
+          
+          textInput: {
+            height: 38,
+            color: theme.txt,
+            fontSize: 16,
+            textAlign: "right",
+            padding: 10, // Ensure padding for internal spacing
+            selectionColor: Colors.primary, // Color of the highlight on selection
+            placeholderTextColor: Colors.disable, // Color of the placeholder text
+          },
+          predefinedPlacesDescription: {
+            color: "#1faadb",
+          },
+        }}
+        textInputProps={{
+          onChangeText: setInputValue, // Set the input value state on text change
+          selectionColor: Colors.primary,
+          placeholderTextColor: Colors.disable,
+          style: [
+            style.s14, // Make sure your theme/style file correctly defines s14
+            {
+              color: theme.txt,
+              flex: 1,
+              textAlign: "right",
+              height: 50, // Adjust height as needed
+            },
+          ],
+        }}
       />
-      <FlatList
-        data={addresses}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => setQuery(item.address.freeformAddress)}
-          >
-            <Text>{item.address.freeformAddress}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      <TouchableOpacity style={[style.btnSave, { alignSelf: "center" }]}
+      onPress={() => {
+        setPlacesModalVisible(false);
+      }}>
+        <Text style={style.btntxt}>שמור</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: [
-    ,
-    {
-      flex: 1,
-      marginTop: 50,
-      marginHorizontal: 10,
-    },
-  ],
-  input: [
-    style.txtinput,
-    style.s14,
-    {
-      height: 40,
-      padding: 10,
-      marginBottom: 10,
-      textAlign: "right", // Align text to the right
-    },
-    { borderColor: theme.input, backgroundColor: theme.input, marginTop: 20 },
-  ],
-  item: {
-    padding: 10,
-    borderBottomWidth: 1,
+  container: {
+    flex: 1,
   },
 });

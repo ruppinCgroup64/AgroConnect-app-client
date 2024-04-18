@@ -11,7 +11,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "y"
+      "bundleIdentifier": "com.agroconnect2024.agroconnect"
     },
     "android": {
       "adaptiveIcon": {

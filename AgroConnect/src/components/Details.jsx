@@ -480,7 +480,7 @@ export default function Details(props) {
           }}
         >
           <SafeAreaView style={style.modalView}>
-            <AutoCompMap setAddress={setAddress} />
+            <AutoCompMap setAddress={setAddress} setPlacesModalVisible={setPlacesModalVisible}/>
             {/* <GooglePlacesAutocomplete
               placeholder="עיר, רחוב, מספר בית"
               onPress={(data, details = null) => {
@@ -527,18 +527,7 @@ export default function Details(props) {
               nearbyPlacesAPI="GooglePlacesSearch"
               debounce={400}
             /> */}
-            <TouchableOpacity
-              onPress={() => {
-                setPlacesModalVisible(false);
-                if (address != []) {
-                  setAddressName(address[1].address.freeformAddress);
-                  setAddress(address[0].position);
-                }
-              }}
-              style={[style.btnSave, { alignSelf: "center" }]}
-            >
-              <Text style={style.btntxt}>שמור</Text>
-            </TouchableOpacity>
+           
           </SafeAreaView>
         </Modal>
         <View style={{ marginBottom: 50 }}>
