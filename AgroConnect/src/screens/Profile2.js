@@ -22,7 +22,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/Ionicons'
 import { EventRegister } from 'react-native-event-listeners'
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Profile2_option from '../components/Profile2_option';
 
 
 
@@ -79,17 +78,13 @@ export default function Profile2() {
                     <View style={{ paddingVertical: 20 }}>
                         <View style={[style.divider, { backgroundColor: theme.border }]} />
                     </View>
-
-
-                    <Profile2_option oNav = {'Profile1'} oText = {'ערוך פרופיל'} oIcon = {'chevron-forward'} />
-
-                    {/* <TouchableOpacity onPress={() => navigation.navigate('Profile1')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icons name='person-outline' size={25} color={theme.txt} />
-                            <Text style={[style.s18, { color: theme.txt, marginLeft: 10, flex: 1}]}>ערוך פרופיל</Text>
+                            <Text style={[style.s18, { color: theme.txt, marginLeft: 10, flex: 1 }]}>עריכת פרטים אישיים</Text>
                             <Icons name='chevron-forward' size={20} color={theme.txt}></Icons>
                         </View>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
 
                     <View style={{ paddingTop: 20 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('Address')}>
@@ -199,9 +194,9 @@ export default function Profile2() {
                     </View>
 
                     <View style={{ paddingTop: 15, marginBottom: 70 }}>
-                        <TouchableOpacity onPress={() => this.RBSheet10.open()}>
+                        <TouchableOpacity onPress={() => this.RBSheet14.open()}>
                             <RBSheet ref={ref => {
-                                this.RBSheet10 = ref;
+                                this.RBSheet14 = ref;
                             }}
                                 height={250}
                                 openDuration={100}
@@ -221,13 +216,13 @@ export default function Profile2() {
                                     </View>
                                     <View style={{ marginTop: 25, flexDirection: 'row' }}>
                                         <TouchableOpacity
-                                            onPress={() => this.RBSheet10.close()}
+                                            onPress={() => this.RBSheet14.close()}
                                             style={[style.btn, { backgroundColor: theme.btn, flex: 1 }]}>
                                             <Text style={[style.btntxt, { color: theme.btntxt }]}>Cancel</Text>
                                         </TouchableOpacity>
                                         <View style={{ margin: 5 }}></View>
                                         <TouchableOpacity
-                                            onPress={() => { this.RBSheet10.close(), navigation.navigate('Login') }}
+                                            onPress={() => { this.RBSheet14.close(), navigation.navigate('Login') }}
                                             style={[style.btn, { flex: 1 }]}>
                                             <Text style={[style.btntxt, { color: Colors.secondary }]}>Yes, Logout</Text>
                                         </TouchableOpacity>

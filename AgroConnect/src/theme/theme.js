@@ -4,7 +4,7 @@ const theme = {
         bg: '#FFFFFF',
         bg2:'#FFFFFF',
         bg3:'#F8F8F8',
-        txt: '#212121',
+        txt: '#013220',//figma color
         txt2: '#424242',
         txt3: '#616161',
         disable: '#9E9E9E',
@@ -28,6 +28,8 @@ const theme = {
         a7: require('../../assets/image/a7.png'),
         a9: require('../../assets/image/a9.png'),
         a12: require('../../assets/image/a12.png'),
+        demoUser: require('../../assets/image/demoUser.png'),
+        basket: require('../../assets/image/basket.png'),
     },
     dark: {
         theme: 'dark',
@@ -58,6 +60,8 @@ const theme = {
         a7: require('../../assets/image/a7d.png'),
         a9: require('../../assets/image/a9d.png'),
         a12: require('../../assets/image/a12d.png'),
+        demoUser: require('../../assets/image/demoUser.png'),
+        basket: require('../../assets/image/basket.png'),
     },
 
 };

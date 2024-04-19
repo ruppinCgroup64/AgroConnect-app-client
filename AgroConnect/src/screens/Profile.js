@@ -57,7 +57,7 @@ export default function Profile() {
                 <View style={[style.main, { backgroundColor: theme.bg ,marginTop:10}]}>
                     <AppBar
                         color={theme.bg}
-                        title='Edit Profile'
+                        title='עריכת פרטים'
                         titleStyle={[style.apptitle,{ color: theme.txt,  }]}
                         // centerTitle={true}
                         elevation={0}

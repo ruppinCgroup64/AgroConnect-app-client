@@ -28,6 +28,11 @@ export default StyleSheet.create({
     color: Colors.active,
     fontFamily: "Heebo-Thin",
   },
+  apptitleSB: {
+    fontSize: 24,
+    color: Colors.active,
+    fontFamily: "Heebo-SemiBold",
+  },
   t1: {
     fontSize: 20,
     color: Colors.active,
@@ -97,7 +102,7 @@ export default StyleSheet.create({
   m16: {
     fontSize: 16,
     color: Colors.disable,
-    // fontFamily: 'Heebo-Medium'
+    fontFamily: 'Heebo-Medium'
   },
   b16: {
     fontSize: 16,
