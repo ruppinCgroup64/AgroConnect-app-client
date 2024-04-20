@@ -1,3 +1,5 @@
+//complete the details of consumer
+
 import {
   View,
   Text,
@@ -29,7 +31,6 @@ export default function Details(props) {
   const { consumer, setConsumer, setNavContinue, edit } = props;
 
   const theme = useContext(themeContext);
-  const navigation = useNavigation();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectDate, setSelectDate] = useState("");
@@ -137,6 +138,7 @@ export default function Details(props) {
     {
       setFlag(true);
       console.log("submitted");
+      console.log(updatedConsumer);
       setErrors({});
     }
   };
@@ -310,8 +312,8 @@ export default function Details(props) {
           dropDownContainerStyle={{
             borderColor: theme.input,
             backgroundColor: theme.input,
-            marginTop: 10, // Small gap between the picker and the dropdown
-            zIndex: 1000, // Ensure it renders on top of other components if needed
+            marginTop: 10,
+            zIndex: 1000,
           }}
         />
         {errors.gender ? (

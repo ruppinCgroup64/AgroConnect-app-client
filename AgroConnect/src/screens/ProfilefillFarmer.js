@@ -1,3 +1,5 @@
+//Registration of the farm of the farmer
+
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import { useNavigation } from "@react-navigation/native";
@@ -16,15 +18,19 @@ import Icon from "react-native-vector-icons/Ionicons";
 import SuccessAlert from "../components/SuccessAlert";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { UsersContext } from "../Context/UserContext";
 
-export default function Profilefill() {
+export default function ProfilefillFarmer() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
+  
+  const {user} = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
+  //נתונים רק לבדיקות
   const [updatedFarm, setUpdatedFarm] = useState({
     farmName: "המשק",
     address: "ויתקין, החרוב, 1",

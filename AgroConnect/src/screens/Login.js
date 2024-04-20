@@ -22,11 +22,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 // import CheckBox from '@react-native-community/checkbox';
 import Checkbox from "expo-checkbox";
 
-// let loacl = false;
-// const apiUrl = 'https://localhost:7075/api/Students';
-// if(!local)
-//   apiUrl = 'hproj.ruppint:7075/api/Students';
-
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 

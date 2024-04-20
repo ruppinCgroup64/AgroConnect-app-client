@@ -1,3 +1,5 @@
+//Registration of consumer
+
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +22,7 @@ import { UsersContext } from "../Context/UserContext";
 
 export default function Profilefill() {
   const theme = useContext(themeContext);
-  const {user} = useContext(UsersContext);
+  const {consumer} = useContext(UsersContext);//רק להדגמה
 
   const navigation = useNavigation();
 
@@ -28,11 +30,12 @@ export default function Profilefill() {
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedConsumer, setUpdatedConsumer] = useState(user);
+  const [updatedConsumer, setUpdatedConsumer] = useState(consumer);//רק להדגמה useState(consumer) ברגיל יהיה {}
 
   useEffect(() => {
     console.log(navContinue);
     if (navContinue && (!updatedConsumer.isFarmer)) {
+      //קריאה לשרת- רישום צרכן
       navigation.navigate("Welcome");
     } else if (navContinue && updatedConsumer.isFarmer) {
       navigation.navigate("ProfilefillFarmer");

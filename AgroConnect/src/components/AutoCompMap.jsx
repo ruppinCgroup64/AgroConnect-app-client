@@ -1,14 +1,15 @@
+//Using auto complete google maps for adding existing address in registration and edit details
+
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { googleAPI1 } from "../../googleAPI";
-import theme from "../theme/theme"; // Ensure these are correctly imported
+import theme from "../theme/theme"; //Ensure these are correctly imported
 import { Colors } from "../theme/color";
 import style from "../theme/style";
 
 export default function AutoCompMap({ setAddress, setLatitude, setLongitude, setPlacesModalVisible }) {
   const [inputValue, setInputValue] = useState(""); // For the input value of the autocomplete field
-  const [latLon, setLatLon] = useState({ latitude: null, longitude: null }); // To store latitude and longitude
 
   return (
     <SafeAreaView style={styles.container}>
@@ -19,8 +20,6 @@ export default function AutoCompMap({ setAddress, setLatitude, setLongitude, set
         debounce={400}
         keepResultsAfterBlur={true}
         onPress={(data, details = null) => {
-          console.log(data)
-          // This function is called when a dropdown item is selected
           if (details) {
             setAddress(details.formatted_address)
             setLatitude(details.geometry.location.lat)
@@ -30,8 +29,8 @@ export default function AutoCompMap({ setAddress, setLatitude, setLongitude, set
         onFail={error => console.error(error)}
         query={{
           key: googleAPI1,
-          language: "he", // Language of the results
-          types: "address", // Search only for addresses
+          language: "he",  
+          types: "address", 
         }}
         styles={{
           textInputContainer: {
@@ -40,7 +39,7 @@ export default function AutoCompMap({ setAddress, setLatitude, setLongitude, set
             borderWidth: 1,
             backgroundColor: theme.input,
             marginTop: 20,
-            zIndex: 10 // Try setting a high zIndex
+            zIndex: 10 
           },
           
           textInput: {
@@ -48,25 +47,25 @@ export default function AutoCompMap({ setAddress, setLatitude, setLongitude, set
             color: theme.txt,
             fontSize: 16,
             textAlign: "right",
-            padding: 10, // Ensure padding for internal spacing
-            selectionColor: Colors.primary, // Color of the highlight on selection
-            placeholderTextColor: Colors.disable, // Color of the placeholder text
+            padding: 10, 
+            selectionColor: Colors.primary, 
+            placeholderTextColor: Colors.disable, 
           },
           predefinedPlacesDescription: {
             color: "#1faadb",
           },
         }}
         textInputProps={{
-          onChangeText: setInputValue, // Set the input value state on text change
+          onChangeText: setInputValue,
           selectionColor: Colors.primary,
           placeholderTextColor: Colors.disable,
           style: [
-            style.s14, // Make sure your theme/style file correctly defines s14
+            style.s14, 
             {
               color: theme.txt,
               flex: 1,
               textAlign: "right",
-              height: 50, // Adjust height as needed
+              height: 50, 
             },
           ],
         }}

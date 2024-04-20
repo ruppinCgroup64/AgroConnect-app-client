@@ -1,3 +1,5 @@
+//Get show and setShow state and content to present in green alert
+
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 

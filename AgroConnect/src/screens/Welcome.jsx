@@ -1,3 +1,5 @@
+//welcome after successful registration
+
 import React, { useEffect, useContext } from 'react';
 import { View, Text, Image, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import themeContext from '../theme/themeContex';
