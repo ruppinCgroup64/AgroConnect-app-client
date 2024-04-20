@@ -38,9 +38,9 @@ const width = Dimensions.get('screen').width
    i → the icon name of the option, using the import Icons  */
 const settings_details = [
     { navTo: 'EditProfile', t: 'עריכת פרטים אישיים', i: 'person-outline', key: 1 },
-    { navTo: 'About', t: 'אודות', i: 'alert-circle-outline', key: 2 }
+    { navTo: 'EditProfileFarm', t: 'העמוד שלי', i: 'id-card-outline', key: 2 },
+    { navTo: 'About', t: 'אודות', i: 'alert-circle-outline', key: 3 }
 ];
-
 
 export default function Settings() {
     const navigation = useNavigation();
@@ -48,21 +48,24 @@ export default function Settings() {
     const { consumer } = useContext(UsersContext);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-    // states and an eddect to eneble navigation to the farmer's settings, when pressed
+
+    // states and an eddect to eneble navigation to the costumers's settings, when pressed
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState("צרכן");
+    const [value, setValue] = useState("חקלאי");
     const [items, setItems] = useState([
-        { label: "צרכן", value: "צרכן" },
-        { label: "חקלאי", value: "חקלאי" }
+        { label: "חקלאי", value: "חקלאי" },
+        { label: "צרכן", value: "צרכן" }
     ]);
     const [userType, setUserType] = useState("התחבר כ-");
     useEffect(() => {
-        if (value == "חקלאי")
-            navigation.navigate('SettingsFarmer');
+        if (value == "צרכן")
+            navigation.navigate('Settings');
     }, [value]);
+
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg, }]}>
             <View style={[style.main, { backgroundColor: theme.bg, marginTop: 20 }]}>
+
 
                 {/* The Top Bar of the settings */}
                 <AppBar
@@ -108,6 +111,11 @@ export default function Settings() {
                         <Settings_option theme navTo={settings_details[0].navTo} t={settings_details[0].t} i={settings_details[0].i} />
                     </View>}
 
+                    {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
+                    {<View style={{ paddingBottom: 20 }}>
+                        <Settings_option theme navTo={settings_details[1].navTo} t={settings_details[1].t} i={settings_details[1].i} />
+                    </View>}
+
                     {/* The "Connected As" drop down */}
                     <DropDownPicker
                         listMode="MODAL"
@@ -151,9 +159,9 @@ export default function Settings() {
                         }}
                     />
 
-                    {/* Adding the third Settings option using the array "settings_details" and the component "Settings_option" */}
+                    {/* Adding the forth Settings option using the array "settings_details" and the component "Settings_option" */}
                     {<View style={{ paddingBottom: 20 }}>
-                        <Settings_option theme navTo={settings_details[1].navTo} t={settings_details[1].t} i={settings_details[1].i} />
+                        <Settings_option theme navTo={settings_details[2].navTo} t={settings_details[2].t} i={settings_details[2].i} />
                     </View>}
 
                     {/* setting the logout button and popup logout manu ("Are you sure you want to log out?") */}

@@ -69,6 +69,9 @@ import ProDetail2 from "../screens/ProDetail2";
 import EditProfile from "../screens/EditProfile";
 import Welcome from "../screens/Welcome";
 import CreateTender from "../screensFarmer/CreateTender/";
+import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
+import About from "../screens/About";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -109,18 +112,18 @@ export default function StackNavigator() {
             />
           ) : null}
 
-          <Stack.Screen
+          {/* <Stack.Screen
             name="CreateTender"
             component={CreateTender}
             options={{ headerShown: false }}
-          />
+          /> */}
 
           {/* <Stack.Screen
             name="Introduction"
             component={Introduction}
             options={{ headerShown: false }}
           /> */}
-          
+
           {/* <Stack.Screen
             name="Letsin"
             component={Letsin}
@@ -378,6 +381,16 @@ export default function StackNavigator() {
           <Stack.Screen
             name="CreateAccount"
             component={CreateAccount}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SettingsFarmer"
+            component={SettingsFarmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="About"
+            component={About}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
