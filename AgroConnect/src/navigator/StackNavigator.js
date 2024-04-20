@@ -28,7 +28,7 @@ import OrderTrack from "../screens/OrderTrack";
 import TopUpMethod from "../screens/TopUpMethod";
 import Helpcenter from "../screens/Helpcenter";
 import CustomerService from "../screens/CustomerService";
-import Profile2 from "../screens/Profile2";
+import Settings from "../screens/Settings";
 import Address from "../screens/Address";
 import Notification1 from "../screens/Notification1";
 import Payment from "../screens/Payment";
@@ -293,8 +293,8 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Profile2"
-            component={Profile2}
+            name="Settings"
+            component={Settings}
             options={{ headerShown: false }}
           />
           <Stack.Screen
