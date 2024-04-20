@@ -7,58 +7,25 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 export default function RoundedImage({url, wid, hei}) {
 
   return (
-    <View style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: wid,
-        height: hei,
-        backgroundColor: '#DEEAD8',
-        borderRadius: 100,
-        borderWidth: 0.5,  
-        borderColor: '#000'}}>
-          <Image source={{ uri: url }} style={styles.image} />
+    <View style={[styles.container, { width: wid, height: hei }]}>
+      <Image source={{ uri: url }} style={styles.image} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 150,
-    height: 150,
-    backgroundColor: '#DEEAD8',
+    backgroundColor: '#FFFFF',
     borderRadius: 100,
-    overflow: 'hidden',
     borderWidth: 0.5,  
     borderColor: '#000', 
-    borderStyle: 'solid'
-  },
-  imagePlaceholder: {
-    width: 150,
-    height: 150,
-    backgroundColor: '#DEEAD8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 100,
-    overflow: 'hidden',
-    borderWidth: 0.5,  
-    borderColor: '#000', 
-    borderStyle: 'solid'
+    overflow: 'hidden', // Moved overflow style here
   },
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: 100, // Apply the same borderRadius to the Image component
   },
-  iconPlaceholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  deleteIcon: {
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
 });
