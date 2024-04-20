@@ -1,15 +1,12 @@
 //1. Get a image uri (its not must) and setProfilePic of the user (must!)
-//2. Show circle frame with image or option to add image
+//2. Show circle frame with image or option to add image or delete it
 //3. setProfilePic of the user only if it changed
-//If there is an image it will appear at the circle frame, if not, it will allow to add an image(sent in base64).
-//Call it in this way- <ImageProfile userImageURI={the user image uri}/>
+//If there is an image it will appear at the circle frame, if not, it will allow to add an image(sent in base64). 
 
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import * as FileSystem from 'expo-file-system';
-
 
 export default function ImageProfile({userImageURI, setProfilePic}) {
   const [selectedImage, setSelectedImage] = useState(() => userImageURI || null);

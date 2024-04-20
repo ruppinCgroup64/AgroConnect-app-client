@@ -1,3 +1,5 @@
+//edit profile of the farm in the settings
+
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import { useNavigation } from "@react-navigation/native";
@@ -18,29 +20,22 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { colors } from "react-native-elements";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import DetailsFarm from "../components/DetailsFarm";
+import { UsersContext } from "../Context/UserContext";
 
 export default function EditProfileFarm() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
+  const {farm, setFarm} = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedFarm, setUpdatedFarm] = useState({
-    farmName: "המשק",
-    address: "ויתקין, החרוב, 1",
-    socialNetworkLink: "https://www.facebook.com/HAMESHEK.Hod.Hasharon/",
-    mainPic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
-    consumerNum: 1,
-  });
-
   useEffect(() => {
     if (navContinue) {
       setContent("פרטיך נשמרו בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
     }
-    console.log(updatedFarm);
+    console.log(farm)
   }, [navContinue]);
 
   useEffect(() => {
@@ -150,7 +145,7 @@ export default function EditProfileFarm() {
               </View>
             </View>
           </RBSheet>
-          <DetailsFarm farm={updatedFarm} setFarm={setUpdatedFarm} setNavContinue={setNavContinue}/>
+          <DetailsFarm farm={farm} setFarm={setFarm} setNavContinue={setNavContinue}/>
           <SuccessAlert show={show} setShow={setShow} content={content} />
         </View>
       </KeyboardAvoidingView>

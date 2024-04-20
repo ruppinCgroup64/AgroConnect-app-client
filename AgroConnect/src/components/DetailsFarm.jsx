@@ -1,3 +1,5 @@
+//complete the details of farm
+
 import {
   View,
   Text,

@@ -85,6 +85,16 @@ export default function Profile2() {
                             <Icons name='chevron-forward' size={20} color={theme.txt}></Icons>
                         </View>
                     </TouchableOpacity>
+                    
+                    <View style={{ paddingTop: 20 }}>
+                    <TouchableOpacity  onPress={() => navigation.navigate('EditProfileFarm')}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icons name='person-outline' size={25} color={theme.txt} />
+                            <Text style={[style.s18, { color: theme.txt, marginLeft: 10, flex: 1 }]}>עריכת פרטי משק</Text>
+                            <Icons name='chevron-forward' size={20} color={theme.txt}></Icons>
+                        </View>
+                    </TouchableOpacity>
+                    </View>
 
                     <View style={{ paddingTop: 20 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('Address')}>

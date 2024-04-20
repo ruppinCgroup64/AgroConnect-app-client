@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import StackNavigator from "./src/navigator/StackNavigator";
 import { I18nManager } from "react-native";
 import UsersContextProvider from "./src/Context/UserContext";
+import ProductContextProvider from "./src/Context/ProductsContext";
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
@@ -29,8 +30,10 @@ export default function App() {
   }
 
   return (
+    <ProductContextProvider>
     <UsersContextProvider>
-      <StackNavigator />
+      <StackNavigator/>
     </UsersContextProvider>
+    </ProductContextProvider>
   );
 }
