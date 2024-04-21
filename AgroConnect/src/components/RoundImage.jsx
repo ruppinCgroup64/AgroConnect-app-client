@@ -22,19 +22,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 0.5,  
     borderColor: '#000', 
-<<<<<<< Updated upstream
     overflow: 'hidden', // Moved overflow style here
-=======
-    overflow: 'hidden',
->>>>>>> Stashed changes
   },
   image: {
     width: '100%',
     height: '100%',
-<<<<<<< Updated upstream
     borderRadius: 100, // Apply the same borderRadius to the Image component
-=======
-    borderRadius: 100,
->>>>>>> Stashed changes
   },
 });

@@ -63,13 +63,9 @@ export default function CreateTender() {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState(null);
   const [value, setValue] = useState(null);
-<<<<<<< Updated upstream
   const [items, setItems] = useState(() =>
     products.map((p) => ({ value: p.id, label: p.name }))
   );
-=======
-  const [items, setItems] = useState(() => products.map(p => ({ value: p.id, label: p.name })));
->>>>>>> Stashed changes
   const [errors, setErrors] = useState({});
   const [navContinue, setNavContinue] = useState(false);
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
@@ -104,15 +100,9 @@ export default function CreateTender() {
     setFlag(false);
   }, [tender]);
 
-<<<<<<< Updated upstream
   useEffect(() => {
     //navigation.navigate(""); //שליחת אובייקט המכרז לאחר פרסומו לעמוד מכרז צד חקלאי
   }, [navContinue]);
-=======
-  useEffect(()=>{
-    //navigation.navigate("");//שליחת אובייקט המכרז לאחר פרסומו לעמוד מכרז צד חקלאי
-     },[navContinue])
->>>>>>> Stashed changes
 
      useEffect(()=>{
       console.log(selectedProduct)
@@ -243,7 +233,6 @@ export default function CreateTender() {
                 במידה ותבחר לעזוב פרטיך יימחקו
               </Text>
             </View>
-<<<<<<< Updated upstream
             <View style={{ marginTop: 25, flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => this.RBSheet14.close()}
@@ -272,17 +261,6 @@ export default function CreateTender() {
           keyboardShouldPersistTaps={"always"}
         >
           <View style={{ alignItems: "center", justifyContent: "center" }}>
-=======
-          </RBSheet>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps={"always"}
-          >
-            <View
-            style={{alignItems: 'center',
-            justifyContent: 'center',
-            }}>
->>>>>>> Stashed changes
             <DropDownPicker
               listMode="MODAL"
               open={open}
@@ -298,14 +276,6 @@ export default function CreateTender() {
                     if(x.id==item.value) setSelectedProduct(x)
                 })}}
               setItems={setItems}
-              onSelectItem={(item) => {
-                const p = products.find((x) => 
-                  {
-                    if(x.id == item.value){
-                    setSelectedProduct(x);
-                  }
-                });
-              }}
               placeholder="בחר מוצר"
               placeholderStyle={{
                 color: Colors.disable,
@@ -333,7 +303,6 @@ export default function CreateTender() {
             {errors.selectedProduct ? (
               <Text style={style.errorText}>{errors.selectedProduct}</Text>
             ) : null}
-<<<<<<< Updated upstream
             <RoundedImage
               url={selectedProduct ? selectedProduct.url : null}
               wid={100}
@@ -341,11 +310,6 @@ export default function CreateTender() {
             />
           </View>
           {/* <View
-=======
-            <RoundedImage url={selectedProduct? selectedProduct.url:null} wid={100} hei={100}/>
-             </View>
-            {/* <View
->>>>>>> Stashed changes
               style={[
                 style.inputContainer,
                 {
