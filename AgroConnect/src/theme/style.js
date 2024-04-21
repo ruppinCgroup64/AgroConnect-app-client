@@ -122,7 +122,7 @@ export default StyleSheet.create({
   s18: {
     fontSize: 18,
     color: Colors.disable,
-    fontFamily: "Heebo-SemiBold",
+    fontFamily: "Heebo-SemiBold"
   },
   b18: {
     fontSize: 18,
