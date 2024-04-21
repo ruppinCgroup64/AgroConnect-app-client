@@ -33,6 +33,7 @@ import { colors } from "react-native-elements";
 
 export default function CreateTender() {
   const theme = useContext(themeContext);
+  const navigation = useNavigation();
   const { products } = useContext(ProductContext); //נשים ברשימה של אייטמים
   const { farm } = useContext(UsersContext);
 
@@ -102,6 +103,10 @@ export default function CreateTender() {
   useEffect(() => {
     //navigation.navigate(""); //שליחת אובייקט המכרז לאחר פרסומו לעמוד מכרז צד חקלאי
   }, [navContinue]);
+
+     useEffect(()=>{
+      console.log(selectedProduct)
+       },[selectedProduct])
 
   const handleSubmit = () => {
     //if (validateForm())
@@ -265,15 +270,12 @@ export default function CreateTender() {
               setValue={(newValue) => {
                 setValue(newValue);
               }}
+              onSelectItem={(item) => 
+                {
+                  const p= products.find((x)=> {
+                    if(x.id==item.value) setSelectedProduct(x)
+                })}}
               setItems={setItems}
-              onSelectItem={(item) => {
-                const p = products.find((x) => 
-                  {
-                    if(x.id == item.value){
-                    setSelectedProduct(x);
-                  }
-                });
-              }}
               placeholder="בחר מוצר"
               placeholderStyle={{
                 color: Colors.disable,
