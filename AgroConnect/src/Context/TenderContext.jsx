@@ -25,7 +25,7 @@ export default function TenderContextProvider(props) {
     }
   }
 
-  async function get() {
+  async function getTender() {
     let res = await read("api/products");
     if (res.status)
       setProducts(res.json())

@@ -19,7 +19,7 @@ import { Colors } from "../theme/color";
 import { useNavigation } from "@react-navigation/native";
 import { AppBar, Avatar, useSurfaceColor } from "@react-native-material/core";
 import Icon from "react-native-vector-icons/Ionicons";
-import DropDownPicker from "react-native-dropdown-picker";
+//import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
@@ -32,23 +32,21 @@ import { colors } from "react-native-elements";
 import DateTimeSelect from "../components/DateTimeSelect";
 import ValInput from "../components/ValInput";
 import { TenderContext } from "../Context/TenderContext";
+import DropDownSelect from "../components/DropDownSelect";
 
 export default function CreateTender() {
+
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const { products } = useContext(ProductContext); //נשים ברשימה של אייטמים
-  const { farm } = useContext(UsersContext);//החקלאי שמחובר
+  const { products, getProductAveragePrice } = useContext(ProductContext); //נשים ברשימה של אייטמים
+  const { farm } = useContext(UsersContext); //החקלאי שמחובר
   const { createTender } = useContext(TenderContext);
 
+  const [productAvgPrice, setProductAvgPrice] = useState(null);
   const [tender, setTender] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [flag, setFlag] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState(() =>
-    products.map((p) => ({ value: p.id, label: p.name }))
-  );
   const [errors, setErrors] = useState({});
   const [navContinue, setNavContinue] = useState(false);
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
@@ -98,8 +96,15 @@ export default function CreateTender() {
     //navigation.navigate(""); //שליחת אובייקט המכרז לאחר פרסומו לעמוד מכרז צד חקלאי
   }, [navContinue]);
 
+  //select product=>show avg price, set the productID to the tender
   useEffect(() => {
+    if(selectedProduct){
     console.log(selectedProduct);
+    setProductNum(selectedProduct.id);
+    //getProductAveragePrice(x.id) נפעיל גט מהשרת לממוצע מוצר זה
+    //אם מצליח:
+    //setProductAvgPrice(תשובה)
+    }
   }, [selectedProduct]);
 
   const handleSubmit = () => {
@@ -161,244 +166,259 @@ export default function CreateTender() {
         <View
           style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}
         >
-        <AppBar
-          color={theme.bg}
-          title="יצירת מכרז"
-          titleStyle={[
-            style.apptitle,
-            { color: theme.txt, textAlign: "center" },
-          ]}
-          style={{ paddingBottom: 15 }}
-          elevation={0}
-          leading={
-            <TouchableOpacity onPress={() => this.RBSheet14.open()}>
-              <Icon
-                name="arrow-back"
-                color={theme.txt}
-                size={30}
-                style={{
-                  transform: [{ scaleX: -1 }],
-                }}
-              />
-            </TouchableOpacity>
-          }
-          trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
-        />
+          <AppBar
+            color={theme.bg}
+            title="יצירת מכרז"
+            titleStyle={[
+              style.apptitle,
+              { color: theme.txt, textAlign: "center" },
+            ]}
+            style={{ paddingBottom: 15 }}
+            elevation={0}
+            leading={
+              <TouchableOpacity onPress={() => this.RBSheet14.open()}>
+                <Icon
+                  name="arrow-back"
+                  color={theme.txt}
+                  size={30}
+                  style={{
+                    transform: [{ scaleX: -1 }],
+                  }}
+                />
+              </TouchableOpacity>
+            }
+            trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
+          />
 
-        <RBSheet
-          ref={(ref) => {
-            this.RBSheet14 = ref;
-          }}
-          height={250}
-          openDuration={100}
-          customStyles={{
-            container: {
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
-              backgroundColor: theme.bg,
-            },
-          }}
-        >
-          <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-            <Text
-              style={[
-                style.apptitleSB,
-                { textAlign: "center", color: "#F75555" },
-              ]}
-            >
-              ביטול
-            </Text>
-            <View
-              style={[
-                style.divider,
-                { marginVertical: 10, backgroundColor: "#EEEEEE" },
-              ]}
-            ></View>
-            <View style={{ paddingTop: 20 }}>
+          <RBSheet
+            ref={(ref) => {
+              this.RBSheet14 = ref;
+            }}
+            height={250}
+            openDuration={100}
+            customStyles={{
+              container: {
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                backgroundColor: theme.bg,
+              },
+            }}
+          >
+            <View style={{ marginHorizontal: 20, marginTop: 20 }}>
               <Text
-                style={[style.m18, { color: theme.txt, textAlign: "center" }]}
+                style={[
+                  style.apptitleSB,
+                  { textAlign: "center", color: "#F75555" },
+                ]}
               >
-                במידה ותבחר לעזוב פרטיך יימחקו
+                ביטול
               </Text>
-            </View>
-            <View style={{ marginTop: 25, flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => this.RBSheet14.close()}
-                style={[style.btn, { backgroundColor: theme.btn, flex: 1 }]}
-              >
-                <Text style={[style.btntxt, { color: theme.btntxt }]}>
-                  הישאר
+              <View
+                style={[
+                  style.divider,
+                  { marginVertical: 10, backgroundColor: "#EEEEEE" },
+                ]}
+              ></View>
+              <View style={{ paddingTop: 20 }}>
+                <Text
+                  style={[style.m18, { color: theme.txt, textAlign: "center" }]}
+                >
+                  במידה ותבחר לעזוב פרטיך יימחקו
                 </Text>
-              </TouchableOpacity>
-              <View style={{ margin: 5 }}></View>
-              <TouchableOpacity
-                onPress={() => {
-                  this.RBSheet14.close(), navigation.navigate("Login");
-                }}
-                style={[style.btn, { flex: 1 }]}
-              >
-                <Text style={[style.btntxt, { color: Colors.secondary }]}>
-                  מחק
-                </Text>
-              </TouchableOpacity>
+              </View>
+              <View style={{ marginTop: 25, flexDirection: "row" }}>
+                <TouchableOpacity
+                  onPress={() => this.RBSheet14.close()}
+                  style={[style.btn, { backgroundColor: theme.btn, flex: 1 }]}
+                >
+                  <Text style={[style.btntxt, { color: theme.btntxt }]}>
+                    הישאר
+                  </Text>
+                </TouchableOpacity>
+                <View style={{ margin: 5 }}></View>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.RBSheet14.close(), navigation.navigate("Login");
+                  }}
+                  style={[style.btn, { flex: 1 }]}
+                >
+                  <Text style={[style.btntxt, { color: Colors.secondary }]}>
+                    מחק
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </RBSheet>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={"always"}
-        >
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <RoundedImage
-              url={selectedProduct ? selectedProduct.url : null}
-              wid={100}
-              hei={100}
-            />
+          </RBSheet>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={"always"}
+          >
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <RoundedImage
+                url={selectedProduct ? selectedProduct.url : null}
+                wid={100}
+                hei={100}
+              />
             </View>
             <View>
-            <DropDownPicker
-              listMode="MODAL"
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={(newValue) => {
-                setValue(newValue);
-              }}
-              onSelectItem={(item) => {
-                const p = products.find((x) => {
-                  if (x.id == item.value) {
-                    setSelectedProduct(x);
-                    setProductNum(x.id);
-                  }
-                });
-              }}
-              setItems={setItems}
-              placeholder="בחר מוצר"
-              placeholderStyle={{
-                color: Colors.disable,
-              }}
+              <DropDownSelect
+                list={products}
+                content={"בחר מוצר"}
+                setSelectedItem={setSelectedProduct}
+              />
+              {/* <DropDownPicker
+                listMode="MODAL"
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={(newValue) => {
+                  setValue(newValue);
+                }}
+                onSelectItem={(item) => {
+                  const p = products.find((x) => {
+                    if (x.id == item.value) {
+                      setSelectedProduct(x);
+                      setProductNum(x.id);
+                      //getProductAveragePrice(x.id) נפעיל גט מהשרת לממוצע מוצר זה
+                      //אם מצליח:
+                      //setProductAvgPrice(תשובה)
+                    }
+                  });
+                }}
+                setItems={setItems}
+                placeholder="בחר מוצר"
+                placeholderStyle={{
+                  color: Colors.disable,
+                }}
+                style={[
+                  {
+                    borderColor: theme.input,
+                    borderWidth: 1,
+                    backgroundColor: theme.input,
+                    color: theme.txt,
+                    flex: 1,
+                    borderRadius: 15,
+                    marginTop: 20,
+                  },
+                  style.s14,
+                ]}
+                textStyle={[
+                  style.s14,
+                  {
+                    textAlign: "left",
+                    color: theme.txt,
+                  },
+                ]}
+              /> */}
+              {errors.selectedProduct ? (
+                <Text style={style.errorText}>{errors.selectedProduct}</Text>
+              ) : null}
+              {productAvgPrice > 0 ? (
+                <Text
+                  style={[style.b12, { alignSelf: "right", paddingLeft: 5 }]}
+                >
+                  המחיר הממוצע למוצר זה הינו: {productAvgPrice}
+                </Text>
+              ) : null}
+            </View>
+            <View
               style={[
+                style.inputContainer,
                 {
                   borderColor: theme.input,
                   borderWidth: 1,
                   backgroundColor: theme.input,
-                  color: theme.txt,
-                  flex: 1,
-                  borderRadius: 15,
                   marginTop: 20,
                 },
-                style.s14,
               ]}
-              textStyle={[
-                style.s14,
-                {
-                  textAlign: "left",
-                  color: theme.txt,
-                },
-              ]}
-            />
-            {errors.selectedProduct ? (
-              <Text style={style.errorText}>{errors.selectedProduct}</Text>
-            ) : null}
-          </View>
-          <View
-            style={[
-              style.inputContainer,
-              {
-                borderColor: theme.input,
-                borderWidth: 1,
-                backgroundColor: theme.input,
-                marginTop: 20,
-              },
-            ]}
-          >
-            <TextInput
-              placeholder="כתובת איסוף"
-              textAlign="right"
-              selectionColor={Colors.primary}
-              placeholderTextColor={Colors.disable}
-              style={[style.s14, { color: theme.txt, flex: 1 }]}
-              onFocus={() => setPlacesModalVisible(true)}
-              value={collectAddress}
-            />
-          </View>
-          {errors.collectAddress ? (
-            <Text style={style.errorText}>{errors.collectAddress}</Text>
-          ) : null}
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={isPlacesModalVisible}
-            onRequestClose={() => {
-              setPlacesModalVisible(!isPlacesModalVisible);
-            }}
-          >
-            <SafeAreaView style={style.modalView}>
-              <AutoCompMap
-                setAddress={setCollectAddress}
-                setLatitude={setLatitude}
-                setLongitude={setLongitude}
-                setPlacesModalVisible={setPlacesModalVisible}
+            >
+              <TextInput
+                placeholder="כתובת איסוף"
+                textAlign="right"
+                selectionColor={Colors.primary}
+                placeholderTextColor={Colors.disable}
+                style={[style.s14, { color: theme.txt, flex: 1 }]}
+                onFocus={() => setPlacesModalVisible(true)}
+                value={collectAddress}
               />
-            </SafeAreaView>
-          </Modal>
+            </View>
+            {errors.collectAddress ? (
+              <Text style={style.errorText}>{errors.collectAddress}</Text>
+            ) : null}
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={isPlacesModalVisible}
+              onRequestClose={() => {
+                setPlacesModalVisible(!isPlacesModalVisible);
+              }}
+            >
+              <SafeAreaView style={style.modalView}>
+                <AutoCompMap
+                  setAddress={setCollectAddress}
+                  setLatitude={setLatitude}
+                  setLongitude={setLongitude}
+                  setPlacesModalVisible={setPlacesModalVisible}
+                />
+              </SafeAreaView>
+            </Modal>
 
-          <DateTimeSelect
-            setDateHour={setCloseDateHour}
-            setDateHourShow={setCloseDateHourShow}
-            DateHourShow={closeDateHourShow}
-            content={"מועד סגירת המכרז"}
-          />
-          {errors.closeDateHour ? (
-            <Text style={style.errorText}>{errors.closeDateHour}</Text>
-          ) : null}
+            <DateTimeSelect
+              setDateHour={setCloseDateHour}
+              setDateHourShow={setCloseDateHourShow}
+              DateHourShow={closeDateHourShow}
+              content={"מועד סגירת המכרז"}
+            />
+            {errors.closeDateHour ? (
+              <Text style={style.errorText}>{errors.closeDateHour}</Text>
+            ) : null}
 
-          <DateTimeSelect
-            setDateHour={setCollectDateHour}
-            setDateHourShow={setCollectDateHourShow}
-            DateHourShow={collectDateHourShow}
-            content={"מועד חלוקה"}
-          />
-          {errors.collectDateHour ? (
-            <Text style={style.errorText}>{errors.collectDateHour}</Text>
-          ) : null}
+            <DateTimeSelect
+              setDateHour={setCollectDateHour}
+              setDateHourShow={setCollectDateHourShow}
+              DateHourShow={collectDateHourShow}
+              content={"מועד חלוקה"}
+            />
+            {errors.collectDateHour ? (
+              <Text style={style.errorText}>{errors.collectDateHour}</Text>
+            ) : null}
 
-          <ValInput
-            val={packsAmount}
-            setVal={setPacksAmount}
-            content={'ק"ג במארז אחד'}
-            keyboardType={"numeric"}
-          />
-          {errors.packsAmount ? (
-            <Text style={style.errorText}>{errors.packsAmount}</Text>
-          ) : null}
+            <ValInput
+              val={packsAmount}
+              setVal={setPacksAmount}
+              content={'ק"ג במארז אחד'}
+              keyboardType={"numeric"}
+            />
+            {errors.packsAmount ? (
+              <Text style={style.errorText}>{errors.packsAmount}</Text>
+            ) : null}
 
-          <ValInput
-            val={offeredPack}
-            setVal={setOfferedPack}
-            content={"מספר מארזים למכירה"}
-            keyboardType={"number-pad"}
-          />
-          {errors.offeredPack ? (
-            <Text style={style.errorText}>{errors.offeredPack}</Text>
-          ) : null}
+            <ValInput
+              val={offeredPack}
+              setVal={setOfferedPack}
+              content={"מספר מארזים למכירה"}
+              keyboardType={"number-pad"}
+            />
+            {errors.offeredPack ? (
+              <Text style={style.errorText}>{errors.offeredPack}</Text>
+            ) : null}
 
-          <ValInput
-            val={initialOffer}
-            setVal={setInitialOffer}
-            content={"הצעה התחלתית למארז"}
-            keyboardType={"numeric"}
-          />
-          {errors.initialOffer ? (
-            <Text style={style.errorText}>{errors.initialOffer}</Text>
-          ) : null}
-          <View style={{ marginBottom: 50, marginTop: 20 }}>
-            <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-              <Text style={style.btntxt}>צור מכרז</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+            <ValInput
+              val={initialOffer}
+              setVal={setInitialOffer}
+              content={"הצעה התחלתית למארז"}
+              keyboardType={"numeric"}
+            />
+            {errors.initialOffer ? (
+              <Text style={style.errorText}>{errors.initialOffer}</Text>
+            ) : null}
+            <View style={{ marginBottom: 50, marginTop: 20 }}>
+              <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+                <Text style={style.btntxt}>צור מכרז</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -18,7 +18,14 @@ export default function ProductContextProvider(props) {
     url: "https://www.shefab.co.il/files/products/product71_image1_2020-08-30_17-35-56.jpg"
   }],);
 
-  async function get() {
+  async function getProducts() {
+    let res = await read("api/products");
+    if (res.status)
+      setProducts(res.json())
+    else alert("something went wrong");
+  }
+
+  async function getProductAveragePrice(productID) {
     let res = await read("api/products");
     if (res.status)
       setProducts(res.json())
@@ -26,7 +33,7 @@ export default function ProductContextProvider(props) {
   }
 
   return (
-    <ProductContext.Provider value={{ products }}>
+    <ProductContext.Provider value={{ products, getProductAveragePrice, getProducts }}>
       {props.children}
     </ProductContext.Provider>
   );
