@@ -97,7 +97,7 @@ export default function Details(props) {
     consumer && consumer.password ? consumer.password : ""
   );
   const [confirmPassword, setConfirmPassword] = useState(() =>
-    consumer && consumer.confirmPassword ? consumer.confirmPassword : ""
+    edit ? consumer.password : ""
   );
   const [profilePic, setProfilePic] = useState(() =>
     consumer && consumer.profilePic ? consumer.profilePic : ""
@@ -134,7 +134,7 @@ export default function Details(props) {
   }, [consumer]);
 
   const handleSubmit = () => {
-    //if (validateForm())
+    if (validateForm())
     {
       setFlag(true);
       console.log("submitted");
@@ -145,27 +145,27 @@ export default function Details(props) {
   const validateForm = () => {
     const errors = {};
     //first name
-    //const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
+    const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
     if (!firstName) errors.firstName = "שדה חובה";
-    // else if (!regexFirstName.test(firstName)) {
-    //   errors.firstName = "שם פרטי לא תקין";
-    // }
+    else if (!regexFirstName.test(firstName)) {
+      errors.firstName = "שם פרטי לא תקין";
+    }
     //last name
-    // const regexLastName = /^[א-ת]{1,60}$/;
-    // if (!regexLastName.test(lastName)) {
-    //   errors.lastName = "שם משפחה לא תקין";
-    // } else
+    const regexLastName = /^[א-ת]{1,60}$/;
+    if (!regexLastName.test(lastName)) {
+      errors.lastName = "שם משפחה לא תקין";
+    } else
     if (!firstName) errors.lastName = "שדה חובה";
     //dateOfBirth
     if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
     if (!gender) errors.gender = "שדה חובה";
     //password
-    // const regexPassword =
-    //   /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{7,12}$/;
-    // if (!regexPassword.test(password)) {
-    //   errors.password = "סיסמא לא תקינה";
-    // } else if (!password) errors.password = "שדה חובה";
+    const regexPassword =
+      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{4,10}$/;
+    if (!regexPassword.test(password)) {
+      errors.password = "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 4-10 תווים ";
+    } else if (!password) errors.password = "שדה חובה";
     if (!password) errors.password = "שדה חובה";
     //confirm password
     if (!confirmPassword) errors.confirmPassword = "שדה חובה";
@@ -175,14 +175,16 @@ export default function Details(props) {
     //email
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) errors.email = "שדה חובה";
-    // else if (!regexEmail.test(email)) {
-    //   errors.email = "כתובת מייל לא תקינה";
-    // }
+    else if (!regexEmail.test(email)) {
+      errors.email = "כתובת מייל לא תקינה";
+    }
+    //phone
     const regexPhone = /^05\d{8}$/;
     if (!phoneNum) errors.phoneNum = "שדה חובה";
     else if (!regexPhone.test(phoneNum)) {
       errors.phoneNum = "מספר טלפון לא תקין";
     }
+    //address
     if (!address) errors.address = "שדה חובה";
     console.log(errors);
     setErrors(errors);
@@ -497,52 +499,6 @@ export default function Details(props) {
               setLongitude={setLongitude}
               setPlacesModalVisible={setPlacesModalVisible}
             />
-            {/* <GooglePlacesAutocomplete
-              placeholder="עיר, רחוב, מספר בית"
-              onPress={(data, details = null) => {
-                console.log(JSON.stringify(data));
-                console.log(JSON.stringify(details?.geometry?.location));
-                setAddress();
-              }}
-              query={{
-                key: "AIzaSyCkv5saCxh1Fsr6xNiJatbWcq28VnmrxAA",
-                language: "he",
-              }}
-              textInputProps={{
-                selectionColor: Colors.primary,
-                placeholderTextColor: Colors.disable,
-                style: [
-                  style.s14,
-                  {
-                    color: theme.txt,
-                    flex: 1,
-                    textAlign: "right",
-                    height: 50,
-                  },
-                ],
-                onChangeText: (text) => setAddress(text),
-              }}
-              styles={{
-                textInputContainer: {
-                  backgroundColor: theme.input,
-                  borderTopWidth: 0,
-                  borderBottomWidth: 0,
-                  marginTop: 20,
-                },
-                textInput: {
-                  height: 40,
-                  borderWidth: 1,
-                  borderColor: theme.input,
-                  backgroundColor: theme.input,
-                },
-                predefinedPlacesDescription: {
-                  color: "#1faadb",
-                },
-              }}
-              fetchDetails={true}
-              nearbyPlacesAPI="GooglePlacesSearch"
-              debounce={400}
-            /> */}
           </SafeAreaView>
         </Modal>
         <View style={{ marginBottom: 50 }}>

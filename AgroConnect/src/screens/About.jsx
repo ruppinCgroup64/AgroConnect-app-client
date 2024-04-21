@@ -64,7 +64,7 @@ export default function About() {
                     </View>
                     <Text style={[style.s18, { textAlign: "center", color: theme.txt, writingDirection: "rtl" }]}> עמית דוכן </Text>
                     <View style={{ paddingTop: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <RoundedImage url="https://media.licdn.com/dms/image/D4D35AQEaOBJz4yM-TQ/profile-framedphoto-shrink_800_800/0/1707056756112?e=1714262400&v=beta&t=oM7XzGNDDUL1Yl1vLheCgwUMunMT5dsgo-guHDm4mI8" wid={width / 3.6} hei={height / 8} />
+                        <RoundedImage url="https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk" wid={width / 3.6} hei={height / 8} />
                     </View>
                     <Text style={[style.s18, { textAlign: "center", color: theme.txt, writingDirection: "rtl" }]}> עדי חדד </Text>
                     <View style={{ paddingTop: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>

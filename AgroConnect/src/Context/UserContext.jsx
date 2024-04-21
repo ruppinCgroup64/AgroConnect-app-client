@@ -17,10 +17,10 @@ export default function UsersContextProvider(props) {
     address: "בארותיים, הפלג, 200",
     latitude: "123",
     longitude:"123",
-    password: "1234",
-    confirmPassword: "1234",
+    password: "A123!",
+    confirmPassword: "A123!",//רק לדוגמא
     profilePic:
-      "https://scontent.ftlv20-1.fna.fbcdn.net/v/t1.6435-1/83893614_3381060301908235_6597994632028618752_n.jpg?stp=dst-jpg_p320x320&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jXYPO1-4jx4Ab4yBNsH&_nc_ht=scontent.ftlv20-1.fna&oh=00_AfAban614EALrQ7ciV4Iskti2bMJXyrcOaZj0uBP4RjpXA&oe=664C3833",
+      "https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk",
     isFarmer: false,
   });
   const [farm, setFarm] = useState({

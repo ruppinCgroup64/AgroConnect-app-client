@@ -14,16 +14,13 @@ import themeContext from "../theme/themeContex";
 import style from "../theme/style";
 import { Colors } from "../theme/color";
 import { useNavigation } from "@react-navigation/native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
-import RBSheet from "react-native-raw-bottom-sheet";
 import AutoCompMap from "./AutoCompMap";
 
 export default function DetailsFarm(props) {
   const { farm, setFarm, setNavContinue } = props;
 
   const theme = useContext(themeContext);
-  const navigation = useNavigation();
   const [flag, setFlag] = useState(false);
 
   const [farmName, setFarmName] = useState(() =>
@@ -76,7 +73,7 @@ export default function DetailsFarm(props) {
   }, [farm]);
 
   const handleSubmit = () => {
-    //if (validateForm())
+    if (validateForm())
     {
       setFlag(true);
       console.log("submitted");
@@ -173,52 +170,6 @@ export default function DetailsFarm(props) {
               setLongitude={setLongitude}
               setPlacesModalVisible={setPlacesModalVisible}
             />
-            {/* <GooglePlacesAutocomplete
-                  placeholder="עיר, רחוב, מספר משק"
-                  onPress={(data, details = null) => {
-                    console.log(JSON.stringify(data));
-                    console.log(JSON.stringify(details?.geometry?.location));
-                    setAddress();
-                  }}
-                  query={{
-                    key: "AIzaSyCkv5saCxh1Fsr6xNiJatbWcq28VnmrxAA",
-                    language: "he",
-                  }}
-                  textInputProps={{
-                    selectionColor: Colors.primary,
-                    placeholderTextColor: Colors.disable,
-                    style: [
-                      style.s14,
-                      {
-                        color: theme.txt,
-                        flex: 1,
-                        textAlign: "right",
-                        height: 50,
-                      },
-                    ],
-                    onChangeText: (text) => setAddress(text),
-                  }}
-                  styles={{
-                    textInputContainer: {
-                      backgroundColor: theme.input,
-                      borderTopWidth: 0,
-                      borderBottomWidth: 0,
-                      marginTop: 20,
-                    },
-                    textInput: {
-                      height: 40,
-                      borderWidth: 1,
-                      borderColor: theme.input,
-                      backgroundColor: theme.input,
-                    },
-                    predefinedPlacesDescription: {
-                      color: "#1faadb",
-                    },
-                  }}
-                  fetchDetails={true}
-                  nearbyPlacesAPI="GooglePlacesSearch"
-                  debounce={400}
-                /> */}
           </SafeAreaView>
         </Modal>
         <View
