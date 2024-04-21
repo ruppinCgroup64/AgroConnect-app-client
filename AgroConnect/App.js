@@ -6,6 +6,7 @@ import StackNavigator from "./src/navigator/StackNavigator";
 import { I18nManager } from "react-native";
 import UsersContextProvider from "./src/Context/UserContext";
 import ProductContextProvider from "./src/Context/ProductsContext";
+import TenderContextProvider from "./src/Context/TenderContext";
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
@@ -30,10 +31,12 @@ export default function App() {
   }
 
   return (
+    <TenderContextProvider>
     <ProductContextProvider>
     <UsersContextProvider>
       <StackNavigator/>
     </UsersContextProvider>
     </ProductContextProvider>
+    </TenderContextProvider>
   );
 }

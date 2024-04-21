@@ -1,5 +1,5 @@
 
-//get set value, value from the user,  content and keyboardType and show the TextInput
+//get set value, value from the user, content, keyboardType, side=true (only if true you need to send) if the content need to be at the left when added, and show the TextInput
 
 import {  useContext } from "react";
 import { Keyboard, TextInput, View } from "react-native";
@@ -7,7 +7,7 @@ import style from "../theme/style";
 import themeContext from "../theme/themeContex";
 import { Colors } from "../theme/color";
 
-export default function ValInput({val, setVal,content, keyboardType}) 
+export default function ValInput({val, setVal,content, keyboardType, side}) 
 {
   const theme = useContext(themeContext);
 
@@ -31,7 +31,7 @@ export default function ValInput({val, setVal,content, keyboardType})
             style={[
               style.s14,
               { color: theme.txt, flex: 1 },
-              { textAlign: val ? "left" : "right" },
+              { textAlign: val&&side? "left" : "right" }
             ]}
             onChangeText={setVal}
             keyboardType={keyboardType}

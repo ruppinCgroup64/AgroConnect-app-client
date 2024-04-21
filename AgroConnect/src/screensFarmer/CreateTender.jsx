@@ -31,12 +31,14 @@ import RoundedImage from "../components/RoundImage";
 import { colors } from "react-native-elements";
 import DateTimeSelect from "../components/DateTimeSelect";
 import ValInput from "../components/ValInput";
+import { TenderContext } from "../Context/TenderContext";
 
 export default function CreateTender() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   const { products } = useContext(ProductContext); //נשים ברשימה של אייטמים
-  const { farm } = useContext(UsersContext);
+  const { farm } = useContext(UsersContext);//החקלאי שמחובר
+  const { createTender } = useContext(TenderContext);
 
   const [tender, setTender] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -83,7 +85,11 @@ export default function CreateTender() {
 
   useEffect(() => {
     if (flag) {
+      //create Tender in the DB
+      //createTender(tender)
+      console.log(tender);
       setNavContinue(true);
+      console.log(tender);
     }
     setFlag(false);
   }, [tender]);
@@ -100,7 +106,6 @@ export default function CreateTender() {
     if (validateForm()) {
       setFlag(true);
       console.log("submitted");
-      console.log(tender);
       setErrors({});
     }
   };
@@ -118,12 +123,28 @@ export default function CreateTender() {
     if (!initialOffer) errors.initialOffer = "שדה חובה";
     //the end of the tender
     if (!closeDateHour) errors.closeDateHour = "שדה חובה";
-    else if (closeDateHour < "today") {
+    else {
+      const currentDate = new Date();
+      if (closeDateHour < currentDate) {
+        errors.closeDateHour = "יש להזין מועד עתידי בלבד";
+      }
     }
     //A point where the winners will collect the products
     if (!collectAddress) errors.collectAddress = "שדה חובה";
     //time of collection
-    if (!closeDateHourShow) errors.collectDateHour = "שדה חובה";
+    if (!collectDateHour) errors.collectDateHour = "שדה חובה";
+    else {
+      const currentDate = new Date();
+      if (collectDateHour < currentDate) {
+        errors.collectDateHour = "יש להזין מועד עתידי בלבד";
+      } else if (
+        closeDateHour &&
+        collectDateHour &&
+        closeDateHour >= collectDateHour
+      ) {
+        errors.collectDateHour = "מועד איסוף חייב להיות לאחר מועד סגירת המכרז";
+      }
+    }
     console.log(errors);
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -137,6 +158,9 @@ export default function CreateTender() {
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={{ flex: 1 }}
       >
+        <View
+          style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}
+        >
         <AppBar
           color={theme.bg}
           title="יצירת מכרז"
@@ -225,11 +249,13 @@ export default function CreateTender() {
           keyboardShouldPersistTaps={"always"}
         >
           <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <RoundedImage
+            <RoundedImage
               url={selectedProduct ? selectedProduct.url : null}
               wid={100}
               hei={100}
             />
+            </View>
+            <View>
             <DropDownPicker
               listMode="MODAL"
               open={open}
@@ -275,7 +301,6 @@ export default function CreateTender() {
             {errors.selectedProduct ? (
               <Text style={style.errorText}>{errors.selectedProduct}</Text>
             ) : null}
-            
           </View>
           <View
             style={[
@@ -368,12 +393,13 @@ export default function CreateTender() {
           {errors.initialOffer ? (
             <Text style={style.errorText}>{errors.initialOffer}</Text>
           ) : null}
-          <View style={{ marginBottom: 50 , marginTop:50}}>
+          <View style={{ marginBottom: 50, marginTop: 20 }}>
             <TouchableOpacity onPress={handleSubmit} style={style.btn}>
               <Text style={style.btntxt}>צור מכרז</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

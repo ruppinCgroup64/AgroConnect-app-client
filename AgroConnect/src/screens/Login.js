@@ -132,7 +132,7 @@ export default function Login() {
                   { color: theme.txt, textAlign: "center" },
                 ]}
               >
-                ברוכים השבים!
+                ברוכים הבאים!
               </Text>
               {/* <Text style={[style.b1, { color: theme.txt,textAlign:'center'}]}>התחברו לחשבון שלכם</Text> */}
             </View>
@@ -221,55 +221,12 @@ export default function Login() {
             {errors.password ? (
               <Text style={style.errorText}>{errors.password}</Text>
             ) : null}
-            {/* <View style={{ flexDirection: 'row', marginVertical: 20, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
-
-               <Checkbox
-                  // style={styles.checkbox}
-                  value={isChecked}
-                  onValueChange={setChecked}
-                  color={isChecked ? Colors.primary : Colors.disable}
-                />
-              <View>
-                <Text style={[style.s14, { lineHeight: 14, marginLeft: 5, color: theme.txt }]}>Remember me</Text>
-              </View>
-
-            </View> */}
 
             <View style={{ marginVertical: 30 }}>
               <TouchableOpacity onPress={handleSubmit} style={style.btn}>
                 <Text style={style.btntxt}>התחבר</Text>
               </TouchableOpacity>
             </View>
-
-            {/* <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
-              <View style={{ marginTop: 20, alignItems: 'center' }}>
-                <Text style={[style.s16, { color: Colors.primary }]}>Forgot the password?</Text>
-              </View>
-            </TouchableOpacity> */}
-
-            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginVertical: 50 }}>
-              <View style={[style.divider, { flex: 1, backgroundColor: theme.border }]}></View>
-              <Text style={[style.s18, { color: theme.txt2, marginHorizontal: 10, }]}>or continue with</Text>
-              <View style={[style.divider, { flex: 1, backgroundColor: theme.border }]}></View>
-            </View> */}
-
-            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[style.btnoutline, { borderColor: theme.border, backgroundColor: theme.input }]}>
-                <Image source={require('../../assets/image/Fb.png')}
-                  resizeMode='stretch'
-                  style={{ height: height / 25, width: width / 11 }}></Image>
-              </TouchableOpacity>
-              <TouchableOpacity style={[style.btnoutline, { borderColor: theme.border, backgroundColor: theme.input }]}>
-                <Image source={require('../../assets/image/Google.png')}
-                  resizeMode='stretch'
-                  style={{ height: height / 25, width: width / 11 }}></Image>
-              </TouchableOpacity>
-              <TouchableOpacity style={[style.btnoutline, { borderColor: theme.border, backgroundColor: theme.input }]}>
-                <Image source={theme.apple}
-                  resizeMode='stretch'
-                  style={{ height: height / 25, width: width / 11 }}></Image>
-              </TouchableOpacity>
-            </View> */}
 
             <View
               style={{
