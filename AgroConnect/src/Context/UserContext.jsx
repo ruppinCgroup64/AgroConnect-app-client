@@ -1,3 +1,4 @@
+
 //users management- consumer, farmers, login user
 
 import { useState, createContext } from "react";
@@ -19,7 +20,7 @@ export default function UsersContextProvider(props) {
     password: "1234",
     confirmPassword: "1234",
     profilePic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
+      "https://scontent.ftlv20-1.fna.fbcdn.net/v/t1.6435-1/83893614_3381060301908235_6597994632028618752_n.jpg?stp=dst-jpg_p320x320&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jXYPO1-4jx4Ab4yBNsH&_nc_ht=scontent.ftlv20-1.fna&oh=00_AfAban614EALrQ7ciV4Iskti2bMJXyrcOaZj0uBP4RjpXA&oe=664C3833",
     isFarmer: false,
   });
   const [farm, setFarm] = useState({
@@ -27,7 +28,7 @@ export default function UsersContextProvider(props) {
     address: "ויתקין, החרוב, 1",
     socialNetworkLink: "https://www.facebook.com/HAMESHEK.Hod.Hasharon/",
     mainPic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
+      "https://scontent.ftlv20-2.fna.fbcdn.net/v/t39.30808-1/292727236_473168214810401_4713296776012036218_n.jpg?stp=dst-jpg_p320x320&_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=gaNQOR2nwlEAb5opWTS&_nc_ht=scontent.ftlv20-2.fna&oh=00_AfAqXpY2-in1gXg6IUoP9_ER2J6s9aN1lbLLDEXun_rRYQ&oe=662ABBE7",
     farmerID:"meshek@gmai.com"//פה יהיה האימייל המזהה
   });
   

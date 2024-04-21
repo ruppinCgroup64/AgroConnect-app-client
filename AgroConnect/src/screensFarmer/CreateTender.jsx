@@ -1,4 +1,5 @@
-//create tender
+
+//create tender by farmer
 
 import {
   View,

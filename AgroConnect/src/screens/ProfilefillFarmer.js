@@ -1,3 +1,4 @@
+
 //Registration of the farm of the farmer
 
 import React, { useState, useContext, useEffect } from "react";
@@ -24,24 +25,18 @@ export default function ProfilefillFarmer() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   
-  const {user} = useContext(UsersContext);
+  const {farm, setFarm} = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
   //נתונים רק לבדיקות
-  const [updatedFarm, setUpdatedFarm] = useState({
-    farmName: "המשק",
-    address: "ויתקין, החרוב, 1",
-    socialNetworkLink: "https://www.facebook.com/HAMESHEK.Hod.Hasharon/",
-    mainPic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
-    consumerNum: 1,
-  });
+  const [updatedFarm, setUpdatedFarm] = useState(farm);
 
   useEffect(() => {
     if (navContinue) {
+      setFarm(updatedFarm)
       navigation.navigate("Welcome");
     }
     else if(false)//פה רק כהכנה לשרת, במידה ונפל/יש בעיות יוצגו באלרט
@@ -49,20 +44,6 @@ export default function ProfilefillFarmer() {
       setContent("הרשמתך בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
     }
   }, [navContinue]);
-
-  // useEffect(() => {
-  //   if (navContinue) {
-  //     setShow(true);
-  //   }
-  // }, [content]);
-
-  // useEffect(() => {
-  //   if (navContinue) {
-  //     const timer = setTimeout(() => {
-       
-  //     }, 2000);
-  //   }
-  // }, [show]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -161,7 +142,6 @@ export default function ProfilefillFarmer() {
             setFarm={setUpdatedFarm}
             setNavContinue={setNavContinue}
           />
-          {/* <SuccessAlert show={show} setShow={setShow} content={content} /> */}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

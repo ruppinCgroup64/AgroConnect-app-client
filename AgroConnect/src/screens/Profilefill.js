@@ -22,7 +22,7 @@ import { UsersContext } from "../Context/UserContext";
 
 export default function Profilefill() {
   const theme = useContext(themeContext);
-  const {consumer} = useContext(UsersContext);//רק להדגמה
+  const {consumer, setConsumer} = useContext(UsersContext);//רק להדגמה
 
   const navigation = useNavigation();
 
@@ -35,6 +35,7 @@ export default function Profilefill() {
   useEffect(() => {
     console.log(navContinue);
     if (navContinue && (!updatedConsumer.isFarmer)) {
+      setConsumer(updatedConsumer)
       //קריאה לשרת- רישום צרכן
       navigation.navigate("Welcome");
     } else if (navContinue && updatedConsumer.isFarmer) {
@@ -46,22 +47,6 @@ export default function Profilefill() {
     }
     console.log(updatedConsumer)
   }, [navContinue]);
-
-  // useEffect(() => {
-  //   if (navContinue) 
-  //   {
-  //     setShow(true);
-  //   }
-  // }, [content]);
-
-  // useEffect(() => {
-  //   if (navContinue) {
-  //     const timer = setTimeout(() => {
-        
-  //     }, 2000);
-  //   }
-  //   setNavContinue(false);
-  // }, [show]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>

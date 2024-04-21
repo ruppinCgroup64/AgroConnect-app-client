@@ -195,7 +195,7 @@ export default function Details(props) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={"always"}
       >
-        <ImageProfile setProfilePic={setProfilePic} />
+        <ImageProfile userImageURI={profilePic} setProfilePic={setProfilePic} />
         <View
           style={[
             style.txtinput,

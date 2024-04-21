@@ -34,10 +34,12 @@ export default function DetailsFarm(props) {
   );
 
   const [latitude, setLatitude] = useState(() =>
-  farm && farm.latitude ? farm.latitude : "");
+    farm && farm.latitude ? farm.latitude : ""
+  );
 
   const [longitude, setLongitude] = useState(() =>
-  farm && farm.longitude ? farm.longitude : "");
+    farm && farm.longitude ? farm.longitude : ""
+  );
 
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
