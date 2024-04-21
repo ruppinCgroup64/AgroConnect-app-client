@@ -12,7 +12,7 @@ import Home from "../screens/Home";
 import MyCart from "../screens/MyCart";
 import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
-import Profile2 from "../screens/Profile2";
+import Settings from "../screens/Settings";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +50,7 @@ export default function MyTabs() {
           ),
           tabBarIcon: ({ focused, color }) => {
             return (
+             
               <Image
                 source={
                   focused
@@ -155,7 +156,7 @@ export default function MyTabs() {
 
       <Tab.Screen
         name="Profile"
-        component={Profile2}
+        component={Settings}
         options={{
           tabBarShowLabel: true,
           tabBarLabel: ({ focused, color }) => (
