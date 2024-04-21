@@ -108,7 +108,7 @@ export default function Details(props) {
 
   useEffect(() => {
     if (flag) {
-      updatedConsumer = {
+      const updatedConsumer = {
         firstName,
         lastName,
         dateOfBirth,
@@ -138,7 +138,6 @@ export default function Details(props) {
     {
       setFlag(true);
       console.log("submitted");
-      console.log(updatedConsumer);
       setErrors({});
     }
   };

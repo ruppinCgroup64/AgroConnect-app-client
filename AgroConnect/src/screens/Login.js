@@ -115,7 +115,6 @@ export default function Login() {
             resizeMode="stretch"
             style={{ height: height / 5, width: width, alignSelf: "center" }}
           ></Image>
-          <ScrollView>
             <Image
               source={theme.a}
               resizeMode="stretch"
@@ -292,9 +291,7 @@ export default function Login() {
                 הירשם עכשיו
                 </Text>
               </TouchableOpacity>
-              
             </View>
-          </ScrollView>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

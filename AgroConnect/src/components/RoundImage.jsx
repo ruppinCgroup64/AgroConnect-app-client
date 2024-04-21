@@ -1,3 +1,4 @@
+//
 
 import React, { useState } from 'react';
 import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
