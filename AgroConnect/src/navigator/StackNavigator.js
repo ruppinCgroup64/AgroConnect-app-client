@@ -112,11 +112,11 @@ export default function StackNavigator() {
             />
           ) : null}
 
-          {/* <Stack.Screen
+          <Stack.Screen
             name="CreateTender"
             component={CreateTender}
             options={{ headerShown: false }}
-          /> */}
+          />
 
           {/* <Stack.Screen
             name="Introduction"

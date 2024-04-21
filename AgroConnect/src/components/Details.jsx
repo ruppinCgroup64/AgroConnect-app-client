@@ -22,10 +22,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
 import RBSheet from "react-native-raw-bottom-sheet";
 import AutoCompMap from "./AutoCompMap";
+import ValInput from "./ValInput";
 
 export default function Details(props) {
   const { consumer, setConsumer, setNavContinue, edit } = props;
@@ -97,7 +97,7 @@ export default function Details(props) {
     consumer && consumer.password ? consumer.password : ""
   );
   const [confirmPassword, setConfirmPassword] = useState(() =>
-    edit ? consumer.password : ""
+    edit ? consumer.password : (consumer && consumer.confirmPassword ? consumer.confirmPassword : "")//רק לדוגמא, נצטרך לשנות לפי השרת
   );
   const [profilePic, setProfilePic] = useState(() =>
     consumer && consumer.profilePic ? consumer.profilePic : ""
@@ -358,6 +358,7 @@ export default function Details(props) {
           <TextInput
             placeholder="אימייל"
             value={email}
+            editable={edit? false: true}
             selectionColor={Colors.primary}
             placeholderTextColor={Colors.disable}
             style={[
@@ -366,36 +367,13 @@ export default function Details(props) {
               { textAlign: email ? "left" : "right" },
             ]}
             onChangeText={setEmail}
+            keyboardType="email-address"
           />
         </View>
         {errors.email ? (
           <Text style={style.errorText}>{errors.email}</Text>
         ) : null}
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="מספר טלפון"
-            value={phoneNum}
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[
-              style.s14,
-              { color: theme.txt, flex: 1 },
-              { textAlign: phoneNum ? "left" : "right" },
-            ]}
-            onChangeText={setPhoneNum}
-            keyboardType="numeric"
-          />
-        </View>
+       <ValInput val={phoneNum} setVal={setPhoneNum } content={"מספר טלפון"} keyboardType={"numeric"}/>
         {errors.phoneNum ? (
           <Text style={style.errorText}>{errors.phoneNum}</Text>
         ) : null}

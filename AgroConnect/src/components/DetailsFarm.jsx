@@ -190,6 +190,7 @@ export default function DetailsFarm(props) {
             style={[style.s14, { color: theme.txt, flex: 1 }]}
             onChangeText={setSocialNetworkLink}
             value={socialNetworkLink}
+            keyboardType="url"
           />
         </View>
         {errors.socialNetworkLink ? (
