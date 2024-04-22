@@ -1,10 +1,12 @@
 //API Templates
 let local = true;
-const BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2";
-if (!local) BASE_URL = "hproj.ruppint:7075/api/Consumers"; //השרת המקומי
+let BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2/";
+const port="7093"
+if (local) BASE_URL = "https://localhost:"+port; //השרת המקומי
 
 export async function create(url, data) {
   try {
+    console.log(`${BASE_URL}/${url}`)
     let res = await fetch(`${BASE_URL}/${url}`, {
       method: "POST",
       body: data ? JSON.stringify(data) : "",
