@@ -60,6 +60,8 @@ export default function Login() {
         Password,
         ProfilePic: "",
         IsFarmer: false,
+        RegistrationDate:"",
+        IsAdmin: false
       };
       const status = await login(user);
       console.log(status);

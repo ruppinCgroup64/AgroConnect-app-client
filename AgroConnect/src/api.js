@@ -12,7 +12,7 @@ export async function create(url, data) {
       body: data ? JSON.stringify(data) : "",
       headers: new Headers({
         "Content-type": "application/json; charset=UTF-8", //very important to add the 'charset=UTF-8'!!!!
-        Accept: "application/json; charset=UTF-8",
+        "Accept": "application/json; charset=UTF-8",
       }),
     });
     return await res.json(); //ככה נעשה
@@ -21,6 +21,7 @@ export async function create(url, data) {
     return {status:false, err}//בעיה בקוד/שגיאת שרת
   }
 }
+
 
 export async function read(url) {
   await fetch(`${BASE_URL}/${url}`, {
