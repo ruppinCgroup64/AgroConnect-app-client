@@ -1,7 +1,5 @@
 //API Templates
-let local = true;
-const BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2";
-if (!local) BASE_URL = "hproj.ruppint:7075/api/Consumers"; //השרת המקומי
+const BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2/tar1";
 
 export async function create(url, data) {
   try {

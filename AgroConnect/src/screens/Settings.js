@@ -50,7 +50,7 @@ export default function Settings() {
 
     // states and an eddect to eneble navigation to the farmer's settings, when pressed
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState("צרכן");
+    const [value, setValue] = useState("התחבר כ-");
     const [items, setItems] = useState([
         { label: "צרכן", value: "צרכן" },
         { label: "חקלאי", value: "חקלאי" }
@@ -108,6 +108,11 @@ export default function Settings() {
                         <Settings_option theme navTo={settings_details[0].navTo} t={settings_details[0].t} i={settings_details[0].i} />
                     </View>}
 
+                    {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
+                    {<View style={{ paddingBottom: 20 }}>
+                        <Settings_option theme navTo={settings_details[1].navTo} t={settings_details[1].t} i={settings_details[1].i} />
+                    </View>}
+
                     {/* The "Connected As" drop down */}
                     <DropDownPicker
                         listMode="MODAL"
@@ -150,11 +155,6 @@ export default function Settings() {
                             zIndex: 1000,
                         }}
                     />
-
-                    {/* Adding the third Settings option using the array "settings_details" and the component "Settings_option" */}
-                    {<View style={{ paddingBottom: 20 }}>
-                        <Settings_option theme navTo={settings_details[1].navTo} t={settings_details[1].t} i={settings_details[1].i} />
-                    </View>}
 
                     {/* setting the logout button and popup logout manu ("Are you sure you want to log out?") */}
                     <View style={{ paddingTop: 15, marginBottom: 70 }}>

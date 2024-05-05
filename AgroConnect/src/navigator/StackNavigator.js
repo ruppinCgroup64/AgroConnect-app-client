@@ -70,6 +70,7 @@ import EditProfile from "../screens/EditProfile";
 import Welcome from "../screens/Welcome";
 import CreateTender from "../screensFarmer/CreateTender/";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
+import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
 
 
@@ -391,6 +392,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="About"
             component={About}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Farmer"
+            component={Farmer}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
