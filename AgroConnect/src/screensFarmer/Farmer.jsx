@@ -56,20 +56,20 @@ export default function Farmer() {
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                         <Text style={[style.subtitle, { color: theme.txt, }]}>המשק</Text>
-                        <Icon name='heart-outline' size={24} color={Colors.primary}></Icon>
+                        <Icon name='pencil-outline' size={25} color={Colors.primary}></Icon>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt }]}>בית יצחק, הנשרים 8</Text>
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginBottom: 5}]}>בית יצחק, הנשרים 8</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Icon name='star-half-sharp' size={20} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, }]}>4.9</Text>
+                            <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
+                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <Icon name='logo-whatsapp' size={24} color={Colors.primary}></Icon>
-                            <Icon name='logo-instagram' size={24} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Icon name='logo-facebook' size={24} color={Colors.primary}></Icon>
+                            <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
+                            <Icon name='logo-instagram' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
+                            <Icon name='logo-facebook' size={30} color={Colors.primary}></Icon>
                         </View>
                     </View>
 
