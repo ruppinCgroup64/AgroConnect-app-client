@@ -19,24 +19,17 @@ export async function create(url, data) {
 }
 
 export async function read(url) {
-  await fetch(`${BASE_URL}/${url}`, {
-    method: "GET",
-    headers: new Headers({
-      Accept: "application/json; charset=UTF-8",
-    }),
-  })
-    .then((res) => {
-      console.log("Response:", res);
-      return res.json();
-    })
-    .then(
-      (result) => {
-        console.log("Fetch GET=", result);
+  try {
+    let res = await fetch(`${BASE_URL}/${url}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json; charset=UTF-8",
       },
-      (error) => {
-        console.log("Error GET=", error);
-      }
-    );
+    });
+    return await res.json();
+  } catch (err) {
+    return { status: false, err };
+  }
 }
 
 export async function update(url, data) {

@@ -1,5 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity, ImageBackground, Image, Dimensions, KeyboardAvoidingView } from 'react-native'
+import {
+    View, Text,
+    Image,
+    Dimensions,
+    TouchableOpacity,
+    SafeAreaView,
+    ImageBackground,
+    StatusBar,
+    TextInput,
+    KeyboardAvoidingView,
+    ScrollView,
+    Switch,
+} from 'react-native'
 import React, { useState, useContext } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
@@ -11,26 +22,29 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Avatar } from 'react-native-paper'
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
+import { ProductContext } from "../Context/ProductsContext";
+import { UsersContext } from "../Context/UserContext";
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 export default function Farmer() {
-    const theme = useContext(themeContext);
     const navigation = useNavigation();
+    const theme = useContext(themeContext);
+    const { products } = useContext(ProductContext);
+    const [categoryIndex, setcategoryIndex] = useState(-1);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     //Products
-    const categories = ['עגבניה', 'מלפפון', 'חציל'];
-    const [categoryIndex, setcategoryIndex] = useState(-1)
     const Categorylist = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-            {categories.map((item, index) => (
+            {products.map((item, index) => (
                 <TouchableOpacity key={index}
                     activeOpacity={0.8}>
                     <Text
                         key={index}
                         style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                        {item}
+                        {item.name}
                     </Text>
                 </TouchableOpacity>
             ))}
@@ -59,7 +73,7 @@ export default function Farmer() {
                         <Icon name='pencil-outline' size={25} color={Colors.primary}></Icon>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginBottom: 5}]}>בית יצחק, הנשרים 8</Text>
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginBottom: 5 }]}>בית יצחק, הנשרים 8</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                         <View style={{ flexDirection: 'row' }}>

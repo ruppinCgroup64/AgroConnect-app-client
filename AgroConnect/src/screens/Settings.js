@@ -47,7 +47,6 @@ export default function Settings() {
     const theme = useContext(themeContext);
     const { consumer } = useContext(UsersContext);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
     // states and an eddect to eneble navigation to the farmer's settings, when pressed
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("התחבר כ-");
