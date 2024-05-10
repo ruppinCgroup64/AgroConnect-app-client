@@ -191,6 +191,39 @@ export default function Details(props) {
     return Object.keys(errors).length === 0;
   };
 
+  const uploadFile = () => {
+    setUploded(true);
+    const api = `https://proj.ruppin.ac.il/cgroup41/prod/api/Upload`;
+    const formData = new FormData();
+    formData.append("files", {
+      uri: selectedImage,
+      type: "image/png",
+      name: `${selectedImage.split("/").pop()}`,
+    });
+
+    fetch(api, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        //console.log("response= ", JSON.stringify(response));
+        return response.json();
+      })
+      .then(
+        (result) => {
+          //console.log("fetch POST= ", JSON.stringify(result));
+          setPath(JSON.stringify(result).split("/").pop());
+        },
+        (error) => {
+          console.log("err post=", error);
+        }
+      );
+  };
+
   return (
     <View>
       <ScrollView
