@@ -36,10 +36,22 @@ export default function UsersContextProvider(props) {
   async function register(consumer) {
     let res = await create("api/Consumers", consumer);
     console.log(res)
-    return res.status;
-    if (res.status==-1)
-      alert("user created"); //נחזיר ערך מתאים למי שקרא על מנת לפעול בהתאם
-    else alert("something went wrong");
+    if (res.status === 200) {
+      setConsumer(res.json())
+      return res.json();
+    } else {
+      alert("something went wrong");
+    }
+  }
+  async function registerFarm(farm) {
+    let res = await create("api/Farms", farm);
+    console.log(res)
+    if (res.status === 200) {
+      setFarm(res.json())
+      return res.json();
+    } else {
+      alert("something went wrong");
+    }
   }
 
   async function updateUser(userId, user) {
@@ -61,7 +73,7 @@ export default function UsersContextProvider(props) {
   }
 
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, login, updateUser }}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser }}>
       {props.children}
     </UsersContext.Provider>
   );

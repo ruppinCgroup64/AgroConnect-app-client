@@ -106,6 +106,24 @@ export default function Details(props) {
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
+  const [finalPic, setFinalPic] = useState("")
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      console.log("submitted");
+      try{
+        uploadFile();
+      }
+      catch (err) {
+        return {status:false, err}//בעיה בקוד/שגיאת שרת
+      }
+      setErrors({});
+    }
+  };
+  
+  useEffect(()=>{
+    setFlag(true)
+  },[finalPic])
 
   useEffect(() => {
     if (flag) {
@@ -120,7 +138,7 @@ export default function Details(props) {
         latitude,
         longitude,
         password,
-        profilePic,
+        finalPic,
         isFarmer: isChecked,
       };
       setConsumer(updatedConsumer);
@@ -134,13 +152,7 @@ export default function Details(props) {
     setFlag(false);
   }, [consumer]);
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      setFlag(true);
-      console.log("submitted");
-      setErrors({});
-    }
-  };
+ 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
     const errors = {};
@@ -192,13 +204,12 @@ export default function Details(props) {
   };
 
   const uploadFile = () => {
-    setUploded(true);
-    const api = `https://proj.ruppin.ac.il/cgroup41/prod/api/Upload`;
+    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
     const formData = new FormData();
     formData.append("files", {
-      uri: selectedImage,
+      uri: profilePic,
       type: "image/png",
-      name: `${selectedImage.split("/").pop()}`,
+      name: `${profilePic.split("/").pop()}`,
     });
 
     fetch(api, {
@@ -216,7 +227,7 @@ export default function Details(props) {
       .then(
         (result) => {
           //console.log("fetch POST= ", JSON.stringify(result));
-          setPath(JSON.stringify(result).split("/").pop());
+          setFinalPic(JSON.stringify(result).split("/").pop());
         },
         (error) => {
           console.log("err post=", error);

@@ -18,7 +18,7 @@ import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
 
 export default function DetailsFarm(props) {
-  const { farm, setFarm, setNavContinue } = props;
+  const {setFarm, setNavContinue, farmerID } = props;
 
   const theme = useContext(themeContext);
   const [flag, setFlag] = useState(false);
@@ -45,11 +45,30 @@ export default function DetailsFarm(props) {
     farm && farm.mainPic ? farm.mainPic : null
   );
   const [consumerNum, setConsumerNum] = useState(
-    farm && farm.consumerNum ? farm.consumerNum : -1
+    farm && farm.consumerNum ? farm.consumerNum : farmerID
   );
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
+  const [finalPic, setFinalPic] = useState(initialState)
+
+  const handleSubmit = () => {
+    if (validateForm())
+    {
+      try{
+        uploadFile();
+      }
+      catch (err) {
+        return {status:false, err}//בעיה בקוד/שגיאת שרת
+      }
+      console.log("submitted");
+      setErrors({});
+    }
+  };
+  
+  useEffect(()=>{
+    setFlag(true)
+  },[finalPic])
 
   useEffect(() => {
     if (flag) {
@@ -72,13 +91,36 @@ export default function DetailsFarm(props) {
     }
   }, [farm]);
 
-  const handleSubmit = () => {
-    if (validateForm())
-    {
-      setFlag(true);
-      console.log("submitted");
-      setErrors({});
-    }
+  const uploadFile = () => {
+    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
+    const formData = new FormData();
+    formData.append("files", {
+      uri: mainPic,
+      type: "image/png",
+      name: `${mainPic.split("/").pop()}`,
+    });
+
+    fetch(api, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        //console.log("response= ", JSON.stringify(response));
+        return response.json();
+      })
+      .then(
+        (result) => {
+          //console.log("fetch POST= ", JSON.stringify(result));
+          setFinalPic(JSON.stringify(result).split("/").pop());
+        },
+        (error) => {
+          console.log("err post=", error);
+        }
+      );
   };
 
   //checking every field according to the rules and add to the errors object

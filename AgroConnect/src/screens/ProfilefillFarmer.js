@@ -21,22 +21,22 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { UsersContext } from "../Context/UserContext";
 
-export default function ProfilefillFarmer() {
+export default function ProfilefillFarmer({ route }) {
+  const { farmerID } = route.params
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   
-  const {farm, setFarm} = useContext(UsersContext);
+  const {registerFarm} = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  //נתונים רק לבדיקות
-  const [updatedFarm, setUpdatedFarm] = useState(farm);
+  const [updatedFarm, setUpdatedFarm] = useState({});
 
   useEffect(() => {
     if (navContinue) {
-      setFarm(updatedFarm)
+      registerFarm(updatedFarm);
       navigation.navigate("Welcome");
     }
     else if(false)//פה רק כהכנה לשרת, במידה ונפל/יש בעיות יוצגו באלרט
@@ -138,9 +138,9 @@ export default function ProfilefillFarmer() {
             </View>
           </RBSheet>
           <DetailsFarm
-            farm={updatedFarm}
             setFarm={setUpdatedFarm}
             setNavContinue={setNavContinue}
+            farmerID={farmerID}
           />
         </View>
       </KeyboardAvoidingView>
