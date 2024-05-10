@@ -58,8 +58,10 @@ export default function Settings() {
     ]);
     const [userType, setUserType] = useState("התחבר כ-");
     useEffect(() => {
-        if (value == "צרכן")
+        if (value == "צרכן"){
+            this.RBSheet14.close(); 
             navigation.navigate('Settings');
+        }
     }, [value]);
 
     return (

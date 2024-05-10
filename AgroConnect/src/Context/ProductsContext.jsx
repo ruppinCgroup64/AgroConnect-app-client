@@ -8,6 +8,7 @@ import { read } from "../api";
 export const ProductContext = createContext();
 
 export default function ProductContextProvider(props) {
+  get();
   const [products, setProducts] = useState([
     {
       id: 0,
@@ -21,10 +22,11 @@ export default function ProductContextProvider(props) {
     }]);
 
   async function get() {
-    // let res = await read("api/Categories");
-    // if (res)
-    //   setProducts(res);
-    // else alert("something went wrong");
+    let res = await read("api/Products");
+    console.log(res);
+    if (res)
+      setProducts(res);
+    else alert("something went wrong");
   }
 
   return (

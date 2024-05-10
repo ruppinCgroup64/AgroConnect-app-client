@@ -56,8 +56,10 @@ export default function Settings() {
     ]);
     const [userType, setUserType] = useState("התחבר כ-");
     useEffect(() => {
-        if (value == "חקלאי")
+        if (value == "חקלאי"){
+            this.RBSheet14.close(); 
             navigation.navigate('SettingsFarmer');
+        }
     }, [value]);
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg, }]}>

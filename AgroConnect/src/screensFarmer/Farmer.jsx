@@ -44,13 +44,18 @@ export default function Farmer() {
                     <Text
                         key={index}
                         style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                        {item.name}
+                        {item}
                     </Text>
                 </TouchableOpacity>
             ))}
         </View>
         );
     };
+
+    function AddProduct(){
+        this.RBSheet14.close();
+        navigation.navigate('AddProduct');
+    }//AddProduct
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
