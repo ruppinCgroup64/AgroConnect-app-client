@@ -52,11 +52,6 @@ export default function Farmer() {
         );
     };
 
-    function AddProduct(){
-        this.RBSheet14.close();
-        navigation.navigate('AddProduct');
-    }//AddProduct
-
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
             <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
