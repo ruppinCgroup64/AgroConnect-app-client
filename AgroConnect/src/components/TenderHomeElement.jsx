@@ -5,7 +5,7 @@ import { Colors } from '../theme/color';
 import { useNavigation } from '@react-navigation/native';
 import { useContext, useState } from 'react';
 import themeContext from '../theme/themeContex';
-import SquereImage from './SquereImage';
+import SquareImage from './SquareImage';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -23,7 +23,7 @@ export default function TenderHomeElement({ key, nav, img, title, address, nav2,
                         <Icon name='heart-outline' size={30} color={Colors.primary}></Icon>
                     </View>
                     <TouchableOpacity zIndex={1} style={{ marginTop: -30 }} onPress={() => navigation.navigate(nav)}>
-                        <SquereImage url={img}
+                        <SquareImage url={img}
                             wid={width / 2.25} hei={height / 5} />
                     </TouchableOpacity>
                 </View>

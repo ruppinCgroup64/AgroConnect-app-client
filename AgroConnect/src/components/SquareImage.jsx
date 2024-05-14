@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function SquereImage({url, wid, hei}) {
+export default function SquareImage({url, wid, hei}) {
   return (
     <View style={[styles.container, { width: wid, height: hei }]}>
       <Image source={{ uri: url }} style={styles.image} />
