@@ -51,29 +51,29 @@ const fairs = [
     {
         nav: 'ProDetail',
         img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/434410289_810442257776382_7307582090524435555_n.jpg?stp=dst-jpg_p526x296&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=_lGRTslQw40Q7kNvgH2M48v&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYCp9CMOX94-Pr_THSSt8gEk7ArF5nhQ-OqQVNOtyHBuqQ&oe=6645C4FE',
-        title: 'כתובת יריד ראשון',
-        address: '15.05.2024',
+        title: 'שוק עמק חפר',
+        address: '05.04.2024',
         nav2: 'Review',
         rank: '4.8',
         timer: 'עוד 3 ימים'
     },
     {
         nav: 'ProDetail',
-        img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/434410289_810442257776382_7307582090524435555_n.jpg?stp=dst-jpg_p526x296&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=_lGRTslQw40Q7kNvgH2M48v&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYCp9CMOX94-Pr_THSSt8gEk7ArF5nhQ-OqQVNOtyHBuqQ&oe=6645C4FE',
-        title: 'כתובת יריד ראשון',
-        address: '15.05.2024',
+        img: 'https://www.panoramacenter.co.il/wp-content/uploads/2017/07/shook-608x608.jpg',
+        title: 'שוק איכרים',
+        address: '12.04.2024',
         nav2: 'Review',
-        rank: '4.8',
-        timer: 'עוד 3 ימים'
+        rank: '4.6',
+        timer: 'עוד 10 ימים'
     },
     {
         nav: 'ProDetail',
-        img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/434410289_810442257776382_7307582090524435555_n.jpg?stp=dst-jpg_p526x296&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=_lGRTslQw40Q7kNvgH2M48v&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYCp9CMOX94-Pr_THSSt8gEk7ArF5nhQ-OqQVNOtyHBuqQ&oe=6645C4FE',
-        title: 'כתובת יריד ראשון',
-        address: '15.05.2024',
+        img: 'https://media.reshet.tv/image/upload/t_image_article_800/v1699546480/uploads/2023/903796167.jpg',
+        title: 'שוק צוק הדסה',
+        address: '11.04.2024',
         nav2: 'Review',
         rank: '4.8',
-        timer: 'עוד 3 ימים'
+        timer: 'עוד 9 ימים'
     }
 ];
 
