@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Settings_option({theme, navTo, t, i }) {
   const navigation = useNavigation();
-  console.log("this 2 :"+ t);
   return (
     <TouchableOpacity onPress={() => navigation.navigate(navTo)}>
       <View style={{ flexDirection: 'row' }}>

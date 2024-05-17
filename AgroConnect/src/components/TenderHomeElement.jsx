@@ -10,11 +10,10 @@ import SquareImage from './SquareImage';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function TenderHomeElement({ key, nav, img, title, address, nav2, rank, timer }) {
+export default function TenderHomeElement({ nav, img, title, address, nav2, rank, timer }) {
 
     const theme = useContext(themeContext);
     const navigation = useNavigation();
-    console.log("this:" + title);
     return (
         <TouchableOpacity>
             <View style={{ width: width / 2 }}>
@@ -27,7 +26,7 @@ export default function TenderHomeElement({ key, nav, img, title, address, nav2,
                             wid={width / 2.25} hei={height / 5} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[style.apptitle, { color: theme.txt, marginTop: 10, }]}>{title}</Text>
+                <Text style={[style.apptitle, { color: theme.txt, marginTop: 10, textAlign: 'left' }]}>{title}</Text>
                 <View style={[style.apptitle, { color: theme.txt, marginTop: -5, fontSize: 20, float: 'right' }]}>
                     <Text style={[style.apptitle, { color: theme.txt, marginTop: -5, fontSize: 20, textAlign: 'left' }]}>{address}</Text>
                 </View>

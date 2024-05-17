@@ -21,6 +21,8 @@ import { AppBar } from "@react-native-material/core";
 import Icon from "react-native-vector-icons/Ionicons";
 // import CheckBox from '@react-native-community/checkbox';
 import Checkbox from "expo-checkbox";
+import { create } from "../api";
+import { UsersContext } from "../Context/UserContext";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -36,18 +38,42 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const { consumer, setConsumer } = useContext(UsersContext);
   //submit
   const handleSubmit = () => {
     //if (validateForm()) 
     {
-      console.log("submitted"); //API place
-      // loginPOST(email);//API request
-      setEmail("");
-      setPassword("");
+      const c ={
+        id: 0,
+        email: email,
+        firstName: "string",
+        lastName: "string",
+        password: password,
+        gender: "string",
+        dateOfBirth: "string",
+        phoneNum: "string",
+        address: "string",
+        registrationDate: "string",
+        isAdmin: true,
+        profilePic: "string",
+        isFarmer: true,
+        longitude: "string",
+        latitude: "string"
+      };
+      setConsumer(c);
+      login(c);
       setErrors({});
       navigation.navigate("MyTabs");
     }
   };
+  async function login(user) {
+    let res = await create("api/Consumers/Login", user);
+    if (res)
+      setConsumer(res);
+    else alert("something went wrong");
+  }
+
   //errors
   const validateForm = () => {
     let errors = {};

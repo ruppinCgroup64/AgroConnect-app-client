@@ -6,6 +6,24 @@ import { read } from "../api";
 
 export const UsersContext = createContext();
 
+const c = {
+  id: 0,
+  email: "AmitDohan@mail.com",
+  firstName: "string",
+  lastName: "string",
+  password: "123",
+  gender: "string",
+  dateOfBirth: "string",
+  phoneNum: "string",
+  address: "string",
+  registrationDate: "string",
+  isAdmin: true,
+  profilePic: "string",
+  isFarmer: true,
+  longitude: "string",
+  latitude: "string"
+}
+
 export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState({//פה יהיה ריק, ורק הפונקציות יעדכנו אותו לפי מה שחזר מהשרת
     firstName: "עדי",
@@ -49,11 +67,13 @@ export default function UsersContextProvider(props) {
   }
 
   async function login(user) {
-    let res = await create("api/user", user);
-    if (res.status)
-      alert("user loged"); //נחזיר ערך מתאים למי שקרא על מנת לפעול בהתאם
+    let res = await create("api/Consumers/Login", user);
+    if (res)
+      setConsumer(res);
     else alert("something went wrong");
   }
+
+  
 
   return (
     <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, updateUser }}>
