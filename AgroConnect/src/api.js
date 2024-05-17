@@ -1,12 +1,6 @@
 //API Templates
-<<<<<<< HEAD
-const BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2/tar1";
-=======
 let local = true;
 let BASE_URL = "https://proj.ruppin.ac.il/cgroup64/test2/";
-const port="7093"
-if (local) BASE_URL = "https://localhost:"+port; //השרת המקומי
->>>>>>> Adi_fix
 
 export async function create(url, data) {
   try {

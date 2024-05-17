@@ -8,7 +8,6 @@ import { read } from "../api";
 export const ProductContext = createContext();
 
 export default function ProductContextProvider(props) {
-  get();
   const [products, setProducts] = useState([
     {
       id: 0,

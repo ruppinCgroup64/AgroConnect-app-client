@@ -41,19 +41,6 @@ export default function UsersContextProvider(props) {
   //   profilePic:
   //     "https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk",
   //   isFarmer: false,
-    firstName: "עדי",
-    lastName: "חדד",
-    dateOfBirth: "30/08/1998",
-    gender: "נקבה",
-    email: "adi@gmail.com",
-    phoneNum: "0501234567",
-    address: "בארותיים, הפלג, 200",
-    latitude: "123",
-    longitude: "123",
-    password: "1234",
-    confirmPassword: "1234",
-    profilePic: "https://cdn.dribbble.com/users/146798/screenshots/6194594/media/24a15804b44e8fea542060fad3f47b4a.jpg?resize=400x300&vertical=center",
-    isFarmer: false,
   });
   const [farm, setFarm] = useState({
     // farmName: "המשק",

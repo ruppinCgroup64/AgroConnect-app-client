@@ -23,7 +23,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Checkbox from "expo-checkbox";
 import { create } from "../api";
 import { UsersContext } from "../Context/UserContext";
-import { UsersContext } from "../Context/UserContext";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -42,65 +41,36 @@ export default function Login() {
   const [errors, setErrors] = useState({});
 
   const { consumer, setConsumer } = useContext(UsersContext);
-  //submit
-  const handleSubmit = () => {
-    //if (validateForm()) 
-    {
-      const c ={
-        id: 0,
-        email: email,
-        firstName: "string",
-        lastName: "string",
-        password: password,
-        gender: "string",
-        dateOfBirth: "string",
-        phoneNum: "string",
-        address: "string",
-        registrationDate: "string",
-        isAdmin: true,
-        profilePic: "string",
-        isFarmer: true,
-        longitude: "string",
-        latitude: "string"
-      };
-      setConsumer(c);
-      login(c);
+      
   const handleSubmit = async  () => {
     if (validateForm()) {
-      console.log("submitted"); //API place
-
       // loginPOST(email);//API request
       //setEmail("");
       //setPassword("");
 
       const user = {
+        Id: 0,
+        Email,
         FirstName: "",
         LastName: "",
-        DateOfBirth: "",
+        Password,
         Gender: "",
-        Email,
+        DateOfBirth: "",
         PhoneNum: "",
         Address: "",
-        Latitude: "",
-        Longitude: "",
-        Password,
+        RegistrationDate: "",
+        IsAdmin: true,
         ProfilePic: "",
-        IsFarmer: false,
-        RegistrationDate:"",
-        IsAdmin: false
+        IsFarmer: true,
+        Longitude: "",
+        Latitude: ""
       };
-      //const status = await login(user);
-      //console.log(status);
+      setConsumer(user);
+      login(user);
       setErrors({});
       navigation.navigate("MyTabs");
     }
   };
-  async function login(user) {
-    let res = await create("api/Consumers/Login", user);
-    if (res)
-      setConsumer(res);
-    else alert("something went wrong");
-  }
 
   //errors
   const validateForm = () => {
