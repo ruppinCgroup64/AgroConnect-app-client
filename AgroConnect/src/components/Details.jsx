@@ -8,24 +8,19 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
-  KeyboardAvoidingView,
   Modal,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import style from "../theme/style";
 import { Colors } from "../theme/color";
-import { useNavigation } from "@react-navigation/native";
-import { AppBar, Avatar, useSurfaceColor } from "@react-native-material/core";
 import Icon from "react-native-vector-icons/Ionicons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import Checkbox from "expo-checkbox";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import ImageProfile from "../components/ImageProfile";
-import RBSheet from "react-native-raw-bottom-sheet";
 import AutoCompMap from "./AutoCompMap";
+import ValInput from "./ValInput";
 
 export default function Details(props) {
   const { consumer, setConsumer, setNavContinue, edit } = props;
@@ -64,7 +59,6 @@ export default function Details(props) {
     { label: "אחר", value: "אחר" },
   ]);
 
-
   const [firstName, setFirstName] = useState(() =>
     consumer && consumer.firstName ? consumer.firstName : ""
   );
@@ -86,18 +80,25 @@ export default function Details(props) {
   const [address, setAddress] = useState(() =>
     consumer && consumer.address ? consumer.address : {}
   );
-  
+
   const [latitude, setLatitude] = useState(() =>
-  consumer && consumer.latitude ? consumer.latitude : "");
+    consumer && consumer.latitude ? consumer.latitude : ""
+  );
 
   const [longitude, setLongitude] = useState(() =>
-  consumer && consumer.longitude ? consumer.longitude : "");
+    consumer && consumer.longitude ? consumer.longitude : ""
+  );
 
   const [password, setPassword] = useState(() =>
     consumer && consumer.password ? consumer.password : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(() =>
-    consumer && consumer.confirmPassword ? consumer.confirmPassword : ""
+  const [confirmPassword, setConfirmPassword] = useState(
+    () =>
+      edit
+        ? consumer.password
+        : consumer && consumer.confirmPassword
+        ? consumer.confirmPassword
+        : "" //רק לדוגמא, נצטרך לשנות לפי השרת
   );
   const [profilePic, setProfilePic] = useState(() =>
     consumer && consumer.profilePic ? consumer.profilePic : ""
@@ -105,6 +106,24 @@ export default function Details(props) {
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
+  const [finalPic, setFinalPic] = useState("")
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      console.log("submitted");
+      try{
+        uploadFile();
+      }
+      catch (err) {
+        return {status:false, err}//בעיה בקוד/שגיאת שרת
+      }
+      setErrors({});
+    }
+  };
+  
+  useEffect(()=>{
+    setFlag(true)
+  },[finalPic])
 
   useEffect(() => {
     if (flag) {
@@ -119,7 +138,7 @@ export default function Details(props) {
         latitude,
         longitude,
         password,
-        profilePic,
+        finalPic,
         isFarmer: isChecked,
       };
       setConsumer(updatedConsumer);
@@ -133,39 +152,32 @@ export default function Details(props) {
     setFlag(false);
   }, [consumer]);
 
-  const handleSubmit = () => {
-    //if (validateForm())
-    {
-      setFlag(true);
-      console.log("submitted");
-      setErrors({});
-    }
-  };
+ 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
     const errors = {};
     //first name
-    //const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
+    const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
     if (!firstName) errors.firstName = "שדה חובה";
-    // else if (!regexFirstName.test(firstName)) {
-    //   errors.firstName = "שם פרטי לא תקין";
-    // }
+    else if (!regexFirstName.test(firstName)) {
+      errors.firstName = "שם פרטי לא תקין";
+    }
     //last name
-    // const regexLastName = /^[א-ת]{1,60}$/;
-    // if (!regexLastName.test(lastName)) {
-    //   errors.lastName = "שם משפחה לא תקין";
-    // } else
-    if (!firstName) errors.lastName = "שדה חובה";
+    const regexLastName = /^[א-ת]+(?:\s[א-ת]+)*$/;
+    if (!regexLastName.test(lastName)) {
+      errors.lastName = "שם משפחה לא תקין";
+    } else if (!lastName) errors.lastName = "שדה חובה";
     //dateOfBirth
     if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
     if (!gender) errors.gender = "שדה חובה";
     //password
-    // const regexPassword =
-    //   /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{7,12}$/;
-    // if (!regexPassword.test(password)) {
-    //   errors.password = "סיסמא לא תקינה";
-    // } else if (!password) errors.password = "שדה חובה";
+    const regexPassword =
+      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{4,10}$/;
+    if (!regexPassword.test(password)) {
+      errors.password =
+        "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 4-10 תווים ";
+    } else if (!password) errors.password = "שדה חובה";
     if (!password) errors.password = "שדה חובה";
     //confirm password
     if (!confirmPassword) errors.confirmPassword = "שדה חובה";
@@ -175,18 +187,52 @@ export default function Details(props) {
     //email
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) errors.email = "שדה חובה";
-    // else if (!regexEmail.test(email)) {
-    //   errors.email = "כתובת מייל לא תקינה";
-    // }
+    else if (!regexEmail.test(email)) {
+      errors.email = "כתובת מייל לא תקינה";
+    }
+    //phone
     const regexPhone = /^05\d{8}$/;
     if (!phoneNum) errors.phoneNum = "שדה חובה";
     else if (!regexPhone.test(phoneNum)) {
       errors.phoneNum = "מספר טלפון לא תקין";
     }
+    //address
     if (!address) errors.address = "שדה חובה";
     console.log(errors);
     setErrors(errors);
     return Object.keys(errors).length === 0;
+  };
+
+  const uploadFile = () => {
+    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
+    const formData = new FormData();
+    formData.append("files", {
+      uri: profilePic,
+      type: "image/png",
+      name: `${profilePic.split("/").pop()}`,
+    });
+
+    fetch(api, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        //console.log("response= ", JSON.stringify(response));
+        return response.json();
+      })
+      .then(
+        (result) => {
+          //console.log("fetch POST= ", JSON.stringify(result));
+          setFinalPic(JSON.stringify(result).split("/").pop());
+        },
+        (error) => {
+          console.log("err post=", error);
+        }
+      );
   };
 
   return (
@@ -195,53 +241,28 @@ export default function Details(props) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={"always"}
       >
-        <ImageProfile setProfilePic={setProfilePic} />
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="שם פרטי"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setFirstName}
-            value={firstName}
-          />
-        </View>
+        <ImageProfile userImageURI={profilePic} setProfilePic={setProfilePic} />
+
+        <ValInput
+          val={firstName}
+          setVal={setFirstName}
+          content={"שם פרטי"}
+          keyboardType={"default"}
+        />
         {errors.firstName ? (
           <Text style={style.errorText}>{errors.firstName}</Text>
         ) : null}
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="שם משפחה"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setLastName}
-            value={lastName}
-          />
-        </View>
+
+        <ValInput
+          val={lastName}
+          setVal={setLastName}
+          content={"שם משפחה"}
+          keyboardType={"default"}
+        />
         {errors.lastName ? (
           <Text style={style.errorText}>{errors.lastName}</Text>
         ) : null}
+
         <View
           style={[
             style.inputContainer,
@@ -274,6 +295,7 @@ export default function Details(props) {
         {errors.dateOfBirth ? (
           <Text style={style.errorText}>{errors.dateOfBirth}</Text>
         ) : null}
+
         <DropDownPicker
           listMode="MODAL"
           open={open}
@@ -318,6 +340,7 @@ export default function Details(props) {
         {errors.gender ? (
           <Text style={style.errorText}>{errors.gender}</Text>
         ) : null}
+
         <View
           style={[
             style.inputContainer,
@@ -342,61 +365,29 @@ export default function Details(props) {
         {errors.address ? (
           <Text style={style.errorText}>{errors.address}</Text>
         ) : null}
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="אימייל"
-            value={email}
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[
-              style.s14,
-              { color: theme.txt, flex: 1 },
-              { textAlign: email ? "left" : "right" },
-            ]}
-            onChangeText={setEmail}
-          />
-        </View>
+        
+        <ValInput
+          val={email}
+          setVal={setEmail}
+          content={"אימייל"}
+          keyboardType={"email-address"}
+          side={true}
+        />
         {errors.email ? (
           <Text style={style.errorText}>{errors.email}</Text>
         ) : null}
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="מספר טלפון"
-            value={phoneNum}
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[
-              style.s14,
-              { color: theme.txt, flex: 1 },
-              { textAlign: phoneNum ? "left" : "right" },
-            ]}
-            onChangeText={setPhoneNum}
-            keyboardType="numeric"
-          />
-        </View>
+
+        <ValInput
+          val={phoneNum}
+          setVal={setPhoneNum}
+          content={"מספר טלפון"}
+          keyboardType={"numeric"}
+          side={true}
+        />
         {errors.phoneNum ? (
           <Text style={style.errorText}>{errors.phoneNum}</Text>
         ) : null}
+        
         <View
           style={[
             style.inputContainer,
@@ -497,52 +488,6 @@ export default function Details(props) {
               setLongitude={setLongitude}
               setPlacesModalVisible={setPlacesModalVisible}
             />
-            {/* <GooglePlacesAutocomplete
-              placeholder="עיר, רחוב, מספר בית"
-              onPress={(data, details = null) => {
-                console.log(JSON.stringify(data));
-                console.log(JSON.stringify(details?.geometry?.location));
-                setAddress();
-              }}
-              query={{
-                key: "AIzaSyCkv5saCxh1Fsr6xNiJatbWcq28VnmrxAA",
-                language: "he",
-              }}
-              textInputProps={{
-                selectionColor: Colors.primary,
-                placeholderTextColor: Colors.disable,
-                style: [
-                  style.s14,
-                  {
-                    color: theme.txt,
-                    flex: 1,
-                    textAlign: "right",
-                    height: 50,
-                  },
-                ],
-                onChangeText: (text) => setAddress(text),
-              }}
-              styles={{
-                textInputContainer: {
-                  backgroundColor: theme.input,
-                  borderTopWidth: 0,
-                  borderBottomWidth: 0,
-                  marginTop: 20,
-                },
-                textInput: {
-                  height: 40,
-                  borderWidth: 1,
-                  borderColor: theme.input,
-                  backgroundColor: theme.input,
-                },
-                predefinedPlacesDescription: {
-                  color: "#1faadb",
-                },
-              }}
-              fetchDetails={true}
-              nearbyPlacesAPI="GooglePlacesSearch"
-              debounce={400}
-            /> */}
           </SafeAreaView>
         </Modal>
         <View style={{ marginBottom: 50 }}>

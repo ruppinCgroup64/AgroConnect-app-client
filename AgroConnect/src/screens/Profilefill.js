@@ -22,7 +22,7 @@ import { UsersContext } from "../Context/UserContext";
 
 export default function Profilefill() {
   const theme = useContext(themeContext);
-  const {consumer} = useContext(UsersContext);//רק להדגמה
+  const {register} = useContext(UsersContext);//רק להדגמה
 
   const navigation = useNavigation();
 
@@ -30,38 +30,37 @@ export default function Profilefill() {
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedConsumer, setUpdatedConsumer] = useState(consumer);//רק להדגמה useState(consumer) ברגיל יהיה {}
+  const [updatedConsumer, setUpdatedConsumer] = useState({});
 
   useEffect(() => {
     console.log(navContinue);
-    if (navContinue && (!updatedConsumer.isFarmer)) {
-      //קריאה לשרת- רישום צרכן
+    if(navContinue){
+      let res= register(updatedConsumer);
+      console.log(res.json());
+    if (res.json()==-1)
+    {
+      alert ("email exists")
+    }
+    else
+    {
+      alert ("user was created")
+      // לשמור לאסינק סטורג
+    }
+    if (!updatedConsumer.isFarmer) //if its not a farmer
+    {
       navigation.navigate("Welcome");
-    } else if (navContinue && updatedConsumer.isFarmer) {
-      navigation.navigate("ProfilefillFarmer");
+    } 
+    else if (updatedConsumer.isFarmer) {
+
+      navigation.navigate("ProfilefillFarmer",{farmerID: res.json().id});
     }
     else if(false)//פה רק כהכנה לשרת, במידה ונפל/יש בעיות יוצגו באלרט
     {
       setContent("הרשמתך בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
     }
+    }
     console.log(updatedConsumer)
   }, [navContinue]);
-
-  // useEffect(() => {
-  //   if (navContinue) 
-  //   {
-  //     setShow(true);
-  //   }
-  // }, [content]);
-
-  // useEffect(() => {
-  //   if (navContinue) {
-  //     const timer = setTimeout(() => {
-        
-  //     }, 2000);
-  //   }
-  //   setNavContinue(false);
-  // }, [show]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>

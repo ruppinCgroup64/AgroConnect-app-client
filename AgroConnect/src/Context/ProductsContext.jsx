@@ -21,15 +21,22 @@ export default function ProductContextProvider(props) {
       url: "https://www.shefab.co.il/files/products/product71_image1_2020-08-30_17-35-56.jpg"
     }]);
 
-  async function get() {
-    let res = await read("api/Products");
-    if (res)
-      setProducts(res);
+  async function getProducts() {
+    let res = await read("api/products");
+    if (res.status)
+      setProducts(res.json())
+    else alert("something went wrong");
+  }
+
+  async function getProductAveragePrice(productID) {
+    let res = await read("api/products");
+    if (res.status)
+      setProducts(res.json())
     else alert("something went wrong");
   }
 
   return (
-    <ProductContext.Provider value={{ products, setProducts }}>
+    <ProductContext.Provider value={{ products, getProductAveragePrice, getProducts, setProducts }}>
       {props.children}
     </ProductContext.Provider>
   );

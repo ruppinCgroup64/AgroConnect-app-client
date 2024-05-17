@@ -1,3 +1,4 @@
+
 //Users management- consumer, farmers, login user
 
 import { useState, createContext } from "react";
@@ -26,6 +27,20 @@ const c = {
 
 export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState({//פה יהיה ריק, ורק הפונקציות יעדכנו אותו לפי מה שחזר מהשרת
+  //   firstName: "עדי",
+  //   lastName: "חדד",
+  //   dateOfBirth: "30/08/1998",
+  //   gender: "נקבה",
+  //   email: "adi@gmail.com",
+  //   phoneNum: "0501234567",
+  //   address: "בארותיים, הפלג, 200",
+  //   latitude: "123",
+  //   longitude:"123",
+  //   password: "A123!",
+  //   confirmPassword: "A123!",//רק לדוגמא
+  //   profilePic:
+  //     "https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk",
+  //   isFarmer: false,
     firstName: "עדי",
     lastName: "חדד",
     dateOfBirth: "30/08/1998",
@@ -41,19 +56,34 @@ export default function UsersContextProvider(props) {
     isFarmer: false,
   });
   const [farm, setFarm] = useState({
-    farmName: "המשק",
-    address: "ויתקין, החרוב, 1",
-    socialNetworkLink: "https://www.facebook.com/HAMESHEK.Hod.Hasharon/",
-    mainPic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
-    farmerID: "meshek@gmai.com"//פה יהיה האימייל המזהה
+    // farmName: "המשק",
+    // address: "ויתקין, החרוב, 1",
+    // socialNetworkLink: "https://www.facebook.com/HAMESHEK.Hod.Hasharon/",
+    // mainPic:
+    //   "https://scontent.ftlv20-2.fna.fbcdn.net/v/t39.30808-1/292727236_473168214810401_4713296776012036218_n.jpg?stp=dst-jpg_p320x320&_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=gaNQOR2nwlEAb5opWTS&_nc_ht=scontent.ftlv20-2.fna&oh=00_AfAqXpY2-in1gXg6IUoP9_ER2J6s9aN1lbLLDEXun_rRYQ&oe=662ABBE7",
+    // farmerID: "meshek@gmai.com"//פה יהיה האימייל המזהה
   });
+  
 
-  async function register(user) {
-    let res = await create("api/user", user);
-    if (res.status)
-      alert("user created"); //נחזיר ערך מתאים למי שקרא על מנת לפעול בהתאם
-    else alert("something went wrong");
+  async function register(consumer) {
+    let res = await create("api/Consumers", consumer);
+    console.log(res)
+    if (res.status === 200) {
+      setConsumer(res.json())
+      return res.json();
+    } else {
+      alert("something went wrong");
+    }
+  }
+  async function registerFarm(farm) {
+    let res = await create("api/Farms", farm);
+    console.log(res)
+    if (res.status === 200) {
+      setFarm(res.json())
+      return res.json();
+    } else {
+      alert("something went wrong");
+    }
   }
 
   async function updateUser(userId, user) {
@@ -76,7 +106,7 @@ export default function UsersContextProvider(props) {
   
 
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, updateUser }}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser }}>
       {props.children}
     </UsersContext.Provider>
   );

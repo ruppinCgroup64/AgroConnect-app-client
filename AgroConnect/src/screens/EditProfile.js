@@ -17,29 +17,18 @@ import SuccessAlert from "../components/SuccessAlert";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { colors } from "react-native-elements";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { UsersContext } from "../Context/UserContext";
 
 export default function EditProfile() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
+  const {consumer} = useContext(UsersContext);//רק להדגמה
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedConsumer, setUpdatedConsumer] = useState({
-    firstName: "עדי",
-    lastName: "חדד",
-    dateOfBirth: "30/08/1998",
-    gender: "נקבה",
-    email: "adi@gmail.com",
-    phoneNum: "0501234567",
-    address: "בארותיים, הפלג, 200",
-    password: "1234",
-    confirmPassword: "1234",
-    profilePic:
-      "file:///var/mobile/Containers/Data/Application/DA33310A-7189-40D0-AAD7-855F44CD2353/Library/Caches/ExponentExperienceData/@anonymous/AgroConnect-a9363ae1-df3b-4be5-aa0a-fec0396bfdda/ImagePicker/3191E62A-A295-4C27-B4D8-08D4785087DA.jpg",
-    isFarmer: false,
-  });
+  const [updatedConsumer, setUpdatedConsumer] = useState(consumer);//רק להדגמה useState(consumer) ברגיל יהיה {}
 
   useEffect(() => {
     if (navContinue) {
