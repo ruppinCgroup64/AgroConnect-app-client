@@ -7,6 +7,7 @@ import { I18nManager } from "react-native";
 import UsersContextProvider from "./src/Context/UserContext";
 import ProductContextProvider from "./src/Context/ProductsContext";
 import TenderContextProvider from "./src/Context/TenderContext";
+import 'react-native-reanimated'
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
