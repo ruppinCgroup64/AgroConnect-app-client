@@ -63,10 +63,10 @@ export default function Login() {
         RegistrationDate:"",
         IsAdmin: false
       };
-      const status = await login(user);
-      console.log(status);
+      //const status = await login(user);
+      //console.log(status);
       setErrors({});
-      //navigation.navigate("MyTabs");
+      navigation.navigate("MyTabs");
     }
   };
   //errors
