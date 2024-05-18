@@ -17,18 +17,17 @@ export default function ImageProfile({userImageURI, setProfilePic}) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64: true
     });
 
     if (!result.cancelled && result.assets && result.assets.length > 0) {
       setSelectedImage(result.assets[0].uri);
-      setProfilePic(result.assets[0].base64)
+      setProfilePic(result.assets[0].uri)
     }
   };
 
   const removeImage = () => {
     setSelectedImage(null);
-    setProfilePic(null);
+    setProfilePic("")
   };
 
   return (

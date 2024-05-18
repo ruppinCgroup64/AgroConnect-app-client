@@ -41,10 +41,13 @@ export default function Details(props) {
     const dt = new Date(date);
     const x = dt.toISOString().split("T");
     const x1 = x[0].split("-");
-    setSelectDate(x1[2] + "/" + x1[1] + "/" + x1[0]);
-    setDateOfBirth(selectDate);
+    setSelectDate(x1[2] + "." + x1[1] + "." + x1[0]);
     hideDatePicker();
   };
+  useEffect(() => {
+    if(selectDate!="")
+    {setDateOfBirth(selectDate);}
+  }, [selectDate]);
 
   const [isChecked, setChecked] = useState(() =>
     consumer && consumer.isFarmer ? consumer.isFarmer : false
@@ -106,44 +109,30 @@ export default function Details(props) {
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
-  const [finalPic, setFinalPic] = useState("")
 
   const handleSubmit = () => {
     if (validateForm()) {
-      console.log("submitted");
-      try{
-        uploadFile();
-      }
-      catch (err) {
-        return {status:false, err}//בעיה בקוד/שגיאת שרת
-      }
+      const updatedConsumer = {
+        id: 0,
+        email,
+        firstName,
+        lastName,
+        password,
+        gender,
+        dateOfBirth,
+        phoneNum,
+        address,
+        registrationDate: "",
+        profilePic,
+        isFarmer: isChecked,
+        longitude,
+        latitude,
+      };
+      setConsumer(updatedConsumer);
+      setFlag(true);
       setErrors({});
     }
   };
-  
-  useEffect(()=>{
-    setFlag(true)
-  },[finalPic])
-
-  useEffect(() => {
-    if (flag) {
-      const updatedConsumer = {
-        firstName,
-        lastName,
-        dateOfBirth,
-        gender,
-        email,
-        phoneNum,
-        address,
-        latitude,
-        longitude,
-        password,
-        finalPic,
-        isFarmer: isChecked,
-      };
-      setConsumer(updatedConsumer);
-    }
-  }, [flag]);
 
   useEffect(() => {
     if (flag) {
@@ -152,7 +141,6 @@ export default function Details(props) {
     setFlag(false);
   }, [consumer]);
 
- 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
     const errors = {};
@@ -198,41 +186,8 @@ export default function Details(props) {
     }
     //address
     if (!address) errors.address = "שדה חובה";
-    console.log(errors);
     setErrors(errors);
     return Object.keys(errors).length === 0;
-  };
-
-  const uploadFile = () => {
-    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
-    const formData = new FormData();
-    formData.append("files", {
-      uri: profilePic,
-      type: "image/png",
-      name: `${profilePic.split("/").pop()}`,
-    });
-
-    fetch(api, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
-    })
-      .then((response) => {
-        //console.log("response= ", JSON.stringify(response));
-        return response.json();
-      })
-      .then(
-        (result) => {
-          //console.log("fetch POST= ", JSON.stringify(result));
-          setFinalPic(JSON.stringify(result).split("/").pop());
-        },
-        (error) => {
-          console.log("err post=", error);
-        }
-      );
   };
 
   return (
@@ -365,7 +320,7 @@ export default function Details(props) {
         {errors.address ? (
           <Text style={style.errorText}>{errors.address}</Text>
         ) : null}
-        
+
         <ValInput
           val={email}
           setVal={setEmail}
@@ -387,7 +342,7 @@ export default function Details(props) {
         {errors.phoneNum ? (
           <Text style={style.errorText}>{errors.phoneNum}</Text>
         ) : null}
-        
+
         <View
           style={[
             style.inputContainer,
