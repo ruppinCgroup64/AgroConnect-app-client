@@ -36,47 +36,48 @@ export default function Login() {
   const [isChecked, setChecked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   //login data
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [probLogin, setProbLogin] = useState("");
 
   const { consumer, setConsumer } = useContext(UsersContext);
-      
-  const handleSubmit = async  () => {
-    if (validateForm()) {
-      // loginPOST(email);//API request
-      //setEmail("");
-      //setPassword("");
 
+  const handleSubmit = async () => {
+    if (validateForm()) {
       const user = {
-        Id: 0,
-        Email,
-        FirstName: "",
-        LastName: "",
-        Password,
-        Gender: "",
-        DateOfBirth: "",
-        PhoneNum: "",
-        Address: "",
-        RegistrationDate: "",
-        IsAdmin: true,
-        ProfilePic: "",
-        IsFarmer: true,
-        Longitude: "",
-        Latitude: ""
+        id: 0,
+        email,
+        firstName: "",
+        lastName: "",
+        password,
+        gender: "",
+        dateOfBirth: "",
+        phoneNum: "",
+        address: "",
+        registrationDate: "",
+        isAdmin: true,
+        profilePic: "",
+        isFarmer: true,
+        longitude: "",
+        latitude: "",
       };
-      setConsumer(user);
-      login(user);
+      let ans=await login(user)
+      if (ans==true) {
+        navigation.navigate("MyTabs");
+      } 
+      else {
+        setProbLogin("הפרטים אינם תקינים")
+      }
       setErrors({});
-      navigation.navigate("MyTabs");
     }
   };
 
   //errors
   const validateForm = () => {
     let errors = {};
-    if (!Email) errors.Email = "שדה חובה";
-    if (!Password) errors.Password = "שדה חובה";
+    if (!email) errors.email = "שדה חובה";
+    if (!password) errors.password = "שדה חובה";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -87,9 +88,7 @@ export default function Login() {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : null}
       >
-        <View
-          style={[style.main, { backgroundColor: theme.bg, marginTop: 15 }]}
-        >
+        <View style={[style.main, { backgroundColor: theme.bg }]}>
           {/* <AppBar
             color={theme.bg}
             elevation={0}
@@ -98,9 +97,17 @@ export default function Login() {
             </TouchableOpacity>
             } /> */}
           <Image
-            source={theme.fruits_bgr}
+            source={{
+              uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/homeImg.png",
+            }}
             resizeMode="stretch"
-            style={{ height: height / 5, width: width, alignSelf: "center" }}
+            style={{
+              height: height / 4,
+              width: width,
+              alignSelf: "center",
+              marginRight: 10,
+              marginLeft: 10,
+            }}
           ></Image>
           <Image
             source={theme.a}
@@ -111,7 +118,6 @@ export default function Login() {
               alignSelf: "center",
             }}
           ></Image>
-
           <View style={{ marginVertical: 20 }}>
             <Text
               style={[
@@ -123,72 +129,72 @@ export default function Login() {
             </Text>
             {/* <Text style={[style.b1, { color: theme.txt,textAlign:'center'}]}>התחברו לחשבון שלכם</Text> */}
           </View>
-
           <View
             style={[
               style.inputContainer,
               {
                 marginTop: 10,
                 borderColor:
-                  isFocused === "Email" ? Colors.primary : theme.input,
+                  isFocused === "email" ? Colors.primary : theme.input,
                 backgroundColor:
-                  isFocused === "Email" ? theme.btn : theme.input,
+                  isFocused === "email" ? theme.btn : theme.input,
               },
             ]}
           >
             <Icon
               name="mail"
               size={25}
-              color={isFocused === "Email" ? Colors.primary : Colors.disable}
+              color={isFocused === "email" ? Colors.primary : Colors.disable}
             ></Icon>
             <TextInput
               placeholder="אימייל"
               selectionColor={Colors.primary}
-              onFocus={() => setIsFocused("Email")}
+              onFocus={() => setIsFocused("email")}
               onBlur={() => setIsFocused(false)}
               placeholderTextColor={Colors.disable}
+              
               style={[
                 style.r14,
                 { paddingHorizontal: 10, color: theme.txt, flex: 1 },
-                { textAlign: Email ? "left" : "right" },
+                { textAlign: email ? "left" : "right" },
               ]}
               onChangeText={setEmail}
-              value={Email}
+              value={email}
             />
           </View>
-          {errors.Email ? (
-            <Text style={style.errorText}>{errors.Email}</Text>
+          {errors.email ? (
+            <Text style={style.errorText}>{errors.email}</Text>
           ) : null}
           <View
             style={[
               style.inputContainer,
               {
                 borderColor:
-                  isFocused === "Password" ? Colors.primary : theme.input,
+                  isFocused === "password" ? Colors.primary : theme.input,
                 backgroundColor:
-                  isFocused === "Password" ? theme.btn : theme.input,
+                  isFocused === "password" ? theme.btn : theme.input,
               },
             ]}
           >
             <Icon
               name="lock-closed"
               size={25}
-              color={isFocused === "Password" ? Colors.primary : Colors.disable}
+              color={isFocused === "password" ? Colors.primary : Colors.disable}
             ></Icon>
             <TextInput
               placeholder="סיסמא"
               secureTextEntry={isPasswordVisible}
-              onFocus={() => setIsFocused("Password")}
+              onFocus={() => setIsFocused("password")}
               onBlur={() => setIsFocused(false)}
               selectionColor={Colors.primary}
               placeholderTextColor={Colors.disable}
               style={[
                 style.r14,
                 { paddingHorizontal: 10, color: theme.txt, flex: 1 },
-                { textAlign: Password ? "left" : "right" },
+                { textAlign: password ? "left" : "right" },
               ]}
               onChangeText={setPassword}
-              value={Password}
+              value={password}
             />
 
             <TouchableOpacity
@@ -197,22 +203,25 @@ export default function Login() {
               <Icon
                 name={isPasswordVisible ? "eye-off" : "eye"}
                 color={
-                  isFocused === "Password" ? Colors.primary : Colors.disable
+                  isFocused === "password" ? Colors.primary : Colors.disable
                 }
                 size={20}
               />
             </TouchableOpacity>
           </View>
-          {errors.Password ? (
-            <Text style={style.errorText}>{errors.Password}</Text>
+          {errors.password ? (
+            <Text style={style.errorText}>{errors.password}</Text>
           ) : null}
+          
+          <View style={{ marginVertical: 15 }}>
+              <Text style={style.errorText}>{probLogin}</Text>
+          </View>
 
           <View style={{ marginVertical: 30 }}>
             <TouchableOpacity onPress={handleSubmit} style={style.btn}>
               <Text style={style.btntxt}>התחבר</Text>
             </TouchableOpacity>
           </View>
-
           <View
             style={{
               flexDirection: "row",

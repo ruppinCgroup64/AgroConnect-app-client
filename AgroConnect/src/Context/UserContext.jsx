@@ -2,45 +2,28 @@
 //Users management- consumer, farmers, login user
 
 import { useState, createContext } from "react";
-import { create } from "../api";
-import { read } from "../api";
+import { create, read, update, remove } from "../api";
 
 export const UsersContext = createContext();
 
-const c = {
-  id: 0,
-  email: "AmitDohan@mail.com",
-  firstName: "string",
-  lastName: "string",
-  password: "123",
-  gender: "string",
-  dateOfBirth: "string",
-  phoneNum: "string",
-  address: "string",
-  registrationDate: "string",
-  isAdmin: true,
-  profilePic: "string",
-  isFarmer: true,
-  longitude: "string",
-  latitude: "string"
-}
-
 export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState({//פה יהיה ריק, ורק הפונקציות יעדכנו אותו לפי מה שחזר מהשרת
-  //   firstName: "עדי",
-  //   lastName: "חדד",
-  //   dateOfBirth: "30/08/1998",
-  //   gender: "נקבה",
-  //   email: "adi@gmail.com",
-  //   phoneNum: "0501234567",
-  //   address: "בארותיים, הפלג, 200",
-  //   latitude: "123",
-  //   longitude:"123",
-  //   password: "A123!",
-  //   confirmPassword: "A123!",//רק לדוגמא
-  //   profilePic:
-  //     "https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk",
-  //   isFarmer: false,
+    email: "adi@gmail.com",
+    firstName: "עדי",
+    lastName: "חדד",
+    password: "A123!",
+    gender: "נקבה",
+    dateOfBirth: "30.08.1998",
+    phoneNum: "0501234567",
+    address: "בארותיים, הפלג, 200",
+    registrationDate:"string",
+    profilePic:
+      //"https://media.licdn.com/dms/image/D4D03AQHyK_wA-8uPQQ/profile-displayphoto-shrink_400_400/0/1694515692027?e=1719446400&v=beta&t=Zx7LtHdUvy1jbzjYeh1Ji_SsJDSyAYr42ZWarvH9cPk",
+    "",
+    isFarmer: false,
+    latitude: "123",
+    longitude:"123",
+    confirmPassword: "A123!"//רק לדוגמא
   });
   const [farm, setFarm] = useState({
     // farmName: "המשק",
@@ -54,39 +37,60 @@ export default function UsersContextProvider(props) {
 
   async function register(consumer) {
     let res = await create("api/Consumers", consumer);
-    console.log(res)
-    if (res.status === 200) {
-      setConsumer(res.json())
-      return res.json();
-    } else {
-      alert("something went wrong");
+    console.log(consumer)
+    if (res) {
+      if(res.email==null){
+        return false
+      }
+      else
+      {
+        setConsumer(res);
+        if(res.isFarmer==true){
+          return res.id;
+        }
+        return true;
+      }
     }
+  else alert("something went wrong");
   }
   async function registerFarm(farm) {
     let res = await create("api/Farms", farm);
     console.log(res)
     if (res.status === 200) {
-      setFarm(res.json())
+      setFarm(res)
       return res.json();
     } else {
       alert("something went wrong");
     }
   }
 
-  async function updateUser(userId, user) {
-    let res = await update(`api/user/${userId}`, user);
+  async function updateUser(user) {
+    let res = await update(`api/Consumers`, user);
     if (res && res.status === 200) {
-      // Assuming 200 is the status code for a successful update
-      alert("User updated successfully");
+      return res;
     } else {
-      alert("Failed to update user");
+      return false;
     }
   }
 
   async function login(user) {
     let res = await create("api/Consumers/Login", user);
+    console.log(res)
     if (res)
-      setConsumer(res);
+      {
+        if(res.email==null){
+          return false
+        }
+        else
+        {
+          setConsumer(res);
+          if(res.isFarmer==true){
+            let resFarm = await read("api/Farms/"+res.id);
+            setFarm(resFarm[0])
+          }
+          return true;
+        }
+      }
     else alert("something went wrong");
   }
 
