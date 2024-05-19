@@ -72,6 +72,7 @@ import CreateTender from "../screensFarmer/CreateTender/";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
 import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
+import Tender from "../screens/Tender";
 
 
 const Stack = createNativeStackNavigator();
@@ -397,6 +398,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Farmer"
             component={Farmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Tender"
+            component={Tender}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

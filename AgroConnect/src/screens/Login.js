@@ -98,15 +98,14 @@ export default function Login() {
             } /> */}
           <Image
             source={{
-              uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/homeImg.png",
+              uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/fruits_bgr.png",
             }}
             resizeMode="stretch"
             style={{
-              height: height / 4,
-              width: width,
+              height: height / 3.5,
+              width: width* (4/3.5),
               alignSelf: "center",
-              marginRight: 10,
-              marginLeft: 10,
+              marginTop: -height/15,
             }}
           ></Image>
           <Image
@@ -116,6 +115,7 @@ export default function Login() {
               height: height / 9,
               width: width / 1.8,
               alignSelf: "center",
+              marginTop: -height/25,
             }}
           ></Image>
           <View style={{ marginVertical: 20 }}>

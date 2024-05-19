@@ -31,7 +31,7 @@ import SquareImage from '../components/SquareImage';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function Farmer() {
+export default function Tender() {
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
@@ -39,7 +39,7 @@ export default function Farmer() {
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = {uri: farm.mainPic};
+    const image = {uri: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg'};
 
     //Products
     const Categorylist = () => {
@@ -105,7 +105,7 @@ export default function Farmer() {
             ))}
         </View>
         );
-    };
+    };//Fairs List
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -121,24 +121,25 @@ export default function Farmer() {
                     />
                 </ImageBackground>
             </View>
+
+            {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, }]}>{farm.name}</Text>
-                        <Icon name='pencil-outline' size={25} color={Colors.primary}></Icon>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text style={[style.subtitle, { color: theme.txt, }]}>3 יח' אננס</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginBottom: 5 }]}>{farm.address}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                    <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5}]}>  {farm.address}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
                             <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
-                            <Icon name='logo-instagram' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Icon name='logo-facebook' size={30} color={Colors.primary}></Icon>
                         </View>
                     </View>
 
@@ -155,23 +156,11 @@ export default function Farmer() {
 
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
-                    {/* ~~~~~~~~~~~~~~  תמצאו אותנו ב... ~~~~~~~~~~~~~~ */}
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
-                        <Text style={[style.t1, { color: theme.txt, }]}>תמצאו אותנו ב...</Text>
-                        <TouchableOpacity >
-                            <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{ marginTop: 15 }}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}>
-                            <FairsList />
-                        </ScrollView>
-                    </View>
+                    
 
                 </ScrollView>
 
             </View>
         </SafeAreaView>
-    )
-}
+    )//return
+}//Tender
