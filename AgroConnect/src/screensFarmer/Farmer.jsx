@@ -24,6 +24,7 @@ import { Avatar } from 'react-native-paper'
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
+import RoundedImage from '../components/RoundImage';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -35,17 +36,24 @@ export default function Farmer() {
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+    const height = Dimensions.get('screen').height
+    const width = Dimensions.get('screen').width
+
     //Products
     const Categorylist = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
             {products.map((item, index) => (
-                <TouchableOpacity key={index}
-                    activeOpacity={0.8}>
-                    <Text
-                        key={index}
-                        style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                        {item}
-                    </Text>
+                <TouchableOpacity key={index} activeOpacity={0.8}>
+                    <View key={index}
+                        style={[[style.categoryText, { flexDirection: 'row', color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
+                        <RoundedImage url={item.url} wid={width / 10.8} hei={height / 24} />
+                        <Text
+                            key={index}
+                            style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg ,borderWidth: 0}], categoryIndex == index && [style.categoryTextSelected, {}]]}>
+                            {item.name}
+                        </Text>
+
+                    </View>
                 </TouchableOpacity>
             ))}
         </View>
