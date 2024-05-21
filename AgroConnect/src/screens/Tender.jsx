@@ -27,6 +27,7 @@ import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import SquareImage from '../components/SquareImage';
+import Table from '../components/Table';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -156,6 +157,7 @@ export default function Tender() {
 
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
+                    <Table></Table>
                     
 
                 </ScrollView>
