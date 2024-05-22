@@ -27,11 +27,12 @@ import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import SquareImage from '../components/SquareImage';
+import SalePointProduct from '../components/SalePointProduct';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function Farmer() {
+export default function SalePoint() {
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
@@ -39,7 +40,7 @@ export default function Farmer() {
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = {uri: farm.mainPic};
+    const image = { uri: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png' };
 
     //Products
     const Categorylist = () => {
@@ -62,51 +63,6 @@ export default function Farmer() {
         );
     };
 
-    //fairs
-    const fairs = [
-        {
-            nav: 'ProDetail',
-            img: 'https://www.panoramacenter.co.il/wp-content/uploads/2017/07/shook-608x608.jpg',
-            title: 'שוק איכרים',
-            address: '12.04.2024',
-            nav2: 'Review',
-            rank: '4.6',
-            timer: 'עוד 10 ימים'
-        },
-        {
-            nav: 'ProDetail',
-            img: 'https://media.reshet.tv/image/upload/t_image_article_800/v1699546480/uploads/2023/903796167.jpg',
-            title: 'שוק צוק הדסה',
-            address: '11.04.2024',
-            nav2: 'Review',
-            rank: '4.8',
-            timer: 'עוד 9 ימים'
-        },
-        {
-            nav: 'ProDetail',
-            img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/433611051_903026805164816_7769755400387813259_n.jpg?stp=dst-jpg_s600x600&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jrCldMBMRjwQ7kNvgE_wJQG&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYBqe4OXaZ9yMvhc-i5czcrxnK3tWSzVzExAP-Sg2bPO9g&oe=664BE032',
-            title: 'שוק עמק חפר',
-            address: '05.04.2024',
-            nav2: 'Review',
-            rank: '4.8',
-            timer: 'עוד 3 ימים'
-        },
-    ];//fairs
-
-    //Making the elements that show each fair
-    const FairsList = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-            {fairs.map((item, index) => (
-                <TouchableOpacity key={index}
-                    activeOpacity={0.8}>
-                    <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
-                    <View style={{ marginHorizontal: 115 }}></View>
-                </TouchableOpacity>
-            ))}
-        </View>
-        );
-    };
-
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
             <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
@@ -121,24 +77,29 @@ export default function Farmer() {
                     />
                 </ImageBackground>
             </View>
+
+            {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, }]}>{farm.name}</Text>
-                        <Icon name='pencil-outline' size={25} color={Colors.primary}></Icon>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text style={[style.subtitle, { color: theme.txt, }]}>האתרוג 2, נתניה</Text>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginBottom: 5 }]}>{farm.address}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>10.04.2024</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>|</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginStart: 15 }]}>9:00-13:00</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farm.address}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>{farm.rank}</Text>
+                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
-                            <Icon name='logo-instagram' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Icon name='logo-facebook' size={30} color={Colors.primary}></Icon>
                         </View>
                     </View>
 
@@ -147,31 +108,32 @@ export default function Farmer() {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
                     </View>
-                    <View style={{ marginTop: 10 }}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true} >
-                            <Categorylist />
-                        </ScrollView>
+                    <View style={{ flexDirection: 'row' }}>
+                        <SalePointProduct title="עגבניה" price="16" measure='ק"ג' uri="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s" />
+                        <SalePointProduct title="אננס" price="40" measure="יח'" uri="https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg" />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <SalePointProduct title="אבטיח" price="55" measure="יח'" uri="https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF" />
                     </View>
 
+                    {/* Total amount and checkout */}
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-
-                    {/* ~~~~~~~~~~~~~~  תמצאו אותנו ב... ~~~~~~~~~~~~~~ */}
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
-                        <Text style={[style.t1, { color: theme.txt, }]}>תמצאו אותנו ב...</Text>
-                        <TouchableOpacity >
-                            <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
-                        </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60, }}>
+                        <View style={{ flex: 1, marginRight: 10 }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Checkout')}
+                                style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
+                                <Text style={[style.btntxt, { marginRight: 5 }]}>ביצוע קנייה</Text>
+                                <Icons name='cart-outline' size={20} color={Colors.secondary}></Icons>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text style={[style.m12, { color: theme.txt3, }]}>מחיר כולל</Text>
+                            <Text style={[style.apptitle, { color: theme.txt, }]}>₪250</Text>
+                        </View>
                     </View>
-
-                    <View style={{ marginTop: 15 }}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}>
-                            <FairsList />
-                        </ScrollView>
-                    </View>
-
                 </ScrollView>
 
             </View>
         </SafeAreaView>
-    )
-}
+    )//return
+}//SalePoint
