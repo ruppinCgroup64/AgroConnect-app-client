@@ -13,7 +13,7 @@ export default function UsersContextProvider(props) {
     lastName: "חדד",
     password: "A123!",
     gender: "נקבה",
-    dateOfBirth: "30.08.1998",
+    dateOfBirth: "1998/08/30",
     phoneNum: "0501234567",
     address: "בארותיים, הפלג, 200",
     registrationDate:"string",
@@ -37,7 +37,7 @@ export default function UsersContextProvider(props) {
 
   async function register(consumer) {
     let res = await create("api/Consumers", consumer);
-    console.log(consumer)
+    console.log(res)
     if (res) {
       if(res.email==null){
         return false
@@ -53,6 +53,7 @@ export default function UsersContextProvider(props) {
     }
   else alert("something went wrong");
   }
+
   async function registerFarm(farm) {
     let res = await create("api/Farms", farm);
     console.log(res)

@@ -102,7 +102,7 @@ export default StyleSheet.create({
   m16: {
     fontSize: 16,
     color: Colors.disable,
-    fontFamily: 'Heebo-Medium'
+    fontFamily: "Heebo-Medium",
   },
   b16: {
     fontSize: 16,
@@ -122,7 +122,7 @@ export default StyleSheet.create({
   s18: {
     fontSize: 18,
     color: Colors.disable,
-    fontFamily: "Heebo-SemiBold"
+    fontFamily: "Heebo-SemiBold",
   },
   b18: {
     fontSize: 18,
@@ -222,9 +222,10 @@ export default StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderWidth: 1,
-    marginTop: 10,
+    marginTop: 5,
     borderRadius: 15,
     paddingHorizontal: 10,
+    marginBottom: 5,
     height: 50,
     // flex: 1
   },
@@ -333,11 +334,11 @@ export default StyleSheet.create({
     color: "red",
     marginBottom: 10,
     textAlign: "left",
-    fontFamily: "Heebo-Medium",
+    fontFamily: "Heebo-SemiBold",
     fontSize: 11,
     paddingTop: 5,
     marginBottom: 0,
-    paddingLeft: 5,
+    paddingLeft: 5
   },
   modalView: {
     marginTop: 50, // Adjust as needed for your layout
@@ -345,5 +346,11 @@ export default StyleSheet.create({
     backgroundColor: "white", // Or any other background color
     flex: 1,
     borderColor: theme.input,
+  },
+  textTopInput: {
+    color: Colors.disable,
+    fontSize: 13,
+    textAlign: "left",
+    marginLeft: 5,
   },
 });

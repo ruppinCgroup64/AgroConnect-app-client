@@ -31,7 +31,7 @@ export default function Profilefill() {
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
-  const [emailExists, setEmailExists] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
   const [updatedConsumer, setUpdatedConsumer] = useState(consumer);
   const [updated, setUpdated] = useState(false);
   const [flag, setFlag] = useState(false);
@@ -41,10 +41,10 @@ export default function Profilefill() {
       const fetchData = async () => {
         //register consumer
         let res = await register(updatedConsumer);
-        if (res.email == null) {
-          setEmailExists("אימייל כבר קיים");
+        if (!res) {
+          setEmailExists(true);
         } else {
-          setEmailExists("");
+          setEmailExists(false);
           if (updatedConsumer.profilePic != "") //if the user selected image
           {
             let resImg = await uploadFile(updatedConsumer.profilePic); //upload image to the server
@@ -77,15 +77,19 @@ export default function Profilefill() {
   }, [navContinue]);
 
   useEffect(() => {
+    console.log(updated,updatedConsumer.profilePic)
     if (updated == false&&updatedConsumer.profilePic!="") {
       //the user has not been updated after change image in DB
-      let ans = updatedConsumer.profilePic.includes("https"); //the image selected
+      let ans = updatedConsumer.profilePic.toLowerCase().includes("https"); //the image selected
       if (ans) {
-        let res = updateUser(updatedConsumer); //update the user's image in the DB
+        const fetchData = async () => {
+        let res = await updateUser(updatedConsumer); //update the user's image in the DB
         if (res) {
           setUpdated(true);
           setConsumer(updatedConsumer); //update the context consumer
         }
+        fetchData();
+      }
       }
     }
   }, [updatedConsumer]);
@@ -205,10 +209,8 @@ export default function Profilefill() {
             setConsumer={setUpdatedConsumer}
             setNavContinue={setNavContinue}
             edit={false}
+            emailExists={emailExists}
           />
-          <View>
-            <Text>{emailExists}</Text>
-          </View>
           {/* <SuccessAlert show={show} setShow={setShow} content={content} /> */}
         </View>
       </KeyboardAvoidingView>

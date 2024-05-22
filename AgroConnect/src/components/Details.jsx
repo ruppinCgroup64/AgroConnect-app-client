@@ -23,7 +23,7 @@ import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
 
 export default function Details(props) {
-  const { consumer, setConsumer, setNavContinue, edit } = props;
+  const { consumer, setConsumer, setNavContinue, edit, emailExists } = props;
 
   const theme = useContext(themeContext);
 
@@ -41,12 +41,13 @@ export default function Details(props) {
     const dt = new Date(date);
     const x = dt.toISOString().split("T");
     const x1 = x[0].split("-");
-    setSelectDate(x1[2] + "." + x1[1] + "." + x1[0]);
+    setSelectDate(x1[0] + "/" + x1[1] + "/" + x1[2]);
     hideDatePicker();
   };
   useEffect(() => {
-    if(selectDate!="")
-    {setDateOfBirth(selectDate);}
+    if (selectDate != "") {
+      setDateOfBirth(selectDate);
+    }
   }, [selectDate]);
 
   const [isChecked, setChecked] = useState(() =>
@@ -111,7 +112,8 @@ export default function Details(props) {
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   const handleSubmit = () => {
-    if (validateForm()) {
+    //if (validateForm())
+    {
       const updatedConsumer = {
         id: 0,
         email,
@@ -207,7 +209,6 @@ export default function Details(props) {
         {errors.firstName ? (
           <Text style={style.errorText}>{errors.firstName}</Text>
         ) : null}
-
         <ValInput
           val={lastName}
           setVal={setLastName}
@@ -218,41 +219,43 @@ export default function Details(props) {
           <Text style={style.errorText}>{errors.lastName}</Text>
         ) : null}
 
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="תאריך לידה"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            value={selectDate || dateOfBirth}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-          />
-          <TouchableOpacity onPress={showDatePicker}>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
+        <View style={{ marginTop: 5 }}>
+          <Text style={[style.s14, style.textTopInput]}>תאריך לידה</Text>
+          <View
+            style={[
+              style.inputContainer,
+              {
+                borderColor: theme.input,
+                borderWidth: 1,
+                backgroundColor: theme.input,
+              },
+            ]}
+          >
+            <TextInput
+              textAlign="right"
+              selectionColor={Colors.primary}
+              value={selectDate || dateOfBirth}
+              style={[style.s14, { color: theme.txt, flex: 1 }]}
             />
-            <Icon name="calendar-outline" color={Colors.disable} size={20} />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={showDatePicker}>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+              <Icon name="calendar-outline" color={Colors.disable} size={20} />
+            </TouchableOpacity>
+          </View>
         </View>
         {errors.dateOfBirth ? (
           <Text style={style.errorText}>{errors.dateOfBirth}</Text>
         ) : null}
 
+        <Text style={[style.s14, style.textTopInput]}>מין</Text>
         <DropDownPicker
           listMode="MODAL"
+          placeholder="בחר"
           open={open}
           value={value || gender}
           items={items}
@@ -262,10 +265,6 @@ export default function Details(props) {
             setGender(newValue);
           }}
           setItems={setItems}
-          placeholder="מין"
-          placeholderStyle={{
-            color: Colors.disable,
-          }}
           style={[
             {
               borderColor: theme.input,
@@ -274,7 +273,7 @@ export default function Details(props) {
               color: theme.txt,
               flex: 1,
               borderRadius: 15,
-              marginTop: 20,
+              marginTop: 5,
             },
             style.s14,
           ]}
@@ -296,26 +295,27 @@ export default function Details(props) {
           <Text style={style.errorText}>{errors.gender}</Text>
         ) : null}
 
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="כתובת מגורים"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onFocus={() => setPlacesModalVisible(true)}
-            value={address}
-          />
+        <View style={{ marginTop: 5 }}>
+          <Text style={[style.s14, style.textTopInput]}>כתובת מגורים</Text>
+          <View
+            style={[
+              style.inputContainer,
+              {
+                borderColor: theme.input,
+                borderWidth: 1,
+                backgroundColor: theme.input,
+              },
+            ]}
+          >
+            <TextInput
+              textAlign="right"
+              selectionColor={Colors.primary}
+              placeholderTextColor={Colors.disable}
+              style={[style.s14, { color: theme.txt, flex: 1 }]}
+              onFocus={() => setPlacesModalVisible(true)}
+              value={address}
+            />
+          </View>
         </View>
         {errors.address ? (
           <Text style={style.errorText}>{errors.address}</Text>
@@ -330,6 +330,8 @@ export default function Details(props) {
         />
         {errors.email ? (
           <Text style={style.errorText}>{errors.email}</Text>
+        ) : emailExists ? (
+          <Text style={style.errorText}>אימייל כבר קיים</Text>
         ) : null}
 
         <ValInput
@@ -343,62 +345,66 @@ export default function Details(props) {
           <Text style={style.errorText}>{errors.phoneNum}</Text>
         ) : null}
 
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="סיסמא"
-            value={password}
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            secureTextEntry={true}
+        <View style={{ marginTop: 5 }}>
+          <Text style={[style.s14, style.textTopInput]}>סיסמא</Text>
+          <View
             style={[
-              style.s14,
-              { color: theme.txt, flex: 1 },
-              { textAlign: password ? "left" : "right" },
+              style.inputContainer,
+              {
+                borderColor: theme.input,
+                borderWidth: 1,
+                backgroundColor: theme.input,
+                marginTop: 5,
+              },
             ]}
-            onChangeText={setPassword}
-          />
+          >
+            <TextInput
+              value={password}
+              selectionColor={Colors.primary}
+              secureTextEntry={true}
+              style={[
+                style.s14,
+                { color: theme.txt, flex: 1 },
+                { textAlign: password ? "left" : "right" },
+              ]}
+              onChangeText={setPassword}
+            />
+          </View>
         </View>
         {errors.password ? (
           <Text style={style.errorText}>{errors.password}</Text>
         ) : null}
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: theme.input,
-              borderWidth: 1,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="אישור סיסמא"
-            value={confirmPassword}
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            secureTextEntry={true}
+
+        <View style={{ marginTop: 5 }}>
+          <Text style={[style.s14, style.textTopInput]}>אישור סיסמא</Text>
+          <View
             style={[
-              style.s14,
-              { color: theme.txt, flex: 1 },
-              { textAlign: confirmPassword ? "left" : "right" },
+              style.inputContainer,
+              {
+                borderColor: theme.input,
+                borderWidth: 1,
+                backgroundColor: theme.input,
+                marginTop: 5,
+              },
             ]}
-            onChangeText={setConfirmPassword}
-          />
+          >
+            <TextInput
+              value={confirmPassword}
+              selectionColor={Colors.primary}
+              secureTextEntry={true}
+              style={[
+                style.s14,
+                { color: theme.txt, flex: 1 },
+                { textAlign: confirmPassword ? "left" : "right" },
+              ]}
+              onChangeText={setConfirmPassword}
+            />
+          </View>
         </View>
         {errors.confirmPassword ? (
           <Text style={style.errorText}>{errors.confirmPassword}</Text>
         ) : null}
+
         <View
           style={{
             flexDirection: "row",
@@ -427,7 +433,6 @@ export default function Details(props) {
             </Text>
           </View>
         </View>
-
         <Modal
           animationType="slide"
           transparent={false}
