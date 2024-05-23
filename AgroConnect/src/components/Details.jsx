@@ -82,7 +82,7 @@ export default function Details(props) {
     consumer && consumer.phoneNum ? consumer.phoneNum : ""
   );
   const [address, setAddress] = useState(() =>
-    consumer && consumer.address ? consumer.address : {}
+    consumer && consumer.address ? consumer.address : ""
   );
 
   const [latitude, setLatitude] = useState(() =>
@@ -100,9 +100,7 @@ export default function Details(props) {
     () =>
       edit
         ? consumer.password
-        : consumer && consumer.confirmPassword
-        ? consumer.confirmPassword
-        : "" //רק לדוגמא, נצטרך לשנות לפי השרת
+        : ""
   );
   const [profilePic, setProfilePic] = useState(() =>
     consumer && consumer.profilePic ? consumer.profilePic : ""

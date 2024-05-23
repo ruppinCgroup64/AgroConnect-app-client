@@ -29,7 +29,7 @@ export default function Welcome() {
             style={[styles.container, { backgroundColor: theme.bg, marginTop: 50 }]}
           >
               <Image
-                source={theme.a}
+                source={{uri:theme.a}}
                 resizeMode="stretch"
                 style={{
                   height: height / 6,
@@ -48,14 +48,14 @@ export default function Welcome() {
                   <Text style={[style.m16, { color: theme.txt3, paddingBottom:20 }]}>
                   ההרשמה בוצעה בהצלחה
                 </Text>
-                <Image
+                {/* <Image
                 source={theme.basket}
                 resizeMode="stretch"
                 style={{
                   height: height/3,
                   width: width/1.2
                 }}
-              ></Image>
+              ></Image> */}
           </View>
       </SafeAreaView>
     )

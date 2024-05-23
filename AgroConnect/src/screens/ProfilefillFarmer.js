@@ -1,4 +1,3 @@
-
 //Registration of the farm of the farmer
 
 import React, { useState, useContext, useEffect } from "react";
@@ -11,7 +10,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Text
+  Text,
 } from "react-native";
 import style from "../theme/style";
 import { AppBar } from "@react-native-material/core";
@@ -23,27 +22,76 @@ import { UsersContext } from "../Context/UserContext";
 
 export default function ProfilefillFarmer({ route }) {
   const { farmerID } = route.params
+  //const farmerID = 1052;
+
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  
-  const {registerFarm} = useContext(UsersContext);
+
+  const { registerFarm, setFarm, updateFarm, farm } = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedFarm, setUpdatedFarm] = useState({});
+  const [updated, setUpdated] = useState(false);
+  const [updatedFarm, setUpdatedFarm] = useState(farm);
 
   useEffect(() => {
     if (navContinue) {
-      registerFarm(updatedFarm);
-      navigation.navigate("Welcome");
+      console.log("3")
+      const fetchData = async () => {
+        //register farm
+        let res = await registerFarm(updatedFarm); //the res is the true- need to chang to object
+        if (res==1) {
+          if (updatedFarm.mainPic != "") {
+            //if the user selected image
+            let resImg = await uploadFile(updatedFarm.mainPic); //upload image to the server
+            if (resImg) {
+              setUpdatedFarm((prevState) => ({
+                ...prevState,
+                mainPic: resImg,
+              }));
+            } else {
+              setUpdatedFarm((prevState) => ({
+                ...prevState,
+                mainPic:
+                  "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoFarm.png",
+              }));
+            }
+          } else {
+            setUpdatedFarm((prevState) => ({
+              ...prevState,
+              mainPic:
+                "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoFarm.png",
+            }));
+          }
+        }
+      };
+      fetchData();
     }
-    else if(false)//פה רק כהכנה לשרת, במידה ונפל/יש בעיות יוצגו באלרט
-    {
-      setContent("הרשמתך בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
-    }
+    setNavContinue(false);
   }, [navContinue]);
+
+  useEffect(() => {
+    if (updatedFarm && updated == false && updatedFarm.mainPic != "") {
+      console.log("4")
+      //the user has not been updated after change image in DB
+      console.log("ue",updatedFarm)
+      let ans = updatedFarm.mainPic.toLowerCase().includes("https"); //the image selected
+      console.log("5")
+      if (ans) {
+        const fetchData = async () => {
+          let res = await updateFarm(updatedFarm); //update the user's image in the DB
+          if (res) {
+            setUpdated(true);
+            setFarm(res); //update the context farm
+          }
+        };
+        fetchData();
+        navigation.navigate("Welcome");
+      }
+    }
+  }, [updatedFarm]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -63,84 +111,14 @@ export default function ProfilefillFarmer({ route }) {
             ]}
             style={{ paddingBottom: 15 }}
             elevation={0}
-            leading={
-              <TouchableOpacity onPress={() => this.RBSheet12.open()}>
-                <Icon
-                  name="arrow-back"
-                  color={theme.txt}
-                  size={30}
-                  style={{
-                    transform: [{ scaleX: -1 }],
-                  }}
-                />
-              </TouchableOpacity>
-            }
             trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
           />
 
-          <RBSheet
-            ref={(ref) => {
-              this.RBSheet12 = ref;
-            }}
-            height={250}
-            openDuration={100}
-            customStyles={{
-              container: {
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-                backgroundColor: theme.bg,
-              },
-            }}
-          >
-            <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-              <Text
-                style={[
-                  style.apptitleSB,
-                  { textAlign: "center", color: "#F75555" },
-                ]}
-              >
-                ביטול
-              </Text>
-              <View
-                style={[
-                  style.divider,
-                  { marginVertical: 10, backgroundColor: "#EEEEEE" },
-                ]}
-              ></View>
-              <View style={{ paddingTop: 20 }}>
-                <Text
-                  style={[style.m18, { color: theme.txt, textAlign: "center" }]}
-                >
-                  במידה ותבחר לעזוב פרטיך יימחקו
-                </Text>
-              </View>
-              <View style={{ marginTop: 25, flexDirection: "row" }}>
-                <TouchableOpacity
-                  onPress={() => this.RBSheet12.close()}
-                  style={[style.btn, { backgroundColor: theme.btn, flex: 1 }]}
-                >
-                  <Text style={[style.btntxt, { color: theme.btntxt }]}>
-                    הישאר
-                  </Text>
-                </TouchableOpacity>
-                <View style={{ margin: 5 }}></View>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.RBSheet12.close(), navigation.navigate("Profilefill");
-                  }}
-                  style={[style.btn, { flex: 1 }]}
-                >
-                  <Text style={[style.btntxt, { color: Colors.secondary }]}>
-                    מחק
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </RBSheet>
           <DetailsFarm
             setFarm={setUpdatedFarm}
             setNavContinue={setNavContinue}
             farmerID={farmerID}
+            farm={updatedFarm}
           />
         </View>
       </KeyboardAvoidingView>

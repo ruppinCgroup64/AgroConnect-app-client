@@ -73,7 +73,6 @@ import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
 import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
 
-
 const Stack = createNativeStackNavigator();
 
 export default function StackNavigator() {
@@ -130,6 +129,7 @@ export default function StackNavigator() {
             component={Letsin}
             options={{ headerShown: false }}
           /> */}
+          
 
           <Stack.Screen
             name="Login"
@@ -140,6 +140,16 @@ export default function StackNavigator() {
             name="MyTabs"
             component={MyTabs}
             options={{ headerShown: false /*gestureEnabled: false*/ }}
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={Welcome}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProfilefillFarmer"
+            component={ProfilefillFarmer}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="EditProfile"
@@ -344,18 +354,6 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Profilefill"
             component={Profilefill}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="ProfilefillFarmer"
-            component={ProfilefillFarmer}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
             options={{ headerShown: false }}
           />
 

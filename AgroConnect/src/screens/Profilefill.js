@@ -34,7 +34,6 @@ export default function Profilefill() {
   const [emailExists, setEmailExists] = useState(false);
   const [updatedConsumer, setUpdatedConsumer] = useState(consumer);
   const [updated, setUpdated] = useState(false);
-  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     if (navContinue) {
@@ -77,8 +76,8 @@ export default function Profilefill() {
   }, [navContinue]);
 
   useEffect(() => {
-    console.log(updated,updatedConsumer.profilePic)
-    if (updated == false&&updatedConsumer.profilePic!="") {
+    if (updatedConsumer&&updated == false&&updatedConsumer.profilePic!="") {
+      let id=1;
       //the user has not been updated after change image in DB
       let ans = updatedConsumer.profilePic.toLowerCase().includes("https"); //the image selected
       if (ans) {
@@ -86,32 +85,22 @@ export default function Profilefill() {
         let res = await updateUser(updatedConsumer); //update the user's image in the DB
         if (res) {
           setUpdated(true);
-          setConsumer(updatedConsumer); //update the context consumer
+          id= res.id
         }
-        fetchData();
       }
+      fetchData();
+      }
+      if (!updatedConsumer.isFarmer) {
+        //if its not a farmer
+        navigation.navigate("Welcome");
+      } 
+      else if 
+      (updatedConsumer.isFarmer) {
+        navigation.navigate("ProfilefillFarmer", { farmerID: 1015 });
       }
     }
   }, [updatedConsumer]);
 
-  useEffect(() => {
-    if (flag) {
-      const fetchData = async () => {
-        let res = await register(updatedConsumer);
-        if (res.email == null) {
-          setEmailExists("אימייל כבר קיים");
-        } else {
-          if (!res.isFarmer) {
-            //if its not a farmer
-            navigation.navigate("Welcome");
-          } else if (updatedConsumer.isFarmer) {
-            navigation.navigate("ProfilefillFarmer", { farmerID: res.id });
-          }
-        }
-      };
-      fetchData();
-    }
-  }, [flag]);
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
       <KeyboardAvoidingView

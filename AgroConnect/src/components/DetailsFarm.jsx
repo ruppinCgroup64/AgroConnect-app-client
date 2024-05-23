@@ -18,7 +18,7 @@ import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
 
 export default function DetailsFarm(props) {
-  const {setFarm, setNavContinue, farmerID } = props;
+  const {setFarm, setNavContinue, farmerID, farm } = props;
 
   const theme = useContext(themeContext);
   const [flag, setFlag] = useState(false);
@@ -27,7 +27,7 @@ export default function DetailsFarm(props) {
     farm && farm.farmName ? farm.farmName : ""
   );
   const [address, setAddress] = useState(
-    farm && farm.address ? farm.address : {}
+    farm && farm.address ? farm.address : ""
   );
 
   const [latitude, setLatitude] = useState(() =>
@@ -42,7 +42,7 @@ export default function DetailsFarm(props) {
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
   );
   const [mainPic, setMainPic] = useState(
-    farm && farm.mainPic ? farm.mainPic : null
+    farm && farm.mainPic ? farm.mainPic : ""
   );
   const [consumerNum, setConsumerNum] = useState(
     farm && farm.consumerNum ? farm.consumerNum : farmerID
@@ -50,78 +50,37 @@ export default function DetailsFarm(props) {
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
-  const [finalPic, setFinalPic] = useState(initialState)
+  const [finalPic, setFinalPic] = useState("")
 
   const handleSubmit = () => {
-    if (validateForm())
-    {
-      try{
-        uploadFile();
-      }
-      catch (err) {
-        return {status:false, err}//בעיה בקוד/שגיאת שרת
-      }
-      console.log("submitted");
-      setErrors({});
-    }
-  };
-  
-  useEffect(()=>{
-    setFlag(true)
-  },[finalPic])
-
-  useEffect(() => {
-    if (flag) {
+    //if (validateForm())
+      {
       const updatedFarm = {
-        farmName,
+        id: 0,
+        name:farmName,
         address,
         latitude,
         longitude,
         socialNetworkLink,
+        rank:0,
         mainPic,
-        consumerNum,
+        farmerId:consumerNum,
       };
+      console.log("1")
       setFarm(updatedFarm);
+      setFlag(true)
+      setErrors({});
     }
-  }, [flag]);
+  };
 
   useEffect(() => {
     if (flag) {
-      setNavContinue(true);
+      setNavContinue(true); 
+      console.log("2")
     }
+    setFlag(false)
   }, [farm]);
 
-  const uploadFile = () => {
-    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
-    const formData = new FormData();
-    formData.append("files", {
-      uri: mainPic,
-      type: "image/png",
-      name: `${mainPic.split("/").pop()}`,
-    });
-
-    fetch(api, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
-    })
-      .then((response) => {
-        //console.log("response= ", JSON.stringify(response));
-        return response.json();
-      })
-      .then(
-        (result) => {
-          //console.log("fetch POST= ", JSON.stringify(result));
-          setFinalPic(JSON.stringify(result).split("/").pop());
-        },
-        (error) => {
-          console.log("err post=", error);
-        }
-      );
-  };
 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
