@@ -13,11 +13,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
-export default function SalePointProduct({title, price, measure, uri}) {
+export default function SalePointProduct({i,title, price, measure, uri,amounts,setAmounts, newTotal}) {
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const [amount, setAmount] = useState(0);
     const image = { uri};
+    const [amount, setAmount] = useState(amounts[i]);
 
     return (
         <View style={{ padding: 5, marginTop: 10 }}>
@@ -45,13 +45,19 @@ export default function SalePointProduct({title, price, measure, uri}) {
     );//return
 
     async function newAmountP() {
-        const newAmount = amount + 1;
-        setAmount(newAmount);
+        const newAmounts = amounts;
+        newAmounts[i] ++;
+        setAmounts(newAmounts);
+        setAmount(amount+1);
+        newTotal();
     }//newAmountP
     async function newAmountM() {
-        if (amount > 0) {
-            const newAmount = amount - 1;
-            setAmount(newAmount);
+        if (amounts[i] > 0) {
+            const newAmounts = amounts;
+            newAmounts[i]--;
+            setAmounts(newAmounts);
+            setAmount(amount-1);
+            newTotal();
         }//if
     }//newAmountM
 

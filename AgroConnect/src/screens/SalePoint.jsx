@@ -11,7 +11,7 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
@@ -38,26 +38,46 @@ export default function SalePoint() {
     const theme = useContext(themeContext);
     const { products } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
+    const [amounts, setAmounts] = useState([0, 0, 0]);
+    const [total, setTotal] = useState(0);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
     const image = { uri: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png' };
 
     //Products
-    const Categorylist = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-            {products.map((item, index) => (
-                <TouchableOpacity key={index} activeOpacity={0.8}>
-                    <View key={index}
-                        style={[[style.categoryText, { flexDirection: 'row', color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                        <RoundedImage url={item.url} wid={width / 10.8} hei={height / 24} />
-                        <Text
-                            key={index}
-                            style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg, borderWidth: 0 }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                            {item.name}
-                        </Text>
+    const product = [
+        {
+            title: "אבטיח",
+            price: 55,
+            measure: "יח'",
+            uri: "https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
+            amounts,
+            setAmounts
+        },
+        {
+            title: "עגבניה",
+            price: 16,
+            measure: 'ק"ג',
+            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s",
+            amounts,
+            setAmounts
+        },
+        {
+            title: "אננס",
+            price: 40,
+            measure: "יח'",
+            uri: "https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg",
+            amounts,
+            setAmounts
+        },
+    ];//product
 
-                    </View>
-                </TouchableOpacity>
+    const ProductList = () => {
+        return (<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
+            {product.map((item, index) => (
+                <View key={index} style={{ flexBasis: '50%' }}>
+                    <SalePointProduct i={index} title={item.title} price={item.price} measure={item.measure} uri={item.uri} amounts={amounts} setAmounts={setAmounts} newTotal={newTotal} />
+                </View>
             ))}
         </View>
         );
@@ -109,11 +129,7 @@ export default function SalePoint() {
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <SalePointProduct title="עגבניה" price="16" measure='ק"ג' uri="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s" />
-                        <SalePointProduct title="אננס" price="40" measure="יח'" uri="https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg" />
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <SalePointProduct title="אבטיח" price="55" measure="יח'" uri="https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF" />
+                        <ProductList />
                     </View>
 
                     {/* Total amount and checkout */}
@@ -128,7 +144,7 @@ export default function SalePoint() {
                         </View>
                         <View>
                             <Text style={[style.m12, { color: theme.txt3, }]}>מחיר כולל</Text>
-                            <Text style={[style.apptitle, { color: theme.txt, }]}>₪250</Text>
+                            <Text style={[style.apptitle, { color: theme.txt, }]}>₪{total}</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -136,4 +152,13 @@ export default function SalePoint() {
             </View>
         </SafeAreaView>
     )//return
+
+    async function newTotal() {
+        sum = 0;
+        for(i=0;i<amounts.length;i++){
+            sum+= amounts[i]*product[i].price;
+        }//for
+        setTotal(sum);
+    }//newTotal
+
 }//SalePoint
