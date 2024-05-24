@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Text
+  Text,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppBar } from "@react-native-material/core";
@@ -22,17 +23,23 @@ import { UsersContext } from "../Context/UserContext";
 export default function EditProfile() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const {consumer} = useContext(UsersContext);//רק להדגמה
+  const { consumer, updateUser } = useContext(UsersContext); //רק להדגמה
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
-  const [updatedConsumer, setUpdatedConsumer] = useState(consumer);//רק להדגמה useState(consumer) ברגיל יהיה {}
+  const [updatedConsumer, setUpdatedConsumer] = useState(consumer); //רק להדגמה useState(consumer) ברגיל יהיה {}
 
   useEffect(() => {
     if (navContinue) {
-      setContent("פרטיך נשמרו בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
+      const fetchData = async () => {
+        let res = await updateUser(updatedConsumer); //update the user's image in the DB
+        if (res) {
+          setContent("פרטיך נשמרו בהצלחה");
+        }
+      };
+      fetchData();
     }
     console.log(updatedConsumer);
   }, [navContinue]);
@@ -145,15 +152,16 @@ export default function EditProfile() {
             </View>
           </RBSheet>
           <ScrollView
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps={"always"}
-            >
-          <Details
-            consumer={updatedConsumer}
-            setConsumer={setUpdatedConsumer}
-            setNavContinue={setNavContinue}
-            edit={true}
-          />
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={"always"}
+          >
+            <Details
+              consumer={updatedConsumer}
+              setConsumer={setUpdatedConsumer}
+              setNavContinue={setNavContinue}
+              edit={true}
+              profilePic={consumer.profilePic}
+            />
           </ScrollView>
           <SuccessAlert show={show} setShow={setShow} content={content} />
         </View>

@@ -23,7 +23,14 @@ import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
 
 export default function Details(props) {
-  const { consumer, setConsumer, setNavContinue, edit, emailExists, profilePic } = props;
+  const {
+    consumer,
+    setConsumer,
+    setNavContinue,
+    edit,
+    emailExists,
+    profilePic,
+  } = props;
 
   const theme = useContext(themeContext);
 
@@ -69,9 +76,14 @@ export default function Details(props) {
   const [lastName, setLastName] = useState(() =>
     consumer && consumer.lastName ? consumer.lastName : ""
   );
-  const [dateOfBirth, setDateOfBirth] = useState(() =>
-    consumer && consumer.dateOfBirth ? consumer.dateOfBirth : ""
-  );
+  const [dateOfBirth, setDateOfBirth] = useState(() => {
+    if (consumer && consumer.dateOfBirth) {
+      const dateTime = consumer.dateOfBirth;
+      const dateOnly = dateTime.split(" ")[0];
+      return dateOnly;
+    } else return "";
+  });
+
   const [gender, setGender] = useState(() =>
     consumer && consumer.gender ? consumer.gender : ""
   );
@@ -96,11 +108,8 @@ export default function Details(props) {
   const [password, setPassword] = useState(() =>
     consumer && consumer.password ? consumer.password : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(
-    () =>
-      edit
-        ? consumer.password
-        : ""
+  const [confirmPassword, setConfirmPassword] = useState(() =>
+    edit ? consumer.password : ""
   );
 
   // const [profilePic, setProfilePic] = useState(() =>
@@ -112,26 +121,26 @@ export default function Details(props) {
 
   const handleSubmit = () => {
     //if (validateForm())
-      console.log("123",consumer)
-      const updatedConsumer = {
-        id: 0,
-        email,
-        firstName,
-        lastName,
-        password,
-        gender,
-        dateOfBirth,
-        phoneNum,
-        address,
-        registrationDate: "",
-        profilePic,
-        isFarmer: isChecked,
-        longitude: longitude.toString(),
-        latitude:latitude.toString(),
-      }
-      setConsumer(updatedConsumer);
-      setFlag(true);
-      setErrors({});
+    console.log("123", consumer);
+    const updatedConsumer = {
+      id: 0,
+      email,
+      firstName,
+      lastName,
+      password,
+      gender,
+      dateOfBirth,
+      phoneNum,
+      address,
+      registrationDate: "",
+      profilePic,
+      isFarmer: isChecked,
+      longitude: longitude.toString(),
+      latitude: latitude.toString(),
+    };
+    setConsumer(updatedConsumer);
+    setFlag(true);
+    setErrors({});
   };
 
   useEffect(() => {
@@ -192,59 +201,59 @@ export default function Details(props) {
 
   return (
     <View>
-      
-        <ValInput
-          val={firstName}
-          setVal={setFirstName}
-          content={"שם פרטי"}
-          keyboardType={"default"}
-        />
-        {errors.firstName ? (
-          <Text style={style.errorText}>{errors.firstName}</Text>
-        ) : null}
-        <ValInput
-          val={lastName}
-          setVal={setLastName}
-          content={"שם משפחה"}
-          keyboardType={"default"}
-        />
-        {errors.lastName ? (
-          <Text style={style.errorText}>{errors.lastName}</Text>
-        ) : null}
+      <ValInput
+        val={firstName}
+        setVal={setFirstName}
+        content={"שם פרטי"}
+        keyboardType={"default"}
+      />
+      {errors.firstName ? (
+        <Text style={style.errorText}>{errors.firstName}</Text>
+      ) : null}
+      <ValInput
+        val={lastName}
+        setVal={setLastName}
+        content={"שם משפחה"}
+        keyboardType={"default"}
+      />
+      {errors.lastName ? (
+        <Text style={style.errorText}>{errors.lastName}</Text>
+      ) : null}
 
-        <View style={{ marginTop: 5 }}>
-          <Text style={[style.s14, style.textTopInput]}>תאריך לידה</Text>
-          <View
-            style={[
-              style.inputContainer,
-              {
-                borderColor: theme.input,
-                borderWidth: 1,
-                backgroundColor: theme.input,
-              },
-            ]}
-          >
-            <TextInput
-              textAlign="right"
-              selectionColor={Colors.primary}
-              value={selectDate || dateOfBirth}
-              style={[style.s14, { color: theme.txt, flex: 1 }]}
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>תאריך לידה</Text>
+        <View
+          style={[
+            style.inputContainer,
+            {
+              borderColor: theme.input,
+              borderWidth: 1,
+              backgroundColor: theme.input,
+            },
+          ]}
+        >
+          <TextInput
+            textAlign="right"
+            selectionColor={Colors.primary}
+            value={selectDate || dateOfBirth}
+            style={[style.s14, { color: theme.txt, flex: 1 }]}
+          />
+          <TouchableOpacity onPress={showDatePicker}>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
             />
-            <TouchableOpacity onPress={showDatePicker}>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-              />
-              <Icon name="calendar-outline" color={Colors.disable} size={20} />
-            </TouchableOpacity>
-          </View>
+            <Icon name="calendar-outline" color={Colors.disable} size={20} />
+          </TouchableOpacity>
         </View>
-        {errors.dateOfBirth ? (
-          <Text style={style.errorText}>{errors.dateOfBirth}</Text>
-        ) : null}
+      </View>
+      {errors.dateOfBirth ? (
+        <Text style={style.errorText}>{errors.dateOfBirth}</Text>
+      ) : null}
 
+      <View style={{ display: edit ? "none" : "flex" }}>
         <Text style={[style.s14, style.textTopInput]}>מין</Text>
         <DropDownPicker
           listMode="MODAL"
@@ -287,33 +296,35 @@ export default function Details(props) {
         {errors.gender ? (
           <Text style={style.errorText}>{errors.gender}</Text>
         ) : null}
+      </View>
 
-        <View style={{ marginTop: 5 }}>
-          <Text style={[style.s14, style.textTopInput]}>כתובת מגורים</Text>
-          <View
-            style={[
-              style.inputContainer,
-              {
-                borderColor: theme.input,
-                borderWidth: 1,
-                backgroundColor: theme.input,
-              },
-            ]}
-          >
-            <TextInput
-              textAlign="right"
-              selectionColor={Colors.primary}
-              placeholderTextColor={Colors.disable}
-              style={[style.s14, { color: theme.txt, flex: 1 }]}
-              onFocus={() => setPlacesModalVisible(true)}
-              value={address}
-            />
-          </View>
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>כתובת מגורים</Text>
+        <View
+          style={[
+            style.inputContainer,
+            {
+              borderColor: theme.input,
+              borderWidth: 1,
+              backgroundColor: theme.input,
+            },
+          ]}
+        >
+          <TextInput
+            textAlign="right"
+            selectionColor={Colors.primary}
+            placeholderTextColor={Colors.disable}
+            style={[style.s14, { color: theme.txt, flex: 1 }]}
+            onFocus={() => setPlacesModalVisible(true)}
+            value={address}
+          />
         </View>
-        {errors.address ? (
-          <Text style={style.errorText}>{errors.address}</Text>
-        ) : null}
+      </View>
+      {errors.address ? (
+        <Text style={style.errorText}>{errors.address}</Text>
+      ) : null}
 
+      <View style={{ display: edit ? "none" : "flex" }}>
         <ValInput
           val={email}
           setVal={setEmail}
@@ -326,128 +337,129 @@ export default function Details(props) {
         ) : emailExists ? (
           <Text style={style.errorText}>אימייל כבר קיים</Text>
         ) : null}
+      </View>
 
-        <ValInput
-          val={phoneNum}
-          setVal={setPhoneNum}
-          content={"מספר טלפון"}
-          keyboardType={"numeric"}
-          side={true}
-        />
-        {errors.phoneNum ? (
-          <Text style={style.errorText}>{errors.phoneNum}</Text>
-        ) : null}
+      <ValInput
+        val={phoneNum}
+        setVal={setPhoneNum}
+        content={"מספר טלפון"}
+        keyboardType={"numeric"}
+        side={true}
+      />
+      {errors.phoneNum ? (
+        <Text style={style.errorText}>{errors.phoneNum}</Text>
+      ) : null}
 
-        <View style={{ marginTop: 5 }}>
-          <Text style={[style.s14, style.textTopInput]}>סיסמא</Text>
-          <View
-            style={[
-              style.inputContainer,
-              {
-                borderColor: theme.input,
-                borderWidth: 1,
-                backgroundColor: theme.input,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <TextInput
-              value={password}
-              selectionColor={Colors.primary}
-              secureTextEntry={true}
-              style={[
-                style.s14,
-                { color: theme.txt, flex: 1 },
-                { textAlign: password ? "left" : "right" },
-              ]}
-              onChangeText={setPassword}
-            />
-          </View>
-        </View>
-        {errors.password ? (
-          <Text style={style.errorText}>{errors.password}</Text>
-        ) : null}
-
-        <View style={{ marginTop: 5 }}>
-          <Text style={[style.s14, style.textTopInput]}>אישור סיסמא</Text>
-          <View
-            style={[
-              style.inputContainer,
-              {
-                borderColor: theme.input,
-                borderWidth: 1,
-                backgroundColor: theme.input,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <TextInput
-              value={confirmPassword}
-              selectionColor={Colors.primary}
-              secureTextEntry={true}
-              style={[
-                style.s14,
-                { color: theme.txt, flex: 1 },
-                { textAlign: confirmPassword ? "left" : "right" },
-              ]}
-              onChangeText={setConfirmPassword}
-            />
-          </View>
-        </View>
-        {errors.confirmPassword ? (
-          <Text style={style.errorText}>{errors.confirmPassword}</Text>
-        ) : null}
-
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>סיסמא</Text>
         <View
-          style={{
-            flexDirection: "row",
-            marginVertical: 20,
-            paddingLeft: 10,
-            alignItems: "center",
-            justifyContent: "flex-start",
-            marginRight: 5,
-          }}
+          style={[
+            style.inputContainer,
+            {
+              borderColor: theme.input,
+              borderWidth: 1,
+              backgroundColor: theme.input,
+              marginTop: 5,
+            },
+          ]}
         >
-          <View style={{ display: edit ? "none" : "flex" }}>
-            <Text
-              style={[
-                style.s14,
-                {
-                  color: theme.txt,
-                },
-              ]}
-            >
-              <Checkbox
-                value={isChecked}
-                onValueChange={setChecked}
-                color={isChecked ? Colors.primary : Colors.disable}
-              />{" "}
-              אני חקלאי
-            </Text>
-          </View>
+          <TextInput
+            value={password}
+            selectionColor={Colors.primary}
+            secureTextEntry={true}
+            style={[
+              style.s14,
+              { color: theme.txt, flex: 1 },
+              { textAlign: password ? "left" : "right" },
+            ]}
+            onChangeText={setPassword}
+          />
         </View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={isPlacesModalVisible}
-          onRequestClose={() => {
-            setPlacesModalVisible(!isPlacesModalVisible);
-          }}
+      </View>
+      {errors.password ? (
+        <Text style={style.errorText}>{errors.password}</Text>
+      ) : null}
+
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>אישור סיסמא</Text>
+        <View
+          style={[
+            style.inputContainer,
+            {
+              borderColor: theme.input,
+              borderWidth: 1,
+              backgroundColor: theme.input,
+              marginTop: 5,
+            },
+          ]}
         >
-          <SafeAreaView style={style.modalView}>
-            <AutoCompMap
-              setAddress={setAddress}
-              setLatitude={setLatitude}
-              setLongitude={setLongitude}
-              setPlacesModalVisible={setPlacesModalVisible}
-            />
-          </SafeAreaView>
-        </Modal>
-        <View style={{ marginBottom: 50 }}>
-          <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-            <Text style={style.btntxt}>אישור</Text>
-          </TouchableOpacity>
+          <TextInput
+            value={confirmPassword}
+            selectionColor={Colors.primary}
+            secureTextEntry={true}
+            style={[
+              style.s14,
+              { color: theme.txt, flex: 1 },
+              { textAlign: confirmPassword ? "left" : "right" },
+            ]}
+            onChangeText={setConfirmPassword}
+          />
         </View>
+      </View>
+      {errors.confirmPassword ? (
+        <Text style={style.errorText}>{errors.confirmPassword}</Text>
+      ) : null}
+
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 20,
+          paddingLeft: 10,
+          alignItems: "center",
+          justifyContent: "flex-start",
+          marginRight: 5,
+        }}
+      >
+        <View style={{ display: edit ? "none" : "flex" }}>
+          <Text
+            style={[
+              style.s14,
+              {
+                color: theme.txt,
+              },
+            ]}
+          >
+            <Checkbox
+              value={isChecked}
+              onValueChange={setChecked}
+              color={isChecked ? Colors.primary : Colors.disable}
+            />{" "}
+            אני חקלאי
+          </Text>
+        </View>
+      </View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isPlacesModalVisible}
+        onRequestClose={() => {
+          setPlacesModalVisible(!isPlacesModalVisible);
+        }}
+      >
+        <SafeAreaView style={style.modalView}>
+          <AutoCompMap
+            setAddress={setAddress}
+            setLatitude={setLatitude}
+            setLongitude={setLongitude}
+            setPlacesModalVisible={setPlacesModalVisible}
+          />
+        </SafeAreaView>
+      </Modal>
+      <View style={{ marginBottom: 50 }}>
+        <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+          <Text style={style.btntxt}>אישור</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

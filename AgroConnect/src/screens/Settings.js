@@ -27,6 +27,8 @@ import Settings_option from "../components/Settings_option";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from "../components/RoundImage";
 import DropDownPicker from "react-native-dropdown-picker";
+import ImageProfile from "../components/ImageProfile";
+import SuccessAlert from "../components/SuccessAlert";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -49,7 +51,8 @@ const settings_details = [
 export default function Settings() {
   const navigation = useNavigation();
   const theme = useContext(themeContext);
-  const { consumer, setConsumer, setFarm } = useContext(UsersContext);
+  const { consumer, setConsumer, setFarm, updateUser } =
+    useContext(UsersContext);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   // states and an eddect to eneble navigation to the farmer's settings, when pressed
   const [open, setOpen] = useState(false);
@@ -66,13 +69,70 @@ export default function Settings() {
     }
   }, [value]);
 
-const logOut = async (rbsheet) => {
+  const logOut = async (rbsheet) => {
     rbsheet.RBSheet14.close();
-    navigation.navigate("Login"); 
+    navigation.navigate("Login");
     setConsumer(null);
-    setFarm(null)
-};
+    setFarm(null);
+  };
+  const [updatedConsumer, setUpdatedConsumer] = useState(consumer);
+  const [profilePic, setProfilePic] = useState(consumer.profilePic);
+  const [edited, setEdited] = useState(false);
+  const [show, setShow] = useState(false);
+  const [content, setContent] = useState("");
 
+  useEffect(() => {
+    console.log(edited)
+    if (edited) {
+      const fetchData = async () => {
+        let updatedRes = {};
+        if (profilePic) {
+          //image selected
+          let resImg = await uploadFile(profilePic); //upload image to the server
+          if (resImg) {
+            updatedRes = {
+              ...updatedConsumer,
+              profilePic: resImg,
+            };
+          } else {
+            updatedRes = {
+              ...updatedConsumer,
+              profilePic:
+                "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
+            };
+          }
+        } else {
+          updatedRes = {
+            ...updatedConsumer,
+            profilePic:
+              "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
+          };
+        }
+        setUpdatedConsumer(updatedRes);
+      };
+      fetchData();
+    }
+  }, [profilePic]);
+
+  useEffect(() => {
+    if(edited){
+    const fetchData = async () => {
+      let res = await updateUser(updatedConsumer); //update the user's image in the DB
+      if (res) {
+        setContent("תמונתך נשמרה בהצלחה");
+      }
+    };
+    fetchData();
+    }
+    console.log("sett", updatedConsumer);
+    setEdited(false)
+  }, [updatedConsumer]);
+
+  useEffect(() => {
+    if (content!="") {
+      setShow(true);
+    }
+  }, [content]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -116,10 +176,10 @@ const logOut = async (rbsheet) => {
               alignItems: "center",
             }}
           >
-            <RoundedImage
-              url={consumer.profilePic}
-              wid={width / 3.6}
-              hei={height / 8}
+            <ImageProfile
+              userImageURI={profilePic}
+              setProfilePic={setProfilePic}
+              setEdited={setEdited}
             />
           </View>
 
@@ -285,6 +345,7 @@ const logOut = async (rbsheet) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        <SuccessAlert show={show} setShow={setShow} content={content} />
       </View>
     </SafeAreaView>
   ); //return
