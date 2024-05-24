@@ -144,12 +144,17 @@ export default function EditProfile() {
               </View>
             </View>
           </RBSheet>
+          <ScrollView
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps={"always"}
+            >
           <Details
             consumer={updatedConsumer}
             setConsumer={setUpdatedConsumer}
             setNavContinue={setNavContinue}
             edit={true}
           />
+          </ScrollView>
           <SuccessAlert show={show} setShow={setShow} content={content} />
         </View>
       </KeyboardAvoidingView>

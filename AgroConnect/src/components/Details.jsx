@@ -23,7 +23,7 @@ import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
 
 export default function Details(props) {
-  const { consumer, setConsumer, setNavContinue, edit, emailExists } = props;
+  const { consumer, setConsumer, setNavContinue, edit, emailExists, profilePic } = props;
 
   const theme = useContext(themeContext);
 
@@ -102,16 +102,17 @@ export default function Details(props) {
         ? consumer.password
         : ""
   );
-  const [profilePic, setProfilePic] = useState(() =>
-    consumer && consumer.profilePic ? consumer.profilePic : ""
-  );
+
+  // const [profilePic, setProfilePic] = useState(() =>
+  //   consumer && consumer.profilePic ? consumer.profilePic : ""
+  // );
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   const handleSubmit = () => {
     //if (validateForm())
-    {
+      console.log("123",consumer)
       const updatedConsumer = {
         id: 0,
         email,
@@ -125,13 +126,12 @@ export default function Details(props) {
         registrationDate: "",
         profilePic,
         isFarmer: isChecked,
-        longitude,
-        latitude,
-      };
+        longitude: longitude.toString(),
+        latitude:latitude.toString(),
+      }
       setConsumer(updatedConsumer);
       setFlag(true);
       setErrors({});
-    }
   };
 
   useEffect(() => {
@@ -161,10 +161,10 @@ export default function Details(props) {
     if (!gender) errors.gender = "שדה חובה";
     //password
     const regexPassword =
-      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{4,10}$/;
+      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{3,10}$/;
     if (!regexPassword.test(password)) {
       errors.password =
-        "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 4-10 תווים ";
+        "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 3-10 תווים ";
     } else if (!password) errors.password = "שדה חובה";
     if (!password) errors.password = "שדה חובה";
     //confirm password
@@ -192,12 +192,7 @@ export default function Details(props) {
 
   return (
     <View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps={"always"}
-      >
-        <ImageProfile userImageURI={profilePic} setProfilePic={setProfilePic} />
-
+      
         <ValInput
           val={firstName}
           setVal={setFirstName}
@@ -453,7 +448,6 @@ export default function Details(props) {
             <Text style={style.btntxt}>אישור</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }

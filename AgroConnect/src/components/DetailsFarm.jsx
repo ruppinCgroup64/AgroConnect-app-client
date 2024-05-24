@@ -18,7 +18,7 @@ import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
 
 export default function DetailsFarm(props) {
-  const {setFarm, setNavContinue, farmerID, farm } = props;
+  const {mainPic,setFarm, setNavContinue, farmerID, farm} = props;
 
   const theme = useContext(themeContext);
   const [flag, setFlag] = useState(false);
@@ -41,9 +41,9 @@ export default function DetailsFarm(props) {
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
   );
-  const [mainPic, setMainPic] = useState(
-    farm && farm.mainPic ? farm.mainPic : ""
-  );
+  // const [mainPic, setMainPic] = useState(
+  //   farm && farm.mainPic ? farm.mainPic : ""
+  // );
   const [consumerNum, setConsumerNum] = useState(
     farm && farm.consumerNum ? farm.consumerNum : farmerID
   );
@@ -59,8 +59,8 @@ export default function DetailsFarm(props) {
         id: 0,
         name:farmName,
         address,
-        latitude,
-        longitude,
+        longitude: longitude.toString(),
+        latitude:latitude.toString(),
         socialNetworkLink,
         rank:0,
         mainPic,
@@ -105,8 +105,6 @@ export default function DetailsFarm(props) {
 
   return (
     <View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
         <View
           style={[
             style.txtinput,
@@ -203,7 +201,6 @@ export default function DetailsFarm(props) {
             <Text style={style.btntxt}>אישור</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }

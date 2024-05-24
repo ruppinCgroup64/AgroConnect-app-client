@@ -28,7 +28,7 @@ export default function Welcome() {
           <View
             style={[styles.container, { backgroundColor: theme.bg, marginTop: 50 }]}
           >
-              <Image
+              {/* <Image
                 source={{uri:theme.a}}
                 resizeMode="stretch"
                 style={{
@@ -36,7 +36,7 @@ export default function Welcome() {
                   width: width / 1.2,
                   alignSelf: "center",
                 }}
-              ></Image>
+              ></Image> */}
                 <Text
                   style={[
                     style.subtitle,

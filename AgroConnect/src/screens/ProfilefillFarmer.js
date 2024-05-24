@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Text,
+  ScrollView,
 } from "react-native";
 import style from "../theme/style";
 import { AppBar } from "@react-native-material/core";
@@ -19,15 +20,16 @@ import SuccessAlert from "../components/SuccessAlert";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { UsersContext } from "../Context/UserContext";
+import ImageProfile from "../components/ImageProfile";
 
 export default function ProfilefillFarmer({ route }) {
-  const { farmerID } = route.params
-  //const farmerID = 1052;
+  //const { farmerID } = route.params;
+  const farmerID = 1015;
 
   const theme = useContext(themeContext);
   const navigation = useNavigation();
 
-  const { registerFarm, setFarm, updateFarm, farm } = useContext(UsersContext);
+  const { registerFarm, updateFarm, farm } = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
@@ -36,35 +38,40 @@ export default function ProfilefillFarmer({ route }) {
   const [updated, setUpdated] = useState(false);
   const [updatedFarm, setUpdatedFarm] = useState(farm);
 
+  const [mainPic, setMainPic] = useState("");
+
   useEffect(() => {
     if (navContinue) {
-      console.log("3")
+      console.log("3");
       const fetchData = async () => {
         //register farm
         let res = await registerFarm(updatedFarm); //the res is the true- need to chang to object
-        if (res==1) {
+        if (res) {
+          let updatedRes = {};
           if (updatedFarm.mainPic != "") {
             //if the user selected image
             let resImg = await uploadFile(updatedFarm.mainPic); //upload image to the server
             if (resImg) {
-              setUpdatedFarm((prevState) => ({
-                ...prevState,
+              updatedRes = {
+                //take the original object from the server and change its image
+                ...res,
                 mainPic: resImg,
-              }));
+              };
             } else {
-              setUpdatedFarm((prevState) => ({
-                ...prevState,
+              updatedRes = {
+                ...res,
                 mainPic:
                   "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoFarm.png",
-              }));
+              };
             }
           } else {
-            setUpdatedFarm((prevState) => ({
-              ...prevState,
+            updatedRes = {
+              ...res,
               mainPic:
                 "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoFarm.png",
-            }));
+            };
           }
+          setUpdatedFarm(updatedRes);
         }
       };
       fetchData();
@@ -73,25 +80,57 @@ export default function ProfilefillFarmer({ route }) {
   }, [navContinue]);
 
   useEffect(() => {
-    if (updatedFarm && updated == false && updatedFarm.mainPic != "") {
-      console.log("4")
+    if (
+      updatedFarm &&
+      updated == false &&
+      updatedFarm.mainPic &&
+      updatedFarm.mainPic != ""
+    ) 
+    {
+      console.log("4");
       //the user has not been updated after change image in DB
-      console.log("ue",updatedFarm)
       let ans = updatedFarm.mainPic.toLowerCase().includes("https"); //the image selected
-      console.log("5")
+      console.log("5");
       if (ans) {
+        console.log("6");
         const fetchData = async () => {
+          console.log(updatedFarm)
           let res = await updateFarm(updatedFarm); //update the user's image in the DB
           if (res) {
+            console.log("now",res)
             setUpdated(true);
-            setFarm(res); //update the context farm
           }
         };
         fetchData();
-        navigation.navigate("Welcome");
       }
     }
   }, [updatedFarm]);
+
+  useEffect(() => {
+    if (
+      updatedFarm &&
+      updatedFarm.mainPic &&
+      updatedFarm.mainPic != "" &&
+      updatedFarm.mainPic.toLowerCase().includes("https")
+    ) {
+      setShow(true);
+      setContent("המשק שלך נרשם בהצלחה!");
+    }
+  }, [farm]);
+
+  useEffect(() => {
+    if (content != "") {
+      setShow(true);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (content != "") {
+      const timer = setTimeout(() => {
+        navigation.navigate("MyTabs");
+      }, 2000);
+    }
+  }, [show]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -113,13 +152,20 @@ export default function ProfilefillFarmer({ route }) {
             elevation={0}
             trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
           />
-
-          <DetailsFarm
-            setFarm={setUpdatedFarm}
-            setNavContinue={setNavContinue}
-            farmerID={farmerID}
-            farm={updatedFarm}
-          />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={"always"}
+          >
+            <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
+            <DetailsFarm
+              mainPic={mainPic}
+              setFarm={setUpdatedFarm}
+              setNavContinue={setNavContinue}
+              farmerID={farmerID}
+              farm={updatedFarm}
+            />
+          </ScrollView>
+          <SuccessAlert show={show} setShow={setShow} content={content} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Text,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppBar } from "@react-native-material/core";
@@ -20,11 +21,11 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { UsersContext } from "../Context/UserContext";
 import { uploadFile } from "../api";
+import ImageProfile from "../components/ImageProfile";
 
 export default function Profilefill() {
   const theme = useContext(themeContext);
-  const { register, consumer, setConsumer, updateUser } =
-    useContext(UsersContext); //רק להדגמה
+  const { consumer, register, updateUser } = useContext(UsersContext); //רק להדגמה
 
   const navigation = useNavigation();
 
@@ -35,39 +36,42 @@ export default function Profilefill() {
   const [updatedConsumer, setUpdatedConsumer] = useState(consumer);
   const [updated, setUpdated] = useState(false);
 
+  const [profilePic, setProfilePic] = useState("");
+
   useEffect(() => {
     if (navContinue) {
       const fetchData = async () => {
         //register consumer
         let res = await register(updatedConsumer);
-        if (!res) {
+        if (res.email == null) {
           setEmailExists(true);
         } else {
           setEmailExists(false);
-          if (updatedConsumer.profilePic != "") //if the user selected image
-          {
+          let updatedRes = {};
+          if (updatedConsumer.profilePic != "") {
+            //if the user selected image
             let resImg = await uploadFile(updatedConsumer.profilePic); //upload image to the server
             if (resImg) {
-              setUpdatedConsumer((prevState) => ({
-                ...prevState,
+              updatedRes = {
+                //take the original object from the server and change its image
+                ...res,
                 profilePic: resImg,
-              }));
-            }
-            else {
-              setUpdatedConsumer((prevState) => ({
-                ...prevState,
+              };
+            } else {
+              updatedRes = {
+                ...res,
                 profilePic:
                   "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
-              }));
+              };
             }
-          } 
-          else {
-            setUpdatedConsumer((prevState) => ({
-              ...prevState,
+          } else {
+            updatedRes = {
+              ...res,
               profilePic:
                 "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
-            }));
+            };
           }
+          setUpdatedConsumer(updatedRes);
         }
       };
       fetchData();
@@ -76,30 +80,59 @@ export default function Profilefill() {
   }, [navContinue]);
 
   useEffect(() => {
-    if (updatedConsumer&&updated == false&&updatedConsumer.profilePic!="") {
-      let id=1;
+    if (
+      updatedConsumer &&
+      updated == false &&
+      updatedConsumer.profilePic != "" &&
+      updatedConsumer.profilePic
+    ) {
+      console.log("updatedCons", updatedConsumer);
+      //let id = 1;
       //the user has not been updated after change image in DB
       let ans = updatedConsumer.profilePic.toLowerCase().includes("https"); //the image selected
       if (ans) {
+        console.log("consumer3", updatedConsumer);
         const fetchData = async () => {
-        let res = await updateUser(updatedConsumer); //update the user's image in the DB
-        if (res) {
-          setUpdated(true);
-          id= res.id
-        }
-      }
-      fetchData();
-      }
-      if (!updatedConsumer.isFarmer) {
-        //if its not a farmer
-        navigation.navigate("Welcome");
-      } 
-      else if 
-      (updatedConsumer.isFarmer) {
-        navigation.navigate("ProfilefillFarmer", { farmerID: 1015 });
+          let res = await updateUser(updatedConsumer); //update the user's image in the DB
+          if (res) {
+            setUpdated(true);
+            //id = res.id;
+            setUpdatedConsumer(res);
+          }
+        };
+        fetchData();
       }
     }
   }, [updatedConsumer]);
+
+  useEffect(() => {
+    if (
+      updatedConsumer &&
+      updatedConsumer.profilePic != "" &&
+      updatedConsumer.profilePic &&
+      updatedConsumer.profilePic.toLowerCase().includes("https")
+    ) {
+      //if its not a farmer
+      setShow(true);
+      setContent("הרשמתך בוצעה בהצלחה!");
+    }
+  }, [consumer]);
+
+  useEffect(() => {
+    if (content != "") {
+      setShow(true);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (content != "") {
+      const timer = setTimeout(() => {
+        if (!updatedConsumer.isFarmer) navigation.navigate("MyTabs");
+        else
+          navigation.navigate("ProfilefillFarmer", { farmerID: consumer.id }); //add consumer.id
+      }, 2000);
+    }
+  }, [show]);
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -193,14 +226,26 @@ export default function Profilefill() {
               </View>
             </View>
           </RBSheet>
-          <Details
-            consumer={updatedConsumer}
-            setConsumer={setUpdatedConsumer}
-            setNavContinue={setNavContinue}
-            edit={false}
-            emailExists={emailExists}
-          />
-          {/* <SuccessAlert show={show} setShow={setShow} content={content} /> */}
+          <View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps={"always"}
+            >
+              <ImageProfile
+                userImageURI={profilePic}
+                setProfilePic={setProfilePic}
+              />
+              <Details
+                profilePic={profilePic}
+                consumer={updatedConsumer}
+                setConsumer={setUpdatedConsumer}
+                setNavContinue={setNavContinue}
+                edit={false}
+                emailExists={emailExists}
+              />
+            </ScrollView>
+            <SuccessAlert show={show} setShow={setShow} content={content} />
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
