@@ -29,6 +29,7 @@ import RoundedImage from "../components/RoundImage";
 import DropDownPicker from "react-native-dropdown-picker";
 import ImageProfile from "../components/ImageProfile";
 import SuccessAlert from "../components/SuccessAlert";
+import { uploadFile } from "../api";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -82,8 +83,8 @@ export default function Settings() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log(edited)
-    if (edited) {
+    console.log(profilePic,consumer.profilePic )
+    if (profilePic!=consumer.profilePic) {
       const fetchData = async () => {
         let updatedRes = {};
         if (profilePic) {
@@ -100,6 +101,7 @@ export default function Settings() {
               profilePic:
                 "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
             };
+            setProfilePic("https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png")
           }
         } else {
           updatedRes = {
@@ -107,6 +109,7 @@ export default function Settings() {
             profilePic:
               "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
           };
+          setProfilePic("https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png")
         }
         setUpdatedConsumer(updatedRes);
       };
@@ -115,7 +118,7 @@ export default function Settings() {
   }, [profilePic]);
 
   useEffect(() => {
-    if(edited){
+    if(profilePic!=consumer.profilePic){
     const fetchData = async () => {
       let res = await updateUser(updatedConsumer); //update the user's image in the DB
       if (res) {
@@ -125,7 +128,6 @@ export default function Settings() {
     fetchData();
     }
     console.log("sett", updatedConsumer);
-    setEdited(false)
   }, [updatedConsumer]);
 
   useEffect(() => {
