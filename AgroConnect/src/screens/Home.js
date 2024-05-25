@@ -88,7 +88,7 @@ const salesPoints = [
         timer: 'עוד 8 ימים'
     },
     {
-        nav: 'SalePoint',
+        nav: 'SalePointFarmer',
         img: 'https://mesheq77.co.il/wp-content/uploads/2018/06/logo300.png',
         title: 'החרוב 1, אחיטוב',
         address: '15.04.2024',
