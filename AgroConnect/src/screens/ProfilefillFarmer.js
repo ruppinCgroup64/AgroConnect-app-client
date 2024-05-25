@@ -21,6 +21,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { UsersContext } from "../Context/UserContext";
 import ImageProfile from "../components/ImageProfile";
+import { uploadFile } from "../api";
 
 export default function ProfilefillFarmer({ route }) {
   //const { farmerID } = route.params;
@@ -114,7 +115,7 @@ export default function ProfilefillFarmer({ route }) {
       updatedFarm.mainPic.toLowerCase().includes("https")
     ) {
       setShow(true);
-      setContent("המשק שלך נרשם בהצלחה!");
+      setContent("המשק שלך נרשם בהצלחה");
     }
   }, [farm]);
 
