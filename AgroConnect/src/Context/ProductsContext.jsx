@@ -28,7 +28,7 @@ export default function ProductContextProvider(props) {
   }
 
   async function getProductsByFarm(farmID) {
-    let res = await read("api/Products/"+farmID);
+    let res = await read("api/Products/farmer/"+farmID);
     if (res)
       return res;
     else alert("something went wrong");

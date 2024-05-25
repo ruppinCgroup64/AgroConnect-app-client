@@ -54,7 +54,7 @@ export default function DetailsFarm(props) {
   const [finalPic, setFinalPic] = useState("");
 
   const handleSubmit = () => {
-    //if (validateForm())
+    if (validateForm())
     {
       const updatedFarm = {
         id: 0,

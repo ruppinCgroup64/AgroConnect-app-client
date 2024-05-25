@@ -56,16 +56,20 @@ export default function CreateSalePoint() {
         console.log("get products farm", res);
         //update the sale point=res now with id
         setProductsList(res);
-        //set the array accourding to products amount
+        //set the array according to products amount
         const newAmounts = res.map(() => 0);
         const newPrices = res.map(() => 0);
         setAmounts(newAmounts);
         setPrices(newPrices);
-        console.log(newAmounts,newPrices)
+        console.log(newAmounts, newPrices);
       }
     };
     fetchData();
   }, []);
+  
+  useEffect(() => {
+    console.log(amounts, prices)
+  }, [amounts, prices]); // Dependency array includes amounts and prices
 
   //when the button was pressed->add the sale point to the DB
   useEffect(() => {
@@ -215,6 +219,10 @@ export default function CreateSalePoint() {
               productsList={productsList}
               setProductsList={setProductsList}
               farm={farm}
+              amounts={amounts}
+              setAmounts={setAmounts}
+              prices={prices}
+              setPrices={setPrices}
             />
             <SuccessAlert show={show} setShow={setShow} content={content} />
           </ScrollView>

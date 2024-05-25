@@ -50,8 +50,8 @@ export default function UsersContextProvider(props) {
 
   async function registerFarm(farm) {
     let res = await create("api/Farms", farm);
-    if (res==1) {
-      return true
+    if (res) {
+      return res
     }
     else {
       alert("something went wrong");
@@ -71,8 +71,7 @@ export default function UsersContextProvider(props) {
   }
   async function updateFarm(f) {
     let res = await update(`api/Farms`, f);
-    if (res && res.status === 200) {
-      console.log(res)
+    if (res) {
       setFarm(res);
       return res;
     } else {

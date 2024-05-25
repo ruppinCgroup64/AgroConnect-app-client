@@ -116,7 +116,7 @@ export default function StackNavigator() {
             />
           ) : null}
           
-          <Stack.Screen
+         <Stack.Screen
             name="CreateSalePoint"
             component={CreateSalePoint}
             options={{ headerShown: false }}
@@ -141,7 +141,8 @@ export default function StackNavigator() {
             name="EditProfileFarm"
             component={EditProfileFarm}
             options={{ headerShown: false }}
-          />
+          />  
+         
           <Stack.Screen
             name="ProfilefillFarmer"
             component={ProfilefillFarmer}

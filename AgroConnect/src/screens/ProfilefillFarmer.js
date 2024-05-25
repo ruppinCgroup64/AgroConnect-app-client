@@ -24,8 +24,7 @@ import ImageProfile from "../components/ImageProfile";
 import { uploadFile } from "../api";
 
 export default function ProfilefillFarmer({ route }) {
-  //const { farmerID } = route.params;
-  const farmerID = 1015;
+  const { farmerID } = route.params;
 
   const theme = useContext(themeContext);
   const navigation = useNavigation();
@@ -47,6 +46,7 @@ export default function ProfilefillFarmer({ route }) {
       const fetchData = async () => {
         //register farm
         let res = await registerFarm(updatedFarm); //the res is the true- need to chang to object
+        console.log(res)
         if (res) {
           let updatedRes = {};
           if (updatedFarm.mainPic != "") {
