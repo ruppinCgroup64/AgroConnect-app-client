@@ -16,9 +16,10 @@ import { Colors } from "../theme/color";
 import { useNavigation } from "@react-navigation/native";
 import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
+import ValInput from "./ValInput";
 
 export default function DetailsFarm(props) {
-  const {setFarm, setNavContinue, farmerID } = props;
+  const { mainPic, setFarm, setNavContinue, farmerID, farm } = props;
 
   const theme = useContext(themeContext);
   const [flag, setFlag] = useState(false);
@@ -27,7 +28,7 @@ export default function DetailsFarm(props) {
     farm && farm.farmName ? farm.farmName : ""
   );
   const [address, setAddress] = useState(
-    farm && farm.address ? farm.address : {}
+    farm && farm.address ? farm.address : ""
   );
 
   const [latitude, setLatitude] = useState(() =>
@@ -41,87 +42,45 @@ export default function DetailsFarm(props) {
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
   );
-  const [mainPic, setMainPic] = useState(
-    farm && farm.mainPic ? farm.mainPic : null
-  );
+  // const [mainPic, setMainPic] = useState(
+  //   farm && farm.mainPic ? farm.mainPic : ""
+  // );
   const [consumerNum, setConsumerNum] = useState(
     farm && farm.consumerNum ? farm.consumerNum : farmerID
   );
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
-  const [finalPic, setFinalPic] = useState(initialState)
+  const [finalPic, setFinalPic] = useState("");
 
   const handleSubmit = () => {
-    if (validateForm())
+    //if (validateForm())
     {
-      try{
-        uploadFile();
-      }
-      catch (err) {
-        return {status:false, err}//בעיה בקוד/שגיאת שרת
-      }
-      console.log("submitted");
+      const updatedFarm = {
+        id: 0,
+        name: farmName,
+        address,
+        longitude: longitude.toString(),
+        latitude: latitude.toString(),
+        socialNetworkLink,
+        rank: 0,
+        mainPic,
+        farmerId: consumerNum,
+      };
+      console.log("1");
+      setFarm(updatedFarm);
+      setFlag(true);
       setErrors({});
     }
   };
-  
-  useEffect(()=>{
-    setFlag(true)
-  },[finalPic])
-
-  useEffect(() => {
-    if (flag) {
-      const updatedFarm = {
-        farmName,
-        address,
-        latitude,
-        longitude,
-        socialNetworkLink,
-        mainPic,
-        consumerNum,
-      };
-      setFarm(updatedFarm);
-    }
-  }, [flag]);
 
   useEffect(() => {
     if (flag) {
       setNavContinue(true);
+      console.log("2");
     }
+    setFlag(false);
   }, [farm]);
-
-  const uploadFile = () => {
-    const api = `https://proj.ruppin.ac.il/cgroup64/test2/api/Upload`;
-    const formData = new FormData();
-    formData.append("files", {
-      uri: mainPic,
-      type: "image/png",
-      name: `${mainPic.split("/").pop()}`,
-    });
-
-    fetch(api, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
-    })
-      .then((response) => {
-        //console.log("response= ", JSON.stringify(response));
-        return response.json();
-      })
-      .then(
-        (result) => {
-          //console.log("fetch POST= ", JSON.stringify(result));
-          setFinalPic(JSON.stringify(result).split("/").pop());
-        },
-        (error) => {
-          console.log("err post=", error);
-        }
-      );
-  };
 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
@@ -145,33 +104,19 @@ export default function DetailsFarm(props) {
   };
 
   return (
-    <View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="שם המשק"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setFarmName}
-            value={farmName}
-          />
-        </View>
-        {errors.farmName ? (
-          <Text style={style.errorText}>{errors.farmName}</Text>
-        ) : null}
+    <View style={{ marginTop: 20 }}>
+      <ValInput
+        val={farmName}
+        setVal={setFarmName}
+        content={"שם המשק"}
+        keyboardType={"default"}
+      />
+      {errors.farmName ? (
+        <Text style={style.errorText}>{errors.farmName}</Text>
+      ) : null}
 
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>כתובת המשק</Text>
         <View
           style={[
             style.inputContainer,
@@ -179,12 +124,10 @@ export default function DetailsFarm(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
             },
           ]}
         >
           <TextInput
-            placeholder="כתובת המשק"
             textAlign="right"
             selectionColor={Colors.primary}
             placeholderTextColor={Colors.disable}
@@ -193,58 +136,44 @@ export default function DetailsFarm(props) {
             value={address}
           />
         </View>
-        {errors.address ? (
-          <Text style={style.errorText}>{errors.address}</Text>
-        ) : null}
+      </View>
+      {errors.address ? (
+        <Text style={style.errorText}>{errors.address}</Text>
+      ) : null}
 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={isPlacesModalVisible}
-          onRequestClose={() => {
-            setPlacesModalVisible(!isPlacesModalVisible);
-          }}
-        >
-          <SafeAreaView style={style.modalView}>
-            <AutoCompMap
-              setAddress={setAddress}
-              setLatitude={setLatitude}
-              setLongitude={setLongitude}
-              setPlacesModalVisible={setPlacesModalVisible}
-            />
-          </SafeAreaView>
-        </Modal>
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="קישור לעמוד ברשת חברתית"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setSocialNetworkLink}
-            value={socialNetworkLink}
-            keyboardType="url"
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isPlacesModalVisible}
+        onRequestClose={() => {
+          setPlacesModalVisible(!isPlacesModalVisible);
+        }}
+      >
+        <SafeAreaView style={style.modalView}>
+          <AutoCompMap
+            setAddress={setAddress}
+            setLatitude={setLatitude}
+            setLongitude={setLongitude}
+            setPlacesModalVisible={setPlacesModalVisible}
           />
-        </View>
-        {errors.socialNetworkLink ? (
-          <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
-        ) : null}
+        </SafeAreaView>
+      </Modal>
 
-        <View style={{ marginTop: 40, marginBottom: 20 }}>
-          <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-            <Text style={style.btntxt}>אישור</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      <ValInput
+        val={socialNetworkLink}
+        setVal={setSocialNetworkLink}
+        content={"קישור לעמוד ברשת חברתית"}
+        keyboardType={"default"}
+      />
+      {errors.socialNetworkLink ? (
+        <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
+      ) : null}
+
+      <View style={{ marginTop: 40, marginBottom: 20 }}>
+        <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+          <Text style={style.btntxt}>אישור</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

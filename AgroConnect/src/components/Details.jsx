@@ -23,7 +23,14 @@ import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
 
 export default function Details(props) {
-  const { consumer, setConsumer, setNavContinue, edit } = props;
+  const {
+    consumer,
+    setConsumer,
+    setNavContinue,
+    edit,
+    emailExists,
+    profilePic,
+  } = props;
 
   const theme = useContext(themeContext);
 
@@ -41,12 +48,13 @@ export default function Details(props) {
     const dt = new Date(date);
     const x = dt.toISOString().split("T");
     const x1 = x[0].split("-");
-    setSelectDate(x1[2] + "." + x1[1] + "." + x1[0]);
+    setSelectDate(x1[0] + "/" + x1[1] + "/" + x1[2]);
     hideDatePicker();
   };
   useEffect(() => {
-    if(selectDate!="")
-    {setDateOfBirth(selectDate);}
+    if (selectDate != "") {
+      setDateOfBirth(selectDate);
+    }
   }, [selectDate]);
 
   const [isChecked, setChecked] = useState(() =>
@@ -68,9 +76,14 @@ export default function Details(props) {
   const [lastName, setLastName] = useState(() =>
     consumer && consumer.lastName ? consumer.lastName : ""
   );
-  const [dateOfBirth, setDateOfBirth] = useState(() =>
-    consumer && consumer.dateOfBirth ? consumer.dateOfBirth : ""
-  );
+  const [dateOfBirth, setDateOfBirth] = useState(() => {
+    if (consumer && consumer.dateOfBirth) {
+      const dateTime = consumer.dateOfBirth;
+      const dateOnly = dateTime.split(" ")[0];
+      return dateOnly;
+    } else return "";
+  });
+
   const [gender, setGender] = useState(() =>
     consumer && consumer.gender ? consumer.gender : ""
   );
@@ -81,7 +94,7 @@ export default function Details(props) {
     consumer && consumer.phoneNum ? consumer.phoneNum : ""
   );
   const [address, setAddress] = useState(() =>
-    consumer && consumer.address ? consumer.address : {}
+    consumer && consumer.address ? consumer.address : ""
   );
 
   const [latitude, setLatitude] = useState(() =>
@@ -95,17 +108,13 @@ export default function Details(props) {
   const [password, setPassword] = useState(() =>
     consumer && consumer.password ? consumer.password : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(
-    () =>
-      edit
-        ? consumer.password
-        : consumer && consumer.confirmPassword
-        ? consumer.confirmPassword
-        : "" //רק לדוגמא, נצטרך לשנות לפי השרת
+  const [confirmPassword, setConfirmPassword] = useState(() =>
+    edit ? consumer.password : ""
   );
-  const [profilePic, setProfilePic] = useState(() =>
-    consumer && consumer.profilePic ? consumer.profilePic : ""
-  );
+
+  // const [profilePic, setProfilePic] = useState(() =>
+  //   consumer && consumer.profilePic ? consumer.profilePic : ""
+  // );
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
@@ -118,15 +127,15 @@ export default function Details(props) {
         firstName,
         lastName,
         password,
-        gender,
-        dateOfBirth,
+        gender: gender,
+        dateOfBirth: dateOfBirth==""? "2024/01/01": dateOfBirth,
         phoneNum,
         address,
         registrationDate: "",
         profilePic,
         isFarmer: isChecked,
-        longitude,
-        latitude,
+        longitude: longitude.toString(),
+        latitude: latitude.toString(),
       };
       setConsumer(updatedConsumer);
       setFlag(true);
@@ -145,26 +154,19 @@ export default function Details(props) {
   const validateForm = () => {
     const errors = {};
     //first name
-    const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
     if (!firstName) errors.firstName = "שדה חובה";
-    else if (!regexFirstName.test(firstName)) {
-      errors.firstName = "שם פרטי לא תקין";
-    }
     //last name
-    const regexLastName = /^[א-ת]+(?:\s[א-ת]+)*$/;
-    if (!regexLastName.test(lastName)) {
-      errors.lastName = "שם משפחה לא תקין";
-    } else if (!lastName) errors.lastName = "שדה חובה";
+     if (!lastName) errors.lastName = "שדה חובה";
     //dateOfBirth
-    if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
+    //if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
     if (!gender) errors.gender = "שדה חובה";
     //password
     const regexPassword =
-      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{4,10}$/;
+      /^(?=.*[!@#$%^&*()])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()]{3,10}$/;
     if (!regexPassword.test(password)) {
       errors.password =
-        "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 4-10 תווים ";
+        "סיסמא לא תקינה - נדרש: לפחות תו אחד מיוחד !@#$%^&*(), לפחות אות אחת גדולה, לפחות מספר אחד, ובאורך של בין 3-10 תווים ";
     } else if (!password) errors.password = "שדה חובה";
     if (!password) errors.password = "שדה חובה";
     //confirm password
@@ -174,9 +176,11 @@ export default function Details(props) {
     }
     //email
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!email) errors.email = "שדה חובה";
-    else if (!regexEmail.test(email)) {
-      errors.email = "כתובת מייל לא תקינה";
+    if (!edit) {
+      if (!email) errors.email = "שדה חובה";
+      else if (!regexEmail.test(email)) {
+        errors.email = "כתובת מייל לא תקינה";
+      }
     }
     //phone
     const regexPhone = /^05\d{8}$/;
@@ -192,32 +196,27 @@ export default function Details(props) {
 
   return (
     <View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps={"always"}
-      >
-        <ImageProfile userImageURI={profilePic} setProfilePic={setProfilePic} />
+      <ValInput
+        val={firstName}
+        setVal={setFirstName}
+        content={"שם פרטי"}
+        keyboardType={"default"}
+      />
+      {errors.firstName ? (
+        <Text style={style.errorText}>{errors.firstName}</Text>
+      ) : null}
+      <ValInput
+        val={lastName}
+        setVal={setLastName}
+        content={"שם משפחה"}
+        keyboardType={"default"}
+      />
+      {errors.lastName ? (
+        <Text style={style.errorText}>{errors.lastName}</Text>
+      ) : null}
 
-        <ValInput
-          val={firstName}
-          setVal={setFirstName}
-          content={"שם פרטי"}
-          keyboardType={"default"}
-        />
-        {errors.firstName ? (
-          <Text style={style.errorText}>{errors.firstName}</Text>
-        ) : null}
-
-        <ValInput
-          val={lastName}
-          setVal={setLastName}
-          content={"שם משפחה"}
-          keyboardType={"default"}
-        />
-        {errors.lastName ? (
-          <Text style={style.errorText}>{errors.lastName}</Text>
-        ) : null}
-
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>תאריך לידה</Text>
         <View
           style={[
             style.inputContainer,
@@ -225,15 +224,12 @@ export default function Details(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
             },
           ]}
         >
           <TextInput
-            placeholder="תאריך לידה"
             textAlign="right"
             selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
             value={selectDate || dateOfBirth}
             style={[style.s14, { color: theme.txt, flex: 1 }]}
           />
@@ -247,12 +243,16 @@ export default function Details(props) {
             <Icon name="calendar-outline" color={Colors.disable} size={20} />
           </TouchableOpacity>
         </View>
-        {errors.dateOfBirth ? (
-          <Text style={style.errorText}>{errors.dateOfBirth}</Text>
-        ) : null}
+      </View>
+      {errors.dateOfBirth ? (
+        <Text style={style.errorText}>{errors.dateOfBirth}</Text>
+      ) : null}
 
+      <View style={{ display: edit ? "none" : "flex" }}>
+        <Text style={[style.s14, style.textTopInput]}>מין</Text>
         <DropDownPicker
           listMode="MODAL"
+          placeholder="בחר"
           open={open}
           value={value || gender}
           items={items}
@@ -262,10 +262,6 @@ export default function Details(props) {
             setGender(newValue);
           }}
           setItems={setItems}
-          placeholder="מין"
-          placeholderStyle={{
-            color: Colors.disable,
-          }}
           style={[
             {
               borderColor: theme.input,
@@ -274,7 +270,7 @@ export default function Details(props) {
               color: theme.txt,
               flex: 1,
               borderRadius: 15,
-              marginTop: 20,
+              marginTop: 5,
             },
             style.s14,
           ]}
@@ -295,7 +291,10 @@ export default function Details(props) {
         {errors.gender ? (
           <Text style={style.errorText}>{errors.gender}</Text>
         ) : null}
+      </View>
 
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>כתובת מגורים</Text>
         <View
           style={[
             style.inputContainer,
@@ -303,12 +302,10 @@ export default function Details(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
             },
           ]}
         >
           <TextInput
-            placeholder="כתובת מגורים"
             textAlign="right"
             selectionColor={Colors.primary}
             placeholderTextColor={Colors.disable}
@@ -317,10 +314,12 @@ export default function Details(props) {
             value={address}
           />
         </View>
-        {errors.address ? (
-          <Text style={style.errorText}>{errors.address}</Text>
-        ) : null}
+      </View>
+      {errors.address ? (
+        <Text style={style.errorText}>{errors.address}</Text>
+      ) : null}
 
+      <View style={{ display: edit ? "none" : "flex" }}>
         <ValInput
           val={email}
           setVal={setEmail}
@@ -330,19 +329,24 @@ export default function Details(props) {
         />
         {errors.email ? (
           <Text style={style.errorText}>{errors.email}</Text>
+        ) : emailExists ? (
+          <Text style={style.errorText}>אימייל כבר קיים</Text>
         ) : null}
+      </View>
 
-        <ValInput
-          val={phoneNum}
-          setVal={setPhoneNum}
-          content={"מספר טלפון"}
-          keyboardType={"numeric"}
-          side={true}
-        />
-        {errors.phoneNum ? (
-          <Text style={style.errorText}>{errors.phoneNum}</Text>
-        ) : null}
+      <ValInput
+        val={phoneNum}
+        setVal={setPhoneNum}
+        content={"מספר טלפון"}
+        keyboardType={"numeric"}
+        side={true}
+      />
+      {errors.phoneNum ? (
+        <Text style={style.errorText}>{errors.phoneNum}</Text>
+      ) : null}
 
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>סיסמא</Text>
         <View
           style={[
             style.inputContainer,
@@ -350,16 +354,13 @@ export default function Details(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
+              marginTop: 5,
             },
           ]}
         >
           <TextInput
-            placeholder="סיסמא"
             value={password}
             selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            secureTextEntry={true}
             style={[
               style.s14,
               { color: theme.txt, flex: 1 },
@@ -368,9 +369,13 @@ export default function Details(props) {
             onChangeText={setPassword}
           />
         </View>
-        {errors.password ? (
-          <Text style={style.errorText}>{errors.password}</Text>
-        ) : null}
+      </View>
+      {errors.password ? (
+        <Text style={style.errorText}>{errors.password}</Text>
+      ) : null}
+
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>אישור סיסמא</Text>
         <View
           style={[
             style.inputContainer,
@@ -378,16 +383,13 @@ export default function Details(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
+              marginTop: 5,
             },
           ]}
         >
           <TextInput
-            placeholder="אישור סיסמא"
             value={confirmPassword}
             selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            secureTextEntry={true}
             style={[
               style.s14,
               { color: theme.txt, flex: 1 },
@@ -396,61 +398,61 @@ export default function Details(props) {
             onChangeText={setConfirmPassword}
           />
         </View>
-        {errors.confirmPassword ? (
-          <Text style={style.errorText}>{errors.confirmPassword}</Text>
-        ) : null}
-        <View
-          style={{
-            flexDirection: "row",
-            marginVertical: 20,
-            paddingLeft: 10,
-            alignItems: "center",
-            justifyContent: "flex-start",
-            marginRight: 5,
-          }}
-        >
-          <View style={{ display: edit ? "none" : "flex" }}>
-            <Text
-              style={[
-                style.s14,
-                {
-                  color: theme.txt,
-                },
-              ]}
-            >
-              <Checkbox
-                value={isChecked}
-                onValueChange={setChecked}
-                color={isChecked ? Colors.primary : Colors.disable}
-              />{" "}
-              אני חקלאי
-            </Text>
-          </View>
-        </View>
+      </View>
+      {errors.confirmPassword ? (
+        <Text style={style.errorText}>{errors.confirmPassword}</Text>
+      ) : null}
 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={isPlacesModalVisible}
-          onRequestClose={() => {
-            setPlacesModalVisible(!isPlacesModalVisible);
-          }}
-        >
-          <SafeAreaView style={style.modalView}>
-            <AutoCompMap
-              setAddress={setAddress}
-              setLatitude={setLatitude}
-              setLongitude={setLongitude}
-              setPlacesModalVisible={setPlacesModalVisible}
-            />
-          </SafeAreaView>
-        </Modal>
-        <View style={{ marginBottom: 50 }}>
-          <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-            <Text style={style.btntxt}>אישור</Text>
-          </TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 20,
+          paddingLeft: 10,
+          alignItems: "center",
+          justifyContent: "flex-start",
+          marginRight: 5,
+        }}
+      >
+        <View style={{ display: edit ? "none" : "flex" }}>
+          <Text
+            style={[
+              style.s14,
+              {
+                color: theme.txt,
+              },
+            ]}
+          >
+            <Checkbox
+              value={isChecked}
+              onValueChange={setChecked}
+              color={isChecked ? Colors.primary : Colors.disable}
+            />{" "}
+            אני חקלאי
+          </Text>
         </View>
-      </ScrollView>
+      </View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isPlacesModalVisible}
+        onRequestClose={() => {
+          setPlacesModalVisible(!isPlacesModalVisible);
+        }}
+      >
+        <SafeAreaView style={style.modalView}>
+          <AutoCompMap
+            setAddress={setAddress}
+            setLatitude={setLatitude}
+            setLongitude={setLongitude}
+            setPlacesModalVisible={setPlacesModalVisible}
+          />
+        </SafeAreaView>
+      </Modal>
+      <View style={{ marginBottom: 50 }}>
+        <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+          <Text style={style.btntxt}>אישור</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

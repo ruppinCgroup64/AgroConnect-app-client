@@ -72,6 +72,7 @@ import CreateTender from "../screensFarmer/CreateTender/";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
 import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
+import CreateSalePoint from "../screensFarmer/CreateSalePoint";
 import Tender from "../screens/Tender";
 import SalePoint from "../screens/SalePoint";
 import SalePointFarmer from "../screensFarmer/SalePointFarmer";
@@ -116,24 +117,6 @@ export default function StackNavigator() {
             />
           ) : null}
 
-          {/* <Stack.Screen
-            name="CreateTender"
-            component={CreateTender}
-            options={{ headerShown: false }}
-          /> */}
-
-          {/* <Stack.Screen
-            name="Introduction"
-            component={Introduction}
-            options={{ headerShown: false }}
-          /> */}
-
-          {/* <Stack.Screen
-            name="Letsin"
-            component={Letsin}
-            options={{ headerShown: false }}
-          /> */}
-
           <Stack.Screen
             name="Login"
             component={Login}
@@ -154,6 +137,71 @@ export default function StackNavigator() {
             component={EditProfileFarm}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="ProfilefillFarmer"
+            component={ProfilefillFarmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profilefill"
+            component={Profilefill}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SettingsFarmer"
+            component={SettingsFarmer}
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
+          <Stack.Screen
+            name="About"
+            component={About}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Farmer"
+            component={Farmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CreateSalePoint"
+            component={CreateSalePoint}
+            options={{ headerShown: false }}
+          />
+
+          {/* <Stack.Screen
+            name="CreateTender"
+            component={CreateTender}
+            options={{ headerShown: false }}
+          /> */}
+
+          {/* <Stack.Screen
+            name="Introduction"
+            component={Introduction}
+            options={{ headerShown: false }}
+          /> */}
+
+          {/* <Stack.Screen
+            name="Letsin"
+            component={Letsin}
+            options={{ headerShown: false }}
+          /> */}
+
+          {/* <Stack.Screen
+            name="Welcome"
+            component={Welcome}
+            options={{ headerShown: false }}
+          /> */}
+
           <Stack.Screen
             name="ProDetail2"
             component={ProDetail2}
@@ -231,11 +279,6 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
 
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ headerShown: false }}
-          />
           {/* <Stack.Screen
             name="ConfirmPin"
             component={ConfirmPin}
@@ -307,11 +350,7 @@ export default function StackNavigator() {
             component={Address}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="Settings"
-            component={Settings}
-            options={{ headerShown: false }}
-          />
+
           <Stack.Screen
             name="CustomerService"
             component={CustomerService}
@@ -341,24 +380,6 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Fingerprint"
             component={Fingerprint}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Profilefill"
-            component={Profilefill}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="ProfilefillFarmer"
-            component={ProfilefillFarmer}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
             options={{ headerShown: false }}
           />
 

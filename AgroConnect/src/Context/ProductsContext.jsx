@@ -27,6 +27,13 @@ export default function ProductContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function getProductsByFarm(farmID) {
+    let res = await read("api/Products/"+farmID);
+    if (res)
+      return res;
+    else alert("something went wrong");
+  }
+
   async function getProductAveragePrice(productID) {
     let res = await read("api/products");
     if (res.status)
@@ -35,7 +42,7 @@ export default function ProductContextProvider(props) {
   }
 
   return (
-    <ProductContext.Provider value={{ products, getProductAveragePrice, getProducts, setProducts }}>
+    <ProductContext.Provider value={{ products, getProductAveragePrice, getProducts, setProducts,getProductsByFarm }}>
       {props.children}
     </ProductContext.Provider>
   );
