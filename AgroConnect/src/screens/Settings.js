@@ -78,13 +78,12 @@ export default function Settings() {
   };
   const [updatedConsumer, setUpdatedConsumer] = useState(consumer);
   const [profilePic, setProfilePic] = useState(consumer.profilePic);
-  const [edited, setEdited] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log(profilePic,consumer.profilePic )
-    if (profilePic!=consumer.profilePic) {
+    console.log("1",profilePic,"0000000000000", consumer.profilePic);
+    if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let updatedRes = {};
         if (profilePic) {
@@ -101,7 +100,9 @@ export default function Settings() {
               profilePic:
                 "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
             };
-            setProfilePic("https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png")
+            setProfilePic(
+              "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png"
+            );
           }
         } else {
           updatedRes = {
@@ -109,7 +110,9 @@ export default function Settings() {
             profilePic:
               "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png",
           };
-          setProfilePic("https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png")
+          setProfilePic(
+            "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/demoUser.png"
+          );
         }
         setUpdatedConsumer(updatedRes);
       };
@@ -118,20 +121,22 @@ export default function Settings() {
   }, [profilePic]);
 
   useEffect(() => {
-    if(profilePic!=consumer.profilePic){
-    const fetchData = async () => {
-      let res = await updateUser(updatedConsumer); //update the user's image in the DB
-      if (res) {
-        setContent("תמונתך נשמרה בהצלחה");
-      }
-    };
-    fetchData();
+    console.log("2",profilePic,"0000000000000", consumer.profilePic);
+    if (profilePic != consumer.profilePic) {
+      const fetchData = async () => {
+        let res = await updateUser(updatedConsumer); //update the user's image in the DB
+        if (res) {
+          setContent("תמונתך נשמרה בהצלחה");
+        }
+      };
+      fetchData();
     }
     console.log("sett", updatedConsumer);
   }, [updatedConsumer]);
 
   useEffect(() => {
-    if (content!="") {
+    console.log("3",profilePic,"0000000000000", consumer.profilePic);
+    if (content != "") {
       setShow(true);
     }
   }, [content]);
@@ -181,7 +186,6 @@ export default function Settings() {
             <ImageProfile
               userImageURI={profilePic}
               setProfilePic={setProfilePic}
-              setEdited={setEdited}
             />
           </View>
 

@@ -16,9 +16,10 @@ import { Colors } from "../theme/color";
 import { useNavigation } from "@react-navigation/native";
 import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
+import ValInput from "./ValInput";
 
 export default function DetailsFarm(props) {
-  const {mainPic,setFarm, setNavContinue, farmerID, farm} = props;
+  const { mainPic, setFarm, setNavContinue, farmerID, farm } = props;
 
   const theme = useContext(themeContext);
   const [flag, setFlag] = useState(false);
@@ -50,37 +51,36 @@ export default function DetailsFarm(props) {
 
   const [errors, setErrors] = useState({});
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
-  const [finalPic, setFinalPic] = useState("")
+  const [finalPic, setFinalPic] = useState("");
 
   const handleSubmit = () => {
     //if (validateForm())
-      {
+    {
       const updatedFarm = {
         id: 0,
-        name:farmName,
+        name: farmName,
         address,
         longitude: longitude.toString(),
-        latitude:latitude.toString(),
+        latitude: latitude.toString(),
         socialNetworkLink,
-        rank:0,
+        rank: 0,
         mainPic,
-        farmerId:consumerNum,
+        farmerId: consumerNum,
       };
-      console.log("1")
+      console.log("1");
       setFarm(updatedFarm);
-      setFlag(true)
+      setFlag(true);
       setErrors({});
     }
   };
 
   useEffect(() => {
     if (flag) {
-      setNavContinue(true); 
-      console.log("2")
+      setNavContinue(true);
+      console.log("2");
     }
-    setFlag(false)
+    setFlag(false);
   }, [farm]);
-
 
   //checking every field according to the rules and add to the errors object
   const validateForm = () => {
@@ -104,31 +104,19 @@ export default function DetailsFarm(props) {
   };
 
   return (
-    <View>
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="שם המשק"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setFarmName}
-            value={farmName}
-          />
-        </View>
-        {errors.farmName ? (
-          <Text style={style.errorText}>{errors.farmName}</Text>
-        ) : null}
+    <View style={{ marginTop: 20 }}>
+      <ValInput
+        val={farmName}
+        setVal={setFarmName}
+        content={"שם המשק"}
+        keyboardType={"default"}
+      />
+      {errors.farmName ? (
+        <Text style={style.errorText}>{errors.farmName}</Text>
+      ) : null}
 
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>כתובת המשק</Text>
         <View
           style={[
             style.inputContainer,
@@ -136,12 +124,10 @@ export default function DetailsFarm(props) {
               borderColor: theme.input,
               borderWidth: 1,
               backgroundColor: theme.input,
-              marginTop: 20,
             },
           ]}
         >
           <TextInput
-            placeholder="כתובת המשק"
             textAlign="right"
             selectionColor={Colors.primary}
             placeholderTextColor={Colors.disable}
@@ -150,57 +136,44 @@ export default function DetailsFarm(props) {
             value={address}
           />
         </View>
-        {errors.address ? (
-          <Text style={style.errorText}>{errors.address}</Text>
-        ) : null}
+      </View>
+      {errors.address ? (
+        <Text style={style.errorText}>{errors.address}</Text>
+      ) : null}
 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={isPlacesModalVisible}
-          onRequestClose={() => {
-            setPlacesModalVisible(!isPlacesModalVisible);
-          }}
-        >
-          <SafeAreaView style={style.modalView}>
-            <AutoCompMap
-              setAddress={setAddress}
-              setLatitude={setLatitude}
-              setLongitude={setLongitude}
-              setPlacesModalVisible={setPlacesModalVisible}
-            />
-          </SafeAreaView>
-        </Modal>
-        <View
-          style={[
-            style.txtinput,
-            {
-              borderColor: theme.input,
-              backgroundColor: theme.input,
-              marginTop: 20,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="קישור לעמוד ברשת חברתית"
-            textAlign="right"
-            selectionColor={Colors.primary}
-            placeholderTextColor={Colors.disable}
-            style={[style.s14, { color: theme.txt, flex: 1 }]}
-            onChangeText={setSocialNetworkLink}
-            value={socialNetworkLink}
-            keyboardType="url"
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isPlacesModalVisible}
+        onRequestClose={() => {
+          setPlacesModalVisible(!isPlacesModalVisible);
+        }}
+      >
+        <SafeAreaView style={style.modalView}>
+          <AutoCompMap
+            setAddress={setAddress}
+            setLatitude={setLatitude}
+            setLongitude={setLongitude}
+            setPlacesModalVisible={setPlacesModalVisible}
           />
-        </View>
-        {errors.socialNetworkLink ? (
-          <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
-        ) : null}
+        </SafeAreaView>
+      </Modal>
 
-        <View style={{ marginTop: 40, marginBottom: 20 }}>
-          <TouchableOpacity onPress={handleSubmit} style={style.btn}>
-            <Text style={style.btntxt}>אישור</Text>
-          </TouchableOpacity>
-        </View>
+      <ValInput
+        val={socialNetworkLink}
+        setVal={setSocialNetworkLink}
+        content={"קישור לעמוד ברשת חברתית"}
+        keyboardType={"default"}
+      />
+      {errors.socialNetworkLink ? (
+        <Text style={style.errorText}>{errors.socialNetworkLink}</Text>
+      ) : null}
+
+      <View style={{ marginTop: 40, marginBottom: 20 }}>
+        <TouchableOpacity onPress={handleSubmit} style={style.btn}>
+          <Text style={style.btntxt}>אישור</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

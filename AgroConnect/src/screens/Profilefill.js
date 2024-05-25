@@ -114,7 +114,7 @@ export default function Profilefill() {
     ) {
       //if its not a farmer
       setShow(true);
-      setContent("הרשמתך בוצעה בהצלחה!");
+      setContent("הרשמתך בוצעה בהצלחה");
     }
   }, [consumer]);
 
@@ -137,7 +137,7 @@ export default function Profilefill() {
   return (
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : null}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
         <View
@@ -228,8 +228,9 @@ export default function Profilefill() {
           </RBSheet>
           <View>
             <ScrollView
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps={"always"}
+               style={{ marginTop: 15 }}
+               showsVerticalScrollIndicator={false}
+               keyboardShouldPersistTaps="handled"
             >
               <ImageProfile
                 userImageURI={profilePic}

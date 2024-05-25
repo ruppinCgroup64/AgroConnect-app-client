@@ -153,8 +153,9 @@ export default function ProfilefillFarmer({ route }) {
             trailing={<View style={{ width: 30, height: 30, opacity: 0 }} />}
           />
           <ScrollView
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps={"always"}
+             style={{ marginTop: 15 }}
+             showsVerticalScrollIndicator={false}
+             keyboardShouldPersistTaps="handled"
           >
             <ImageProfile userImageURI={mainPic} setProfilePic={setMainPic} />
             <DetailsFarm

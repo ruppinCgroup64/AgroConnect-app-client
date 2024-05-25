@@ -1,3 +1,7 @@
+//get value, set of value, content to show to know what the user need to add, keyboard type and side of
+//the inpud needed to be. 
+//show text input and text above it indicates what the user need to add
+
 import React, { useContext } from "react";
 import { View, Text, TextInput } from "react-native";
 import style from "../theme/style";

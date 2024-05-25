@@ -120,27 +120,27 @@ export default function Details(props) {
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
 
   const handleSubmit = () => {
-    //if (validateForm())
-    console.log("123", consumer);
-    const updatedConsumer = {
-      id: 0,
-      email,
-      firstName,
-      lastName,
-      password,
-      gender,
-      dateOfBirth,
-      phoneNum,
-      address,
-      registrationDate: "",
-      profilePic,
-      isFarmer: isChecked,
-      longitude: longitude.toString(),
-      latitude: latitude.toString(),
-    };
-    setConsumer(updatedConsumer);
-    setFlag(true);
-    setErrors({});
+    if (validateForm()) {
+      const updatedConsumer = {
+        id: 0,
+        email,
+        firstName,
+        lastName,
+        password,
+        gender: gender,
+        dateOfBirth: dateOfBirth==""? "2024/01/01": dateOfBirth,
+        phoneNum,
+        address,
+        registrationDate: "",
+        profilePic,
+        isFarmer: isChecked,
+        longitude: longitude.toString(),
+        latitude: latitude.toString(),
+      };
+      setConsumer(updatedConsumer);
+      setFlag(true);
+      setErrors({});
+    }
   };
 
   useEffect(() => {
@@ -154,18 +154,11 @@ export default function Details(props) {
   const validateForm = () => {
     const errors = {};
     //first name
-    const regexFirstName = /^[א-ת]+(?:\s[א-ת]+)*$/;
     if (!firstName) errors.firstName = "שדה חובה";
-    else if (!regexFirstName.test(firstName)) {
-      errors.firstName = "שם פרטי לא תקין";
-    }
     //last name
-    const regexLastName = /^[א-ת]+(?:\s[א-ת]+)*$/;
-    if (!regexLastName.test(lastName)) {
-      errors.lastName = "שם משפחה לא תקין";
-    } else if (!lastName) errors.lastName = "שדה חובה";
+     if (!lastName) errors.lastName = "שדה חובה";
     //dateOfBirth
-    if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
+    //if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
     if (!gender) errors.gender = "שדה חובה";
     //password
@@ -183,9 +176,11 @@ export default function Details(props) {
     }
     //email
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!email) errors.email = "שדה חובה";
-    else if (!regexEmail.test(email)) {
-      errors.email = "כתובת מייל לא תקינה";
+    if (!edit) {
+      if (!email) errors.email = "שדה חובה";
+      else if (!regexEmail.test(email)) {
+        errors.email = "כתובת מייל לא תקינה";
+      }
     }
     //phone
     const regexPhone = /^05\d{8}$/;
@@ -366,7 +361,6 @@ export default function Details(props) {
           <TextInput
             value={password}
             selectionColor={Colors.primary}
-            secureTextEntry={true}
             style={[
               style.s14,
               { color: theme.txt, flex: 1 },
@@ -396,7 +390,6 @@ export default function Details(props) {
           <TextInput
             value={confirmPassword}
             selectionColor={Colors.primary}
-            secureTextEntry={true}
             style={[
               style.s14,
               { color: theme.txt, flex: 1 },

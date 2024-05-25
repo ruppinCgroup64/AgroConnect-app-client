@@ -10,8 +10,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function ImageProfile({
   userImageURI,
-  setProfilePic,
-  setEdited,
+  setProfilePic
 }) {
   const [selectedImage, setSelectedImage] = useState(
     () => userImageURI || null
@@ -28,14 +27,12 @@ export default function ImageProfile({
     if (!result.cancelled && result.assets && result.assets.length > 0) {
       setSelectedImage(result.assets[0].uri);
       setProfilePic(result.assets[0].uri);
-      if (setEdited != null) setEdited(true);
     }
   };
 
   const removeImage = () => {
     setSelectedImage(null);
     setProfilePic(null);
-    if (setEdited != null) setEdited(true);
   };
 
   return (
@@ -68,7 +65,8 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: 150,
     height: 150,
-    backgroundColor: "#DEEAD8",
+    backgroundColor:"#fff",
+    //"#DEEAD8",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
