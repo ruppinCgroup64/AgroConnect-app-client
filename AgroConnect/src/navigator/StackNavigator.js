@@ -158,11 +158,6 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="SettingsFarmer"
-            component={SettingsFarmer}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <Stack.Screen
             name="About"
             component={About}
             options={{ headerShown: false }}
@@ -411,16 +406,6 @@ export default function StackNavigator() {
           <Stack.Screen
             name="SettingsFarmer"
             component={SettingsFarmer}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="About"
-            component={About}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Farmer"
-            component={Farmer}
             options={{ headerShown: false }}
           />
           <Stack.Screen

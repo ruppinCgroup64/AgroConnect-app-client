@@ -42,7 +42,7 @@ const settings_details = [
     { navTo: 'About', t: 'אודות', i: 'alert-circle-outline', key: 3 }
 ];
 
-export default function Settings() {
+export default function SettingsFarmer() {
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const { consumer } = useContext(UsersContext);
