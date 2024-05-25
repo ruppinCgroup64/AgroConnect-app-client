@@ -72,8 +72,8 @@ export default function SalePointFarmer() {
                 </View>
             ))}
         </View>
-        );
-    };
+        );//return
+    };//ProduceList
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
