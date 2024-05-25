@@ -73,6 +73,9 @@ import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
 import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
 import CreateSalePoint from "../screensFarmer/CreateSalePoint";
+import Tender from "../screens/Tender";
+import SalePoint from "../screens/SalePoint";
+import SalePointFarmer from "../screensFarmer/SalePointFarmer";
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +115,12 @@ export default function StackNavigator() {
               options={{ headerShown: false }}
             />
           ) : null}
+          
+          <Stack.Screen
+            name="CreateSalePoint"
+            component={CreateSalePoint}
+            options={{ headerShown: false }}
+          />
 
           <Stack.Screen
             name="Login"
@@ -121,7 +130,7 @@ export default function StackNavigator() {
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
-            options={{ headerShown: false /*gestureEnabled: false*/ }}
+            options={{ headerShown: false, gestureEnabled: false }}
           />
           <Stack.Screen
             name="EditProfile"
@@ -154,11 +163,6 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="SettingsFarmer"
-            component={SettingsFarmer}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <Stack.Screen
             name="About"
             component={About}
             options={{ headerShown: false }}
@@ -168,12 +172,27 @@ export default function StackNavigator() {
             component={Farmer}
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
-            name="CreateSalePoint"
-            component={CreateSalePoint}
+            name="SettingsFarmer"
+            component={SettingsFarmer}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="Tender"
+            component={Tender}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePoint"
+            component={SalePoint}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePointFarmer"
+            component={SalePointFarmer}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="CreateTender"
             component={CreateTender}

@@ -3,6 +3,7 @@
 
 import { useState, createContext } from "react";
 import { create, read, update, remove } from "../api";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export const UsersContext = createContext();
 
@@ -91,15 +92,14 @@ export default function UsersContextProvider(props) {
         {
           setConsumer(res);
           if(res.isFarmer==true){
-            let resFarm = await read("api/Farms/"+res.id);
-            setFarm(resFarm[0])
+            let resFarm = await read("api/Farms/"+res["id"]);
+            setFarm(resFarm[0]);
           }
           return true;
         }
       }
     else alert("something went wrong");
-  }
-
+  }//login
   
 
   return (

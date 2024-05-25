@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
     ScrollView
 } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../theme/color'
 import themeContext from '../theme/themeContex'
@@ -19,6 +19,7 @@ import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/Ionicons'
 import { RadioButton } from 'react-native-paper';
+import SuccessAlert from "../components/SuccessAlert";
 
 
 const height = Dimensions.get('screen').height
@@ -28,17 +29,39 @@ export default function Payment1() {
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [checked, setChecked] = useState(false);
+    const [show, setShow] = useState(false);
+    const [content, setContent] = useState("");
+    const [navContinue, setNavContinue] = useState(false);
+    useEffect(() => {
+        if (navContinue) {
+            setContent("ההזמנה בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
+        }
+    }, [navContinue]);
+
+    useEffect(() => {
+        if (navContinue) {
+            setShow(true);
+        }
+    }, [content]);
+
+    useEffect(() => {
+        if (navContinue) {
+            const timer = setTimeout(() => {
+                navigation.navigate('Home');
+            }, 2000);
+        }
+    }, [show]);
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            <View style={[style.main, { backgroundColor: theme.bg,marginTop:10 }]}>
+            <View style={[style.main, { backgroundColor: theme.bg, marginTop: 10 }]}>
                 <AppBar
                     color={theme.bg}
-                    title='Payment Methods'
-                    titleStyle={[style.apptitle, { color: theme.txt, }]} elevation={0}
+                    title='תשלום'
+                    titleStyle={[style.apptitle, { textAlign: 'left', color: theme.txt, }]} elevation={0}
                     leading={<TouchableOpacity
-                        onPress={() => navigation.navigate('Checkout')}
+                        onPress={() => navigation.goBack()}
                     >
-                        <Icon name="arrow-left" color={theme.txt} size={25} />
+                        <Icon name="arrow-right" color={theme.txt} size={25} />
                     </TouchableOpacity>
                     }
                     trailing={<TouchableOpacity >
@@ -47,29 +70,11 @@ export default function Payment1() {
                     }
                 />
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={[style.s14, { color: theme.txt2, marginTop:20 }]}>Select the payment method you want to use.</Text>
+                    <Text style={[style.s14, { textAlign: 'left', color: theme.txt2, marginTop: 20 }]}>בחר אמצעי תשלום</Text>
+
 
                     <View style={{ paddingTop: 20, }}>
-                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center',borderColor:theme.input }]}>
-                            <Image source={require('../../assets/image/a17.png')}
-                                style={{ resizeMode: 'stretch', height: height / 32, width: width / 15 }}
-                            />
-                            <Text style={[style.b16, { color: theme.txt, fontFamily: 'Urbanist-Bold', marginHorizontal: 10 ,flex:1}]}>My Wallet</Text>
-                            <View style={{ flexDirection:'row',alignItems:'center' }}>
-                            <Text style={[style.b16, { color: theme.txt, fontFamily: 'Urbanist-Bold', marginHorizontal: 10 }]}>$9,449</Text>
-                                <RadioButton
-                                    value="fifth"
-                                    status={checked === 'fifth' ? 'checked' : 'unchecked'}
-                                    onPress={() => setChecked('fifth')}
-                                    color={Colors.primary}
-                                    uncheckedColor={Colors.primary}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={{ paddingTop: 20, }}>
-                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center',borderColor:theme.input }]}>
+                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center', borderColor: theme.input }]}>
                             <Image source={require('../../assets/image/paypal.png')}
                                 style={{ resizeMode: 'stretch', height: height / 32, width: width / 15 }}
                             />
@@ -87,7 +92,7 @@ export default function Payment1() {
                     </View>
 
                     <View style={{ paddingTop: 20, }}>
-                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center',borderColor:theme.input }]}>
+                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center', borderColor: theme.input }]}>
                             <Image source={require('../../assets/image/Google.png')}
                                 style={{ resizeMode: 'stretch', height: height / 32, width: width / 15 }}
                             />
@@ -105,7 +110,7 @@ export default function Payment1() {
                     </View>
 
                     <View style={{ paddingTop: 20, }}>
-                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center' ,borderColor:theme.input}]}>
+                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center', borderColor: theme.input }]}>
                             <Image source={theme.apple}
                                 style={{ resizeMode: 'stretch', height: height / 32, width: width / 15 }}
                             />
@@ -121,9 +126,9 @@ export default function Payment1() {
                             </View>
                         </View>
                     </View>
-                   
+
                     <View style={{ paddingTop: 20, }}>
-                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center',borderColor:theme.input }]}>
+                        <View style={[style.txtinput, { backgroundColor: theme.input, color: theme.txt, flexDirection: 'row', alignItems: 'center', borderColor: theme.input }]}>
                             <Image source={theme.a9}
                                 style={{ resizeMode: 'stretch', height: height / 33, width: width / 10 }}
                             />
@@ -142,12 +147,13 @@ export default function Payment1() {
 
                     <View style={{ paddingTop: 50, paddingBottom: 20 }}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('Otp2')}
+                            onPress={() => { setNavContinue(true); }}
                             style={[style.btn]}>
-                            <Text style={[style.btntxt]}>Confirm Payment</Text>
+                            <Text style={[style.btntxt]}>בצע תשלום</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                <SuccessAlert show={show} setShow={setShow} content={content} />
             </View>
         </SafeAreaView>
     )
