@@ -39,25 +39,34 @@ export default function CreateSalePoint() {
   const [content, setContent] = useState("");
   const [salePoint, setSalePoint] = useState(null);
   const [productsList, setProductsList] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([])
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [updated, setUpdated] = useState(false); //products in sale point updated
 
+  //for render the farm's products
+  const [amounts, setAmounts] = useState([]);
+  const [prices, setPrices] = useState([]);
 
   //in the initial render- bring all the farm products
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       //register point
       let res = await getProductsByFarm(3);
       //farm.id לשים בגט פרודקטס ביי פרם
       if (res) {
-        console.log("get products farm", res)
+        console.log("get products farm", res);
         //update the sale point=res now with id
         setProductsList(res);
+        //set the array accourding to products amount
+        const newAmounts = res.map(() => 0);
+        const newPrices = res.map(() => 0);
+        setAmounts(newAmounts);
+        setPrices(newPrices);
+        console.log(newAmounts,newPrices)
       }
     };
     fetchData();
-     },[])
-    
+  }, []);
+
   //when the button was pressed->add the sale point to the DB
   useEffect(() => {
     if (navContinue) {
@@ -68,7 +77,7 @@ export default function CreateSalePoint() {
           //update the sale point=res now with id
           setSalePoint(res);
         }
-        console.log("salePoint",salePoint)
+        console.log("salePoint", salePoint);
       };
       fetchData();
     }
@@ -192,12 +201,12 @@ export default function CreateSalePoint() {
               </View>
             </View>
           </RBSheet>
-          
-    <ScrollView
-      style={{ marginTop: 15 }}
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-    >
+
+          <ScrollView
+            style={{ marginTop: 15 }}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <DetailsSalePoint
               setSalePoint={setSalePoint}
               salePoint={salePoint}

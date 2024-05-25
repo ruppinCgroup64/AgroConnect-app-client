@@ -77,7 +77,6 @@ import Tender from "../screens/Tender";
 import SalePoint from "../screens/SalePoint";
 import SalePointFarmer from "../screensFarmer/SalePointFarmer";
 
-
 const Stack = createNativeStackNavigator();
 
 export default function StackNavigator() {
@@ -116,6 +115,12 @@ export default function StackNavigator() {
               options={{ headerShown: false }}
             />
           ) : null}
+          
+          <Stack.Screen
+            name="CreateSalePoint"
+            component={CreateSalePoint}
+            options={{ headerShown: false }}
+          />
 
           <Stack.Screen
             name="Login"
@@ -125,7 +130,7 @@ export default function StackNavigator() {
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
-            options={{ headerShown: false /*gestureEnabled: false*/ }}
+            options={{ headerShown: false, gestureEnabled: false }}
           />
           <Stack.Screen
             name="EditProfile"
@@ -167,12 +172,27 @@ export default function StackNavigator() {
             component={Farmer}
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
-            name="CreateSalePoint"
-            component={CreateSalePoint}
+            name="SettingsFarmer"
+            component={SettingsFarmer}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="Tender"
+            component={Tender}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePoint"
+            component={SalePoint}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePointFarmer"
+            component={SalePointFarmer}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="CreateTender"
             component={CreateTender}
@@ -401,26 +421,6 @@ export default function StackNavigator() {
           <Stack.Screen
             name="CreateAccount"
             component={CreateAccount}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SettingsFarmer"
-            component={SettingsFarmer}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Tender"
-            component={Tender}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SalePoint"
-            component={SalePoint}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SalePointFarmer"
-            component={SalePointFarmer}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
