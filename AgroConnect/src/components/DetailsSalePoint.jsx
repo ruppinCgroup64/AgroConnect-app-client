@@ -91,7 +91,7 @@ export default function DetailsSalePoint(props) {
         longitude: longitude.toString(),
         latitude: latitude.toString(),
       };
-      const updatedProducts = [{}];
+      //const updatedProducts = [{}];
       setSalePoint(updatedPoint);
       setFlag(true);
       setErrors({});
@@ -223,7 +223,7 @@ export default function DetailsSalePoint(props) {
         }}
       >
         {productsList.map((product, index) => (
-          <View key={index} style={{ flexBasis: "50%" }}>
+          <View key={index} style={{ width: '100%' }}>
             <SalePointProductFarmer
               i={index}
               title={product.name}

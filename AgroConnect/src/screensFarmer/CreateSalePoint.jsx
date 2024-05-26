@@ -30,7 +30,7 @@ export default function CreateSalePoint() {
   const theme = useContext(themeContext);
   const { farm } = useContext(UsersContext);
   const { createSalePoint } = useContext(SalePointContext);
-  const { getProductsByFarm } = useContext(ProductContext);
+  const { getProductsByFarm, productsByFarm } = useContext(ProductContext);
 
   const navigation = useNavigation();
 
@@ -53,23 +53,21 @@ export default function CreateSalePoint() {
       let res = await getProductsByFarm(3);
       //farm.id לשים בגט פרודקטס ביי פרם
       if (res) {
-        console.log("get products farm", res);
         //update the sale point=res now with id
         setProductsList(res);
-        //set the array according to products amount
-        const newAmounts = res.map(() => 0);
-        const newPrices = res.map(() => 0);
-        setAmounts(newAmounts);
-        setPrices(newPrices);
-        console.log(newAmounts, newPrices);
       }
     };
     fetchData();
   }, []);
-  
+
   useEffect(() => {
-    console.log(amounts, prices)
-  }, [amounts, prices]); // Dependency array includes amounts and prices
+    if (productsByFarm.length > 0) {
+      let newAmounts = productsByFarm.map(() => 0);
+      let newPrices = productsByFarm.map(() => 0);
+      setAmounts(newAmounts);
+      setPrices(newPrices);
+    }
+  }, [productsByFarm]);
 
   //when the button was pressed->add the sale point to the DB
   useEffect(() => {
@@ -90,9 +88,20 @@ export default function CreateSalePoint() {
 
   //when the sale point registred in the DB-> register its products
   useEffect(() => {
-    if (salePoint && salePoint.id) {
+    console.log(salePoint)
+    if (salePoint) {
       //register its products- send list of products
-      //לרשום את המוצרים שהחקלאי בחר לבק
+      const finalProducts = productsList
+      //only the products that have 
+      .filter((product, index) => amounts[index]>0)
+      .map((product, index) => ( 
+        {
+        salePointNum: salePoint.id,
+        productInFarmNum: product.id,
+        productAmount: amounts[index],
+        unitPrice: prices[index],
+      }));
+      console.log(finalProducts);
       setContent("נקודת המכירה נוצרה בהצלחה");
     }
   }, [salePoint]);
@@ -106,9 +115,7 @@ export default function CreateSalePoint() {
   useEffect(() => {
     if (content != "") {
       const timer = setTimeout(() => {
-        if (!updatedConsumer.isFarmer) navigation.navigate("MyTabs");
-        else
-          navigation.navigate("ProfilefillFarmer", { farmerID: consumer.id }); //add consumer.id
+          //navigation.navigate("MyTabs"); //נשלח אותו לעמוד של נקודת המכירה
       }, 2000);
     }
   }, [show]);
