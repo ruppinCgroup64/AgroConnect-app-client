@@ -15,6 +15,13 @@ export default function SalePointContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function addProductsToPoint(point) {
+    let res = await create("api/FarmProductsInPoint", point);
+    if (res)
+      return res
+    else alert("something went wrong");
+  }
+
   async function updateSalePoint(pointID, point) {
     let res = await update(`api/SalePoints/${pointID}`, point);
     if (res) {
@@ -32,7 +39,7 @@ export default function SalePointContextProvider(props) {
   }
 
   return (
-    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoint }}>
+    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoint, addProductsToPoint }}>
       {props.children}
     </SalePointContext.Provider>
   );

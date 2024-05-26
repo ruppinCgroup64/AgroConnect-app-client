@@ -36,6 +36,7 @@ export default function DetailsSalePoint(props) {
     setAmounts,
     prices,
     setPrices,
+    incorrectDetails
   } = props;
 
   const theme = useContext(themeContext);
@@ -91,7 +92,6 @@ export default function DetailsSalePoint(props) {
         longitude: longitude.toString(),
         latitude: latitude.toString(),
       };
-      //const updatedProducts = [{}];
       setSalePoint(updatedPoint);
       setFlag(true);
       setErrors({});
@@ -223,7 +223,7 @@ export default function DetailsSalePoint(props) {
         }}
       >
         {productsList.map((product, index) => (
-          <View key={index} style={{ width: '100%' }}>
+          <View key={index} style={{ width: "100%" }}>
             <SalePointProductFarmer
               i={index}
               title={product.name}
@@ -240,7 +240,11 @@ export default function DetailsSalePoint(props) {
       {errors.amount ? (
         <Text style={style.errorText}>{errors.amount}</Text>
       ) : null}
-      
+      {incorrectDetails ? (
+        <Text style={style.errorText}>
+          במידה ובחרת למכור מוצר יש להזין מחיר וכמות יחד
+        </Text>
+      ) : null}
       <View style={{ marginBottom: 50 }}>
         <TouchableOpacity onPress={handleSubmit} style={style.btn}>
           <Text style={style.btntxt}>צור נקודת מכירה</Text>

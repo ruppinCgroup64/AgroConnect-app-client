@@ -115,12 +115,7 @@ export default function StackNavigator() {
               options={{ headerShown: false }}
             />
           ) : null}
-          
-         <Stack.Screen
-            name="CreateSalePoint"
-            component={CreateSalePoint}
-            options={{ headerShown: false }}
-          />
+         
 
           <Stack.Screen
             name="Login"
@@ -182,6 +177,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Tender"
             component={Tender}
+            options={{ headerShown: false }}
+          /> 
+         <Stack.Screen
+            name="CreateSalePoint"
+            component={CreateSalePoint}
             options={{ headerShown: false }}
           />
           <Stack.Screen
