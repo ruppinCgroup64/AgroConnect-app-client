@@ -70,6 +70,9 @@ export default function Login() {
         setProbLogin("הפרטים אינם תקינים")
       }
       setErrors({});
+      setProbLogin("");
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -89,23 +92,17 @@ export default function Login() {
         behavior={Platform.OS === "ios" ? "padding" : null}
       >
         <View style={[style.main, { backgroundColor: theme.bg }]}>
-          {/* <AppBar
-            color={theme.bg}
-            elevation={0}
-            leading={<TouchableOpacity onPress={() => navigation.navigate('Letsin')}>
-              <Icon name="arrow-back"  color={theme.txt} size={30}/>
-            </TouchableOpacity>
-            } /> */}
           <Image
             source={{
-              uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/fruits_bgr.png",
+              uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/homeImg.png",
             }}
             resizeMode="stretch"
             style={{
-              height: height / 3.5,
-              width: width* (4/3.5),
+              height: height / 4,
+              width: width,
               alignSelf: "center",
-              marginTop: -height/15,
+              marginRight: 10,
+              marginLeft: 10,
             }}
           ></Image>
           <Image
@@ -115,7 +112,6 @@ export default function Login() {
               height: height / 9,
               width: width / 1.8,
               alignSelf: "center",
-              marginTop: -height/25,
             }}
           ></Image>
           <View style={{ marginVertical: 20 }}>
@@ -217,7 +213,7 @@ export default function Login() {
               <Text style={style.errorText}>{probLogin}</Text>
           </View>
 
-          <View style={{ marginVertical: 30 }}>
+          <View>
             <TouchableOpacity onPress={handleSubmit} style={style.btn}>
               <Text style={style.btntxt}>התחבר</Text>
             </TouchableOpacity>

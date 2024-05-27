@@ -28,15 +28,15 @@ export default function Welcome() {
           <View
             style={[styles.container, { backgroundColor: theme.bg, marginTop: 50 }]}
           >
-              <Image
-                source={theme.a}
+              {/* <Image
+                source={{uri:theme.a}}
                 resizeMode="stretch"
                 style={{
                   height: height / 6,
                   width: width / 1.2,
                   alignSelf: "center",
                 }}
-              ></Image>
+              ></Image> */}
                 <Text
                   style={[
                     style.subtitle,
@@ -48,14 +48,14 @@ export default function Welcome() {
                   <Text style={[style.m16, { color: theme.txt3, paddingBottom:20 }]}>
                   ההרשמה בוצעה בהצלחה
                 </Text>
-                <Image
+                {/* <Image
                 source={theme.basket}
                 resizeMode="stretch"
                 style={{
                   height: height/3,
                   width: width/1.2
                 }}
-              ></Image>
+              ></Image> */}
           </View>
       </SafeAreaView>
     )

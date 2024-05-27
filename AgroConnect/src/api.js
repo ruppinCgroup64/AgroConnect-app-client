@@ -15,13 +15,15 @@ export async function create(url, data) {
     if (res.ok) {
       return await res.json();
     } else {
-      const errorBody = await res.text(); // Or res.json() if the server sends JSON on errors
+      const errorBody = await res.text();
+      alert("something went wrong");
       throw new Error(`HTTP ${res.status}: ${errorBody}`);
+
     }
   } catch (err) {
     console.error(err);
-    return { status: false, err: err.message }; // More detailed error message
-  }  
+    return { status: false, err: err.message };
+  }
 }
 
 export async function read(url) {
@@ -49,9 +51,15 @@ export async function update(url, data) {
         "Accept": "application/json; charset=UTF-8",
       }),
     });
-    return await res.json();
+    if (res.ok) {
+      return await res.json();
+    } else {
+      const errorBody = await res.text();
+      throw new Error(`HTTP ${res.status}: ${errorBody}`);
+    }
   } catch (err) {
-    return { status: false, err }; //בעיה בקוד/שגיאת שרת
+    console.error(err);
+    return { status: false, err: err.message };
   }
 }
 
