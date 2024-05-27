@@ -15,15 +15,15 @@ export async function create(url, data) {
     if (res.ok) {
       return await res.json();
     } else {
-      const errorBody = await res.text();  
+      const errorBody = await res.text();
       alert("something went wrong");
       throw new Error(`HTTP ${res.status}: ${errorBody}`);
-     
+
     }
   } catch (err) {
     console.error(err);
-    return { status: false, err: err.message }; 
-  }  
+    return { status: false, err: err.message };
+  }
 }
 
 export async function read(url) {
@@ -54,13 +54,13 @@ export async function update(url, data) {
     if (res.ok) {
       return await res.json();
     } else {
-      const errorBody = await res.text(); 
+      const errorBody = await res.text();
       throw new Error(`HTTP ${res.status}: ${errorBody}`);
     }
   } catch (err) {
     console.error(err);
-    return { status: false, err: err.message }; 
-  }  
+    return { status: false, err: err.message };
+  }
 }
 
 export async function remove(url) {
