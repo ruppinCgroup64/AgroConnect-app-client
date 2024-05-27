@@ -30,6 +30,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import ImageProfile from "../components/ImageProfile";
 import SuccessAlert from "../components/SuccessAlert";
 import { uploadFile } from "../api";
+import MyTabsFarmer from "../navigator/BottomNavigatorFarmer";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -58,15 +59,16 @@ export default function Settings() {
   // states and an eddect to eneble navigation to the farmer's settings, when pressed
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("התחבר כ-");
-  const [items, setItems] = useState([
-    { label: "צרכן", value: "צרכן" },
-    { label: "חקלאי", value: "חקלאי" },
-  ]);
+  tempItems = [{ label: "צרכן", value: "צרכן" }];
+  if (consumer.isFarmer)
+    tempItems=[{ label: "צרכן", value: "צרכן" }, { label: "חקלאי", value: "חקלאי" }];
+  const [items, setItems] = useState(tempItems);
+
   const [userType, setUserType] = useState("התחבר כ-");
   useEffect(() => {
     if (value == "חקלאי") {
       this.RBSheet14.close();
-      navigation.navigate("SettingsFarmer");
+      navigation.navigate("MyTabsFarmer");
     }
   }, [value]);
 
@@ -82,7 +84,7 @@ export default function Settings() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log("1",profilePic,"0000000000000", consumer.profilePic);
+    console.log("1", profilePic, "0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let updatedRes = {};
@@ -121,7 +123,7 @@ export default function Settings() {
   }, [profilePic]);
 
   useEffect(() => {
-    console.log("2",profilePic,"0000000000000", consumer.profilePic);
+    console.log("2", profilePic, "0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let res = await updateUser(updatedConsumer); //update the user's image in the DB
@@ -135,7 +137,7 @@ export default function Settings() {
   }, [updatedConsumer]);
 
   useEffect(() => {
-    console.log("3",profilePic,"0000000000000", consumer.profilePic);
+    console.log("3", profilePic, "0000000000000", consumer.profilePic);
     if (content != "") {
       setShow(true);
     }

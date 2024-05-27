@@ -30,7 +30,7 @@ import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmer
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function SalePointFarmer() {
+export default function SalePointsFarmer() {
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
@@ -84,43 +84,17 @@ export default function SalePointFarmer() {
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
-                <ImageBackground source={image} resizeMode='cover' style={{ height: height / 2.2, flex: 1, }} >
-                    <AppBar
-                        elevation={0}
-                        style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}
-                        leading={<TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-forward" color={theme.txt} size={30} />
-                        </TouchableOpacity>
-                        }
-                    />
-                </ImageBackground>
+            {/* Top Bar */}
+            <View style={{ flexDirection: 'row', paddingTop: 15, paddingHorizontal: 20 }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name="arrow-forward" color={theme.txt} size={30} />
+                </TouchableOpacity>
+                <Text style={[style.s18, { marginStart: (width / 4) - 15, color: theme.txt, fontSize: 25 }]}>נקודות מכירה</Text>
             </View>
 
             {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, }]}>האתרוג 2, נתניה</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>10.04.2024</Text>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>|</Text>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginStart: 15 }]}>9:00-13:00</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farm.address}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
-                        </View>
-                    </View>
 
                     {/* Products */}
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
@@ -156,4 +130,4 @@ export default function SalePointFarmer() {
         setTotal(sum);
     }//newTotal
 
-}//SalePointFarmer
+}//SalePointsFarmer

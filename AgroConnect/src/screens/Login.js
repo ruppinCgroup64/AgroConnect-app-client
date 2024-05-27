@@ -40,8 +40,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [probLogin, setProbLogin] = useState("");
-
-  const { consumer, setConsumer } = useContext(UsersContext);
+  const { consumer } = useContext(UsersContext);
 
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -62,19 +61,24 @@ export default function Login() {
         longitude: "",
         latitude: "",
       };
-      let ans=await login(user)
-      if (ans==true) {
-        navigation.navigate("MyTabs");
-      } 
-      else {
+      let ans = await login(user)
+      if (ans == true)
+        navigateTabs();
+      else
         setProbLogin("הפרטים אינם תקינים")
-      }
       setErrors({});
       setProbLogin("");
       setEmail("");
       setPassword("");
     }
   };
+
+  const navigateTabs = async () => {
+    if (consumer.isFarmer)
+      navigation.navigate("MyTabsFarmer");
+    else
+      navigation.navigate("MyTabs");
+  }//nevigateTabs
 
   //errors
   const validateForm = () => {
@@ -148,7 +152,7 @@ export default function Login() {
               onFocus={() => setIsFocused("email")}
               onBlur={() => setIsFocused(false)}
               placeholderTextColor={Colors.disable}
-              
+
               style={[
                 style.r14,
                 { paddingHorizontal: 10, color: theme.txt, flex: 1 },
@@ -208,9 +212,9 @@ export default function Login() {
           {errors.password ? (
             <Text style={style.errorText}>{errors.password}</Text>
           ) : null}
-          
+
           <View style={{ marginVertical: 15 }}>
-              <Text style={style.errorText}>{probLogin}</Text>
+            <Text style={style.errorText}>{probLogin}</Text>
           </View>
 
           <View>

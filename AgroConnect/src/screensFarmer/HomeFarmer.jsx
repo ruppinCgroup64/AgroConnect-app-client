@@ -80,7 +80,7 @@ const fairs = [
 
 const salesPoints = [
     {
-        nav: 'SalePoint',
+        nav: 'SalePointFarmer',
         img: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png',
         title: 'האתרוג 2, נתניה',
         address: '10.04.2024',
@@ -89,7 +89,7 @@ const salesPoints = [
         timer: 'עוד 8 ימים'
     },
     {
-        nav: 'SalePoint',
+        nav: 'SalePointFarmer',
         img: 'https://mesheq77.co.il/wp-content/uploads/2018/06/logo300.png',
         title: 'החרוב 1, אחיטוב',
         address: '15.04.2024',
@@ -98,7 +98,7 @@ const salesPoints = [
         timer: 'עוד 13 ימים'
     },
     {
-        nav: 'SalePoint',
+        nav: 'SalePointFarmer',
         img: 'https://michaelio.co.il/wp-content/uploads/2021/07/meshek_michaeli_logo.png',
         title: 'משק מיכאלי',
         address: '07.04.2024',
@@ -147,7 +147,7 @@ const SalePoiontsList = () => {
     );
 };
 
-export default function Home() {
+export default function HomeFarmer() {
 
     const theme = useContext(themeContext);
     const navigation = useNavigation();
@@ -175,15 +175,15 @@ export default function Home() {
                         </View>
                     </View>
 
-                    <HomeTopBar />
+                    <HomeTopBar farmer={true} />
 
                     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 10 }} nestedScrollEnabled={true}>
 
                         {/* ~~~~~~~~~~~~~~  נקודות מכירה  ~~~~~~~~~~~~~~ */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                            <Text style={[style.t1, { color: theme.txt, }]}>נקודות מכירה</Text>
+                            <Text style={[style.t1, { color: theme.txt, }]}>נקודות המכירה שלי</Text>
                             <TouchableOpacity >
-                                <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
+                                <Text style={[style.b16, { color: Colors.primary, }]} onPress={() => navigation.navigate('SalePointsFarmer')}>ראה עוד</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -193,9 +193,10 @@ export default function Home() {
                             </ScrollView>
                         </View>
 
+
                         {/* ~~~~~~~~~~~~~~  מכרזים  ~~~~~~~~~~~~~~ */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                            <Text style={[style.t1, { color: theme.txt, }]}>מכרזים</Text>
+                            <Text style={[style.t1, { color: theme.txt, }]}>המכרזים שלי</Text>
                             <TouchableOpacity >
                                 <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
                             </TouchableOpacity>
@@ -205,6 +206,7 @@ export default function Home() {
                                 <TenderList />
                             </ScrollView>
                         </View>
+
 
                         {/* ~~~~~~~~~~~~~~  ירידים  ~~~~~~~~~~~~~~ */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>

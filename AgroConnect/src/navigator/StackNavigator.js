@@ -76,6 +76,9 @@ import CreateSalePoint from "../screensFarmer/CreateSalePoint";
 import Tender from "../screens/Tender";
 import SalePoint from "../screens/SalePoint";
 import SalePointFarmer from "../screensFarmer/SalePointFarmer";
+import HomeFarmer from "../screensFarmer/HomeFarmer";
+import MyTabsFarmer from "./BottomNavigatorFarmer";
+import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
 
 const Stack = createNativeStackNavigator();
 
@@ -126,6 +129,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
+          <Stack.Screen
+            name="MyTabsFarmer"
+            component={MyTabsFarmer}
             options={{ headerShown: false, gestureEnabled: false }}
           />
           <Stack.Screen
@@ -422,6 +430,16 @@ export default function StackNavigator() {
           <Stack.Screen
             name="CreateSalePoint"
             component={CreateSalePoint}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="HomeFarmer"
+            component={HomeFarmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePointsFarmer"
+            component={SalePointsFarmer}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

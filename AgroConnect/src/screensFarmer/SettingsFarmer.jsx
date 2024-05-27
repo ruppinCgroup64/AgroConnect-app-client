@@ -26,6 +26,7 @@ import Settings_option from '../components/Settings_option';
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import DropDownPicker from 'react-native-dropdown-picker';
+import MyTabs from '../navigator/BottomNavigator';
 
 
 const height = Dimensions.get('screen').height
@@ -60,7 +61,7 @@ export default function SettingsFarmer() {
     useEffect(() => {
         if (value == "צרכן"){
             this.RBSheet14.close(); 
-            navigation.navigate('Settings');
+            navigation.navigate('MyTabs');
         }
     }, [value]);
 
