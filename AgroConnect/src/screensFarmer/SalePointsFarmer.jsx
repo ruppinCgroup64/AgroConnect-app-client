@@ -26,6 +26,7 @@ import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
+import TenderHomeElement from '../components/TenderHomeElement';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -93,6 +94,16 @@ export default function SalePointsFarmer() {
                     <Icon name="arrow-forward" color={theme.txt} size={30} />
                 </TouchableOpacity>
                 <Text style={[style.s18, { marginStart: (width / 4) - 15, color: theme.txt, fontSize: 25 }]}>נקודות מכירה</Text>
+            </View>
+            <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 0, }}>
+                <View style={{ flex: 1, marginRight: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
+                        style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
+                        <Text style={[style.btntxt, { marginRight: 5 }]}>יצירת נקודת מכירה</Text>
+                        <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             {/* Tender Info */}
