@@ -1,9 +1,10 @@
 
 //Users management- consumer, farmers, login user
 
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect} from "react";
 import { create, read, update, remove } from "../api";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import {navigateLogin} from "../screens/Login";
 
 export const UsersContext = createContext();
 
@@ -82,18 +83,18 @@ export default function UsersContextProvider(props) {
 
   async function login(user) {
     let res = await create("api/Consumers/Login", user);
-    console.log("login", res)
     if (res) {
       if (res.email == null) {
-        return false
+        return 0;
       }
       else {
         setConsumer(res);
         if (res.isFarmer == true) {
           let resFarm = await read("api/Farms/farmer/" + res["id"]);
           setFarm(resFarm[0]);
+          return 2;
         }
-        return true;
+        return 1;
       }
     }
     else alert("something went wrong");
@@ -101,7 +102,7 @@ export default function UsersContextProvider(props) {
 
 
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm }}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm}}>
       {props.children}
     </UsersContext.Provider>
   );

@@ -41,46 +41,49 @@ export default function SalePointsFarmer() {
     const [prices, setPrices] = useState([0, 0, 0]);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = { uri: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png' };
 
-    //Products
-    const product = [
+    const salesPoints = [
         {
-            title: "אבטיח",
-            measure: 'ק"ג',
-            uri: "https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
+            nav: 'SalePointFarmer',
+            img: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png',
+            title: 'האתרוג 2, נתניה',
+            address: '10.04.2024',
+            nav2: 'Review',
+            rank: '4.7',
+            timer: 'עוד 8 ימים'
         },
         {
-            title: "עגבניה",
-            measure: 'ק"ג',
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s",
+            nav: 'SalePointFarmer',
+            img: 'https://mesheq77.co.il/wp-content/uploads/2018/06/logo300.png',
+            title: 'החרוב 1, אחיטוב',
+            address: '15.04.2024',
+            nav2: 'Review',
+            rank: '4.4',
+            timer: 'עוד 13 ימים'
         },
         {
-            title: "אננס",
-            measure: "יח'",
-            uri: "https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg",
+            nav: 'SalePointFarmer',
+            img: 'https://michaelio.co.il/wp-content/uploads/2021/07/meshek_michaeli_logo.png',
+            title: 'משק מיכאלי',
+            address: '07.04.2024',
+            nav2: 'Review',
+            rank: '4.8',
+            timer: 'עוד 5 ימים'
         },
-    ];//product
+    ];//salesPoints
 
-    const ProductList = () => {
-        return (<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
-            {products.map((product, index) => (
-                <View key={index} style={{ width: "100%" }}>
-                    <SalePointProductFarmerReadOnly
-                        i={index}
-                        title={product.name}
-                        measure={'ק"ג'}
-                        uri={product.pic}
-                        amounts={amounts}
-                        setAmounts={setAmounts}
-                        prices={prices}
-                        setPrices={setPrices}
-                    />
-                </View>
+    const SalePoiontsList = () => {
+        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
+            {salesPoints.map((item, index) => (
+                <TouchableOpacity key={index}
+                    activeOpacity={0.8}>
+                    <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
+                    <View style={{ marginHorizontal: 115 }}></View>
+                </TouchableOpacity>
             ))}
         </View>
-        );//return
-    };//ProduceList
+        );
+    };
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -102,7 +105,7 @@ export default function SalePointsFarmer() {
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <ProductList />
+                        <SalePoiontsList />
                     </View>
 
                     {/* Total amount and checkout */}

@@ -24,6 +24,7 @@ import Checkbox from "expo-checkbox";
 import { create } from "../api";
 import { UsersContext } from "../Context/UserContext";
 
+
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
@@ -62,8 +63,12 @@ export default function Login() {
         latitude: "",
       };
       let ans = await login(user)
-      if (ans == true)
-        navigateTabs();
+      if (ans != 0) {
+        if (ans == 2)
+          navigation.navigate('MyTabsFarmer');
+        else
+          navigation.navigate('MyTabs');
+      }
       else
         setProbLogin("הפרטים אינם תקינים")
       setErrors({});
@@ -72,13 +77,6 @@ export default function Login() {
       setPassword("");
     }
   };
-
-  const navigateTabs = async () => {
-    if (consumer.isFarmer)
-      navigation.navigate("MyTabsFarmer");
-    else
-      navigation.navigate("MyTabs");
-  }//nevigateTabs
 
   //errors
   const validateForm = () => {
