@@ -82,7 +82,6 @@ export default function Settings() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log("1",profilePic,"0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let updatedRes = {};
@@ -121,7 +120,6 @@ export default function Settings() {
   }, [profilePic]);
 
   useEffect(() => {
-    console.log("2",profilePic,"0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let res = await updateUser(updatedConsumer); //update the user's image in the DB
@@ -131,11 +129,9 @@ export default function Settings() {
       };
       fetchData();
     }
-    console.log("sett", updatedConsumer);
   }, [updatedConsumer]);
 
   useEffect(() => {
-    console.log("3",profilePic,"0000000000000", consumer.profilePic);
     if (content != "") {
       setShow(true);
     }
