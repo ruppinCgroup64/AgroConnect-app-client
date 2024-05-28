@@ -25,9 +25,7 @@ import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
-import TenderHomeElement from '../components/TenderHomeElement';
-import SquareImage from '../components/SquareImage';
-import SalePointProductFarmer from '../components/SalePointProductFarmer';
+import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -66,14 +64,23 @@ export default function SalePointFarmer() {
 
     const ProductList = () => {
         return (<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
-            {product.map((item, index) => (
-                <View key={index} style={{ flexBasis: '50%' }}>
-                    <SalePointProductFarmer i={index} title={item.title} measure={item.measure} uri={item.uri} amounts={amounts} setAmounts={setAmounts} prices={prices} setPrices={setPrices} />
+            {products.map((product, index) => (
+                <View key={index} style={{ width: "100%" }}>
+                    <SalePointProductFarmerReadOnly
+                        i={index}
+                        title={product.name}
+                        measure={'ק"ג'}
+                        uri={product.pic}
+                        amounts={amounts}
+                        setAmounts={setAmounts}
+                        prices={prices}
+                        setPrices={setPrices}
+                    />
                 </View>
             ))}
         </View>
-        );
-    };
+        );//return
+    };//ProduceList
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -130,13 +137,9 @@ export default function SalePointFarmer() {
                         <View style={{ flex: 1, marginRight: 10 }}>
                             <TouchableOpacity onPress={() => navigation.navigate('Payment1')}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                                <Text style={[style.btntxt, { marginRight: 5 }]}>ביצוע קנייה</Text>
+                                <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary}></Icons>
                             </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={[style.m12, { color: theme.txt3, }]}>מחיר כולל</Text>
-                            <Text style={[style.apptitle, { color: theme.txt, }]}>₪{total}</Text>
                         </View>
                     </View>
                 </ScrollView>

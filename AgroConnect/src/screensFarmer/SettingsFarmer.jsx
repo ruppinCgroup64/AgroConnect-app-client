@@ -26,6 +26,7 @@ import Settings_option from '../components/Settings_option';
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import DropDownPicker from 'react-native-dropdown-picker';
+import MyTabs from '../navigator/BottomNavigator';
 
 
 const height = Dimensions.get('screen').height
@@ -39,7 +40,8 @@ const width = Dimensions.get('screen').width
 const settings_details = [
     { navTo: 'EditProfile', t: 'עריכת פרטים אישיים', i: 'person-outline', key: 1 },
     { navTo: 'Farmer', t: 'העמוד שלי', i: 'id-card-outline', key: 2 },
-    { navTo: 'About', t: 'אודות', i: 'alert-circle-outline', key: 3 }
+    { navTo: 'EditProfileFarm', t: 'עריכת פרטי המשק', i: 'id-card', key: 3 },
+    { navTo: 'About', t: 'אודות', i: 'alert-circle-outline', key: 4 }
 ];
 
 export default function SettingsFarmer() {
@@ -60,7 +62,7 @@ export default function SettingsFarmer() {
     useEffect(() => {
         if (value == "צרכן"){
             this.RBSheet14.close(); 
-            navigation.navigate('Settings');
+            navigation.navigate('MyTabs');
         }
     }, [value]);
 
@@ -121,6 +123,11 @@ export default function SettingsFarmer() {
                     {/* Adding the third Settings option using the array "settings_details" and the component "Settings_option" */}
                     {<View style={{ paddingBottom: 20 }}>
                         <Settings_option theme navTo={settings_details[2].navTo} t={settings_details[2].t} i={settings_details[2].i} />
+                    </View>}
+
+                     {/* Adding the forth Settings option using the array "settings_details" and the component "Settings_option" */}
+                     {<View style={{ paddingBottom: 20 }}>
+                        <Settings_option theme navTo={settings_details[3].navTo} t={settings_details[3].t} i={settings_details[3].i} />
                     </View>}
 
                     {/* The "Connected As" drop down */}

@@ -24,6 +24,7 @@ import Checkbox from "expo-checkbox";
 import { create } from "../api";
 import { UsersContext } from "../Context/UserContext";
 
+
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
@@ -40,8 +41,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [probLogin, setProbLogin] = useState("");
-
-  const { consumer, setConsumer } = useContext(UsersContext);
+  const { consumer } = useContext(UsersContext);
 
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -62,13 +62,15 @@ export default function Login() {
         longitude: "",
         latitude: "",
       };
-      let ans=await login(user)
-      if (ans==true) {
-        navigation.navigate("MyTabs");
-      } 
-      else {
-        setProbLogin("הפרטים אינם תקינים")
+      let ans = await login(user)
+      if (ans != 0) {
+        if (ans == 2)
+          navigation.navigate('MyTabsFarmer');
+        else
+          navigation.navigate('MyTabs');
       }
+      else
+        setProbLogin("הפרטים אינם תקינים")
       setErrors({});
       setProbLogin("");
       setEmail("");
@@ -148,7 +150,7 @@ export default function Login() {
               onFocus={() => setIsFocused("email")}
               onBlur={() => setIsFocused(false)}
               placeholderTextColor={Colors.disable}
-              
+
               style={[
                 style.r14,
                 { paddingHorizontal: 10, color: theme.txt, flex: 1 },
@@ -208,9 +210,9 @@ export default function Login() {
           {errors.password ? (
             <Text style={style.errorText}>{errors.password}</Text>
           ) : null}
-          
+
           <View style={{ marginVertical: 15 }}>
-              <Text style={style.errorText}>{probLogin}</Text>
+            <Text style={style.errorText}>{probLogin}</Text>
           </View>
 
           <View>
