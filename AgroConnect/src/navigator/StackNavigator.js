@@ -433,11 +433,6 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="CreateSalePoint"
-            component={CreateSalePoint}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
             name="HomeFarmer"
             component={HomeFarmer}
             options={{ headerShown: false }}

@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Text
+  Text,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppBar } from "@react-native-material/core";
@@ -25,17 +25,26 @@ import { UsersContext } from "../Context/UserContext";
 export default function EditProfileFarm() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const {farm, setFarm} = useContext(UsersContext);
+  const { farm, setFarm, updateFarm } = useContext(UsersContext);
 
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
 
+  const [updatedFarm, setUpdatedFarm] = useState(farm);
+
   useEffect(() => {
     if (navContinue) {
-      setContent("פרטיך נשמרו בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
+      const fetchData = async () => {
+        let res = await updateFarm(updatedFarm); //update the user's image in the DB
+        if (res) {
+          setContent("פרטיך נשמרו בהצלחה");
+          console.log(updatedFarm, res)
+        }
+      };
+      fetchData();
     }
-    console.log(farm)
+    console.log("farm", farm);
   }, [navContinue]);
 
   useEffect(() => {
@@ -64,7 +73,7 @@ export default function EditProfileFarm() {
         >
           <AppBar
             color={theme.bg}
-            title="עריכת פרטים אישיים"
+            title="עריכת פרטי משק"
             titleStyle={[
               style.apptitle,
               { color: theme.txt, textAlign: "center" },
@@ -145,7 +154,12 @@ export default function EditProfileFarm() {
               </View>
             </View>
           </RBSheet>
-          <DetailsFarm farm={farm} setFarm={setFarm} setNavContinue={setNavContinue}/>
+          <DetailsFarm
+            farm={updatedFarm}
+            setFarm={setUpdatedFarm}
+            setNavContinue={setNavContinue}
+            mainPic={farm.mainPic}
+          />
           <SuccessAlert show={show} setShow={setShow} content={content} />
         </View>
       </KeyboardAvoidingView>

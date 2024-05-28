@@ -52,7 +52,6 @@ export default function CreateSalePoint() {
     const fetchData = async () => {
       //register point
       let res = await getProductsByFarm(farm.id);
-      //farm.id לשים בגט פרודקטס ביי פרם
       if (res) {
         //update the sale point=res now with id
         setProductsList(res);
