@@ -41,29 +41,6 @@ export default function DetailsSalePoint(props) {
 
   const theme = useContext(themeContext);
 
-  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // const [selectDate, setSelectDate] = useState("");
-  // const showDatePicker = () => {
-  //   setDatePickerVisibility(true);
-  // };
-
-  // const hideDatePicker = () => {
-  //   setDatePickerVisibility(false);
-  // };
-
-  // const handleConfirm = (date) => {
-  //   const dt = new Date(date);
-  //   const x = dt.toISOString().split("T");
-  //   const x1 = x[0].split("-");
-  //   setSelectDate(x1[0] + "/" + x1[1] + "/" + x1[2]);
-  //   hideDatePicker();
-  // };
-  // useEffect(() => {
-  //   if (selectDate != "") {
-  //     setDateOfBirth(selectDate);
-  //   }
-  // }, [selectDate]);
-
   const [flag, setFlag] = useState(false);
 
   const [dateHour, setDateHour] = useState("");
@@ -87,8 +64,7 @@ export default function DetailsSalePoint(props) {
         contactPhoneNum,
         rankPrice: 0,
         rankQuality: 0,
-        //farmNum: farm.id,
-        farmNum: 3, //למחוק אחרי שיש בק
+        farmNum: farm.id,
         longitude: longitude.toString(),
         latitude: latitude.toString(),
       };
