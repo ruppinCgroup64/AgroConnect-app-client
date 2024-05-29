@@ -195,18 +195,18 @@ export default function Settings() {
               alignItems: "center",
             }}
           >
-            <Text style={[style.subtitle, { color: theme.txt }]}>
+            <Text style={[style.subtitle, { color: theme.txt, paddingBottom: 20 }]}>
               {consumer.firstName + " " + consumer.lastName}
             </Text>
             {/* <Text style={[style.s14, { color: theme.txt, marginTop: 5 }]}>{consumer.phoneNum}</Text> */}
           </View>
-          <View style={{ paddingVertical: 20 }}>
+          <View>
             <View style={[style.divider, { backgroundColor: theme.border }]} />
           </View>
 
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
           {
-            <View style={{ paddingBottom: 20 }}>
+            <View style={{ paddingBottom: 20 , paddingTop: 20 }}>
               <Settings_option
                 theme
                 navTo={settings_details[0].navTo}
