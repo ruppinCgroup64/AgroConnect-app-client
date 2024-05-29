@@ -61,7 +61,7 @@ export default function Settings() {
   const [value, setValue] = useState("התחבר כ-");
   tempItems = [{ label: "צרכן", value: "צרכן" }];
   if (consumer.isFarmer)
-    tempItems=[{ label: "צרכן", value: "צרכן" }, { label: "חקלאי", value: "חקלאי" }];
+    tempItems = [{ label: "צרכן", value: "צרכן" }, { label: "חקלאי", value: "חקלאי" }];
   const [items, setItems] = useState(tempItems);
 
   const [userType, setUserType] = useState("התחבר כ-");
@@ -195,7 +195,7 @@ export default function Settings() {
               alignItems: "center",
             }}
           >
-            <Text style={[style.subtitle, { color: theme.txt, paddingBottom: 20 }]}>
+            <Text style={[style.subtitle, { color: theme.txt }]}>
               {consumer.firstName + " " + consumer.lastName}
             </Text>
             {/* <Text style={[style.s14, { color: theme.txt, marginTop: 5 }]}>{consumer.phoneNum}</Text> */}
@@ -205,28 +205,28 @@ export default function Settings() {
           </View>
 
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 , paddingTop: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[0].navTo}
-                t={settings_details[0].t}
-                i={settings_details[0].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20, paddingTop: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[0].navTo}
+              t={settings_details[0].t}
+              i={settings_details[0].i}
+            />
+          </View>
+
 
           {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[1].navTo}
-                t={settings_details[1].t}
-                i={settings_details[1].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[1].navTo}
+              t={settings_details[1].t}
+              i={settings_details[1].i}
+            />
+          </View>
+
 
           {/* The "Connected As" drop down */}
           <DropDownPicker

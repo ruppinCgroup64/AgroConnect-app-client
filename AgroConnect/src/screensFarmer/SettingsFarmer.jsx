@@ -186,7 +186,7 @@ export default function SettingsFarmer() {
               alignItems: "center",
             }}
           >
-            <Text style={[style.subtitle, { color: theme.txt, paddingBottom: 20 }]}>
+            <Text style={[style.subtitle, { color: theme.txt }]}>
               {consumer.firstName + " " + consumer.lastName}
             </Text>
             {/* <Text style={[style.s14, { color: theme.txt, marginTop: 5 }]}>{consumer.phoneNum}</Text> */}
@@ -194,55 +194,54 @@ export default function SettingsFarmer() {
           <View>
             <View style={[style.divider, { backgroundColor: theme.border }]} />
           </View>
-
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20, paddingTop: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[0].navTo}
-                t={settings_details[0].t}
-                i={settings_details[0].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20, paddingTop: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[0].navTo}
+              t={settings_details[0].t}
+              i={settings_details[0].i}
+            />
+          </View>
+
 
 
           {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[1].navTo}
-                t={settings_details[1].t}
-                i={settings_details[1].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[1].navTo}
+              t={settings_details[1].t}
+              i={settings_details[1].i}
+            />
+          </View>
+
 
           {/* Adding the third Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[2].navTo}
-                t={settings_details[2].t}
-                i={settings_details[2].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[2].navTo}
+              t={settings_details[2].t}
+              i={settings_details[2].i}
+            />
+          </View>
+
 
           {/* Adding the forth Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[3].navTo}
-                t={settings_details[3].t}
-                i={settings_details[3].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[3].navTo}
+              t={settings_details[3].t}
+              i={settings_details[3].i}
+            />
+          </View>
+
 
           {/* The "Connected As" drop down */}
           <DropDownPicker
