@@ -53,7 +53,6 @@ export default function DetailsFarm(props) {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      console.log("farm.consumerNum",farm.consumerNum)
       const updatedFarm = {
         id: farm && farm.id ? farm.id : 0,
         name: farmName,
