@@ -26,7 +26,7 @@ import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
-import TenderHomeElement from '../components/TenderHomeElement';
+import TenderShowMoreElement from '../components/TenderShowMoreElement';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -74,13 +74,11 @@ export default function SalePointsFarmer() {
     ];//salesPoints
 
     const SalePoiontsList = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
+        return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
             {salesPoints.map((item, index) => (
-                <TouchableOpacity key={index}
-                    activeOpacity={0.8}>
-                    <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
-                    <View style={{ marginHorizontal: 115 }}></View>
-                </TouchableOpacity>
+                <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                    <TenderShowMoreElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} style={{ flex: 1 }} />
+                </View>
             ))}
         </View>
         );
@@ -93,7 +91,7 @@ export default function SalePointsFarmer() {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name="arrow-forward" color={theme.txt} size={30} />
                 </TouchableOpacity>
-                <Text style={[style.s18, { marginStart: (width / 4) - 15, color: theme.txt, fontSize: 25 }]}>נקודות מכירה</Text>
+                <Text style={[style.s18, { marginStart: (width / 7), color: theme.txt, fontSize: 25 }]}>נקודות המכירה שלי</Text>
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 0, }}>
@@ -103,21 +101,14 @@ export default function SalePointsFarmer() {
                         <Text style={[style.btntxt, { marginRight: 5 }]}>יצירת נקודת מכירה</Text>
                         <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
                     </TouchableOpacity>
+                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
                 </View>
             </View>
 
             {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-
-                    {/* Products */}
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <SalePoiontsList />
-                    </View>
+                    <SalePoiontsList />
 
                     {/* Total amount and checkout */}
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
