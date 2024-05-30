@@ -109,7 +109,7 @@ let farmID = 0;
 export default function HomeFarmer() {
     const theme = useContext(themeContext);
     const navigation = useNavigation();
-    const { consumer } = useContext(UsersContext);
+    const { consumer, farm } = useContext(UsersContext);
     const { salePoints, getSalePoints } = useContext(SalePointContext);
     const [farmPictures, setFarmPictures] = useState({});
     const [loading, setLoading] = useState(true);
@@ -136,7 +136,9 @@ export default function HomeFarmer() {
     const SalePoiontsList = () => {
         return (
             <View style={[style.categorycontainer, { marginBottom: 10 }]}>
-                {salePoints.map((item, index) => (
+                {salePoints
+                .filter(item => item.farmNum === farm.id) // Filter sale points with farmNum equal to the farm ID that's in the context
+                .map((item, index) => (
                     <TouchableOpacity key={index} activeOpacity={0.8}>
                         <TenderHomeElement
                             nav={'SalePointFarmer'}
@@ -229,7 +231,7 @@ export default function HomeFarmer() {
             </KeyboardAvoidingView>
         </SafeAreaView >
     )
-}//HmoeFarmer
+}//HomeFarmer
 
 const fixDate = (dateTimeString) => {
     const [datePart, timePart, period] = dateTimeString.split(' ');
