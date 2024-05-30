@@ -114,7 +114,7 @@ export default function SalePointsFarmer() {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60, }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Payment1')}
+                            <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary}></Icons>
