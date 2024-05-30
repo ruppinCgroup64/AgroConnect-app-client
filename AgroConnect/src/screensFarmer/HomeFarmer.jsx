@@ -15,6 +15,7 @@ import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import HomeTopBar from '../components/HomeTopBar';
 import { SalePointContext } from '../Context/SalePointContext';
+import Loading from '../components/Loading';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -130,7 +131,7 @@ export default function HomeFarmer() {
     }, []);
 
     if (loading) {
-        return <View><Text>Loading...</Text></View>; // Render a loading state while fetching data
+        return <Loading></Loading> // Render a loading state while fetching data
     }
 
     const SalePoiontsList = () => {
@@ -145,7 +146,7 @@ export default function HomeFarmer() {
                             img={farmPictures[item.farmNum]} // Use preloaded picture
                             title={item.address}
                             address={(item.dateHour.split(" "))[0]}
-                            nav2={item.nav2}
+                            nav2={item.id}
                             rank={item.rankPrice}
                             timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
                         />

@@ -7,6 +7,7 @@ import { I18nManager } from "react-native";
 import UsersContextProvider from "./src/Context/UserContext";
 import ProductContextProvider from "./src/Context/ProductsContext";
 import SalePointContextProvider, { SalePointContext } from "./src/Context/SalePointContext";
+import { LogBox } from 'react-native';
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
@@ -25,6 +26,10 @@ export default function App() {
     "Heebo-Light": require("./assets/fonts/Heebo-Light.ttf"),
     "Heebo-Medium": require("./assets/fonts/Heebo-Medium.ttf"),
   });
+
+  LogBox.ignoreLogs([
+    'Require cycle:'
+  ]);
 
   if (!fontsLoaded) {
     return undefined;

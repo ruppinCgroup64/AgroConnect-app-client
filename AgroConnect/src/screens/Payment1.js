@@ -25,7 +25,8 @@ import SuccessAlert from "../components/SuccessAlert";
 const height = Dimensions.get('screen').height
 const width = Dimensions.get('screen').width
 
-export default function Payment1() {
+export default function Payment1({ route }) {
+    const {total} = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [checked, setChecked] = useState(false);
@@ -146,6 +147,7 @@ export default function Payment1() {
                     </View>
 
                     <View style={{ paddingTop: 50, paddingBottom: 20 }}>
+                    <Text style={[style.b16, { color: theme.txt, fontFamily: 'Urbanist-Bold', marginHorizontal: 10, textAlign: 'center',marginBottom:10}]}>סה"כ לתשלום: {total}₪</Text>
                         <TouchableOpacity
                             onPress={() => { setNavContinue(true); }}
                             style={[style.btn]}>

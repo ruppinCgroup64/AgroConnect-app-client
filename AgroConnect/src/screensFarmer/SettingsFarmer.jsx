@@ -187,7 +187,7 @@ export default function SettingsFarmer() {
             }}
           >
             <Text style={[style.subtitle, { color: theme.txt }]}>
-              {consumer.firstName + " " + consumer.lastName}
+              {farm.name}
             </Text>
             {/* <Text style={[style.s14, { color: theme.txt, marginTop: 5 }]}>{consumer.phoneNum}</Text> */}
           </View>

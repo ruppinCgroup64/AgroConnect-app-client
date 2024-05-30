@@ -36,12 +36,19 @@ export default function SalePointContextProvider(props) {
   async function getSalePoints() {
     let res = await read("api/SalePoints");
     if (res)
-      setSalePoints(res)
+      setSalePoints(res);
+    else alert("something went wrong");
+  }
+
+  async function getSalePoint(id) {
+    let res = await read("api/SalePoints/"+id);
+    if (res)
+      setSalePoint(res);
     else alert("something went wrong");
   }
 
   return (
-    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoints, addProductsToPoint, getSalePoints, salePoints }}>
+    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoints, addProductsToPoint, getSalePoints, salePoints, getSalePoint, salePoint}}>
       {props.children}
     </SalePointContext.Provider>
   );

@@ -21,7 +21,7 @@ export default function TenderHomeElement({ nav, img, title, address, nav2, rank
                     <View style={{ alignItems: 'flex-end', zIndex: 2 }} onPress={() => liked}>
                         <Icon name='heart-outline' size={30} color={Colors.primary}></Icon>
                     </View>
-                    <TouchableOpacity zIndex={1} style={{ marginTop: -30 }} onPress={() => navigation.navigate(nav)}>
+                    <TouchableOpacity zIndex={1} style={{ marginTop: -30 }} onPress={() => navigation.navigate(nav, {salePointID: nav2})}>
                         <SquareImage url={img}
                             wid={width / 2.25} hei={height / 5} />
                     </TouchableOpacity>
