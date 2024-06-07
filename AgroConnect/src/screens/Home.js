@@ -188,7 +188,7 @@ export default function Home() {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                             <Text style={[style.t1, { color: theme.txt, }]}>נקודות מכירה</Text>
                             <TouchableOpacity >
-                                <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
+                                <Text style={[style.b16, { color: Colors.primary, }]} onPress={() => navigation.navigate('SalePoints')}>ראה עוד</Text>
                             </TouchableOpacity>
                         </View>
 
