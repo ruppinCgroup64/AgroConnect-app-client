@@ -25,7 +25,7 @@ export default function DetailsFarm(props) {
   const [flag, setFlag] = useState(false);
 
   const [farmName, setFarmName] = useState(() =>
-    farm && farm.farmName ? farm.farmName : ""
+    farm && farm.name ? farm.name : ""
   );
   const [address, setAddress] = useState(
     farm && farm.address ? farm.address : ""
@@ -42,11 +42,9 @@ export default function DetailsFarm(props) {
   const [socialNetworkLink, setSocialNetworkLink] = useState(
     farm && farm.socialNetworkLink ? farm.socialNetworkLink : ""
   );
-  // const [mainPic, setMainPic] = useState(
-  //   farm && farm.mainPic ? farm.mainPic : ""
-  // );
+
   const [consumerNum, setConsumerNum] = useState(
-    farm && farm.consumerNum ? farm.consumerNum : farmerID
+    farm && farm.farmerId ? farm.farmerId : farmerID
   );
 
   const [errors, setErrors] = useState({});
@@ -54,10 +52,9 @@ export default function DetailsFarm(props) {
   const [finalPic, setFinalPic] = useState("");
 
   const handleSubmit = () => {
-    //if (validateForm())
-    {
+    if (validateForm()) {
       const updatedFarm = {
-        id: 0,
+        id: farm && farm.id ? farm.id : 0,
         name: farmName,
         address,
         longitude: longitude.toString(),

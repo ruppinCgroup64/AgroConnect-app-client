@@ -79,6 +79,7 @@ import SalePointFarmer from "../screensFarmer/SalePointFarmer";
 import HomeFarmer from "../screensFarmer/HomeFarmer";
 import MyTabsFarmer from "./BottomNavigatorFarmer";
 import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
+import SalePoints from "../screens/SalePoints";
 
 const Stack = createNativeStackNavigator();
 
@@ -118,8 +119,7 @@ export default function StackNavigator() {
               options={{ headerShown: false }}
             />
           ) : null}
-          
-          
+         
 
           <Stack.Screen
             name="Login"
@@ -145,7 +145,8 @@ export default function StackNavigator() {
             name="EditProfileFarm"
             component={EditProfileFarm}
             options={{ headerShown: false }}
-          />
+          />  
+         
           <Stack.Screen
             name="ProfilefillFarmer"
             component={ProfilefillFarmer}
@@ -185,6 +186,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Tender"
             component={Tender}
+            options={{ headerShown: false }}
+          /> 
+         <Stack.Screen
+            name="CreateSalePoint"
+            component={CreateSalePoint}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -428,11 +434,6 @@ export default function StackNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="CreateSalePoint"
-            component={CreateSalePoint}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
             name="HomeFarmer"
             component={HomeFarmer}
             options={{ headerShown: false }}
@@ -440,6 +441,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="SalePointsFarmer"
             component={SalePointsFarmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SalePoints"
+            component={SalePoints}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

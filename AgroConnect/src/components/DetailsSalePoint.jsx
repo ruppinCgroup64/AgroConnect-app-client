@@ -21,6 +21,7 @@ import Checkbox from "expo-checkbox";
 import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
+import SalePointProductFarmer from "./SalePointProductFarmer";
 
 export default function DetailsSalePoint(props) {
   const {
@@ -31,32 +32,14 @@ export default function DetailsSalePoint(props) {
     productsList,
     setProductsList,
     farm,
+    amounts,
+    setAmounts,
+    prices,
+    setPrices,
+    incorrectDetails
   } = props;
 
   const theme = useContext(themeContext);
-
-  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // const [selectDate, setSelectDate] = useState("");
-  // const showDatePicker = () => {
-  //   setDatePickerVisibility(true);
-  // };
-
-  // const hideDatePicker = () => {
-  //   setDatePickerVisibility(false);
-  // };
-
-  // const handleConfirm = (date) => {
-  //   const dt = new Date(date);
-  //   const x = dt.toISOString().split("T");
-  //   const x1 = x[0].split("-");
-  //   setSelectDate(x1[0] + "/" + x1[1] + "/" + x1[2]);
-  //   hideDatePicker();
-  // };
-  // useEffect(() => {
-  //   if (selectDate != "") {
-  //     setDateOfBirth(selectDate);
-  //   }
-  // }, [selectDate]);
 
   const [flag, setFlag] = useState(false);
 
@@ -81,12 +64,10 @@ export default function DetailsSalePoint(props) {
         contactPhoneNum,
         rankPrice: 0,
         rankQuality: 0,
-        //farmNum: farm.id,
-        farmNum: 3, //למחוק אחרי שיש בק
+        farmNum: farm.id,
         longitude: longitude.toString(),
         latitude: latitude.toString(),
       };
-      const updatedProducts = [{}];
       setSalePoint(updatedPoint);
       setFlag(true);
       setErrors({});
@@ -123,6 +104,10 @@ export default function DetailsSalePoint(props) {
     //address
     if (!address) errors.address = "שדה חובה";
     //products (must select more than one product)
+    const sum = amounts.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue;
+    }, 0);
+    if (sum == 0) errors.amount = "כמות המוצרים צריכה להיות גדולה מ-0";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -154,7 +139,6 @@ export default function DetailsSalePoint(props) {
       {errors.address ? (
         <Text style={style.errorText}>{errors.address}</Text>
       ) : null}
-
 
       <DateTimeSelect
         setDateHour={setDateHour}
@@ -204,6 +188,39 @@ export default function DetailsSalePoint(props) {
           />
         </SafeAreaView>
       </Modal>
+      <View style={{ marginTop: 5 }}>
+        <Text style={[style.s14, style.textTopInput]}>מוצרים</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          marginBottom: 10,
+        }}
+      >
+        {productsList.map((product, index) => (
+          <View key={index} style={{ width: "100%" }}>
+            <SalePointProductFarmer
+              i={index}
+              title={product.name}
+              measure={'ק"ג'}
+              uri={product.pic}
+              amounts={amounts}
+              setAmounts={setAmounts}
+              prices={prices}
+              setPrices={setPrices}
+            />
+          </View>
+        ))}
+      </View>
+      {errors.amount ? (
+        <Text style={style.errorText}>{errors.amount}</Text>
+      ) : null}
+      {incorrectDetails ? (
+        <Text style={style.errorText}>
+          במידה ובחרת למכור מוצר יש להזין מחיר וכמות יחד
+        </Text>
+      ) : null}
       <View style={{ marginBottom: 50 }}>
         <TouchableOpacity onPress={handleSubmit} style={style.btn}>
           <Text style={style.btntxt}>צור נקודת מכירה</Text>

@@ -34,7 +34,7 @@ import { read } from '../api';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function SalePointsFarmer() {
+export default function SalePoints() {
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
@@ -71,7 +71,7 @@ export default function SalePointsFarmer() {
     const SalePoiontsList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
             {salePoints.map((item, index) => (
-                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', marginBottom: 15}}>
                     <TenderShowMoreElement
                         key={index}
                         nav={'SalePoint'}
@@ -95,19 +95,9 @@ export default function SalePointsFarmer() {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name="arrow-forward" color={theme.txt} size={30} />
                 </TouchableOpacity>
-                <Text style={[style.s18, { marginStart: (width / 7), color: theme.txt, fontSize: 25 }]}>נקודות המכירה שלי</Text>
+                <Text style={[style.s18, { marginStart: (width / 4.5), color: theme.txt, fontSize: 25 }]}>נקודות מכירה</Text>
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 0, }}>
-                <View style={{ flex: 1, marginRight: 10 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
-                        style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                        <Text style={[style.btntxt, { marginRight: 5 }]}>יצירת נקודת מכירה</Text>
-                        <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
-                    </TouchableOpacity>
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-                </View>
-            </View>
 
             {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
@@ -131,7 +121,7 @@ export default function SalePointsFarmer() {
         </SafeAreaView>
     )//return
 
-}//SalePointsFarmer
+}//SalePoints
 
 const fixDate = (dateTimeString) => {
     const [datePart, timePart, period] = dateTimeString.split(' ');

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  StyleSheet
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
@@ -36,6 +37,7 @@ export default function Details(props) {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectDate, setSelectDate] = useState("");
+  const [birthDate, setBirthDate] = useState(null);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -128,7 +130,7 @@ export default function Details(props) {
         lastName,
         password,
         gender: gender,
-        dateOfBirth: dateOfBirth==""? "2024/01/01": dateOfBirth,
+        dateOfBirth: dateOfBirth == "" ? "2024/01/01" : dateOfBirth,
         phoneNum,
         address,
         registrationDate: "",
@@ -156,7 +158,7 @@ export default function Details(props) {
     //first name
     if (!firstName) errors.firstName = "שדה חובה";
     //last name
-     if (!lastName) errors.lastName = "שדה חובה";
+    if (!lastName) errors.lastName = "שדה חובה";
     //dateOfBirth
     //if (!dateOfBirth) errors.dateOfBirth = "שדה חובה";
     //gender
@@ -239,6 +241,7 @@ export default function Details(props) {
               mode="date"
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
+              display="calendar"
             />
             <Icon name="calendar-outline" color={Colors.disable} size={20} />
           </TouchableOpacity>

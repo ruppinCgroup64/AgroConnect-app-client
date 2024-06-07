@@ -1,7 +1,7 @@
 //products in the system
 
 import { useState, createContext } from "react";
-import { create, read, update, remove } from "../api";
+import { create, update, read } from "../api";
 
 export const SalePointContext = createContext();
 
@@ -16,24 +16,39 @@ export default function SalePointContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function addProductsToPoint(point) {
+    let res = await create("api/FarmProductsInPoint", point);
+    if (res)
+      return res
+    else alert("something went wrong");
+  }
+
   async function updateSalePoint(pointID, point) {
     let res = await update(`api/SalePoints/${pointID}`, point);
     if (res) {
-        return res
+      return res
     } else {
       alert("Failed to update user");
     }
   }
 
+
   async function getSalePoints() {
     let res = await read("api/SalePoints");
     if (res)
-      setSalePoints(res)
+      setSalePoints(res);
+    else alert("something went wrong");
+  }
+
+  async function getSalePoint(id) {
+    let res = await read("api/SalePoints/"+id);
+    if (res)
+      setSalePoint(res);
     else alert("something went wrong");
   }
 
   return (
-    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoints, salePoints, setSalePoints, salePoint, setSalePoint }}>
+    <SalePointContext.Provider value={{ createSalePoint, updateSalePoint, getSalePoints, addProductsToPoint, getSalePoints, salePoints, getSalePoint, salePoint}}>
       {props.children}
     </SalePointContext.Provider>
   );

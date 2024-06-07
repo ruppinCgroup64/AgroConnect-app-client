@@ -15,12 +15,10 @@ import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import HomeTopBar from '../components/HomeTopBar';
 import { SalePointContext } from '../Context/SalePointContext';
+import Loading from '../components/Loading';
 
-// import Demo from './Demo';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
-
-
 
 const tenders = [
     {
@@ -82,36 +80,6 @@ const fairs = [
     },
 ];//fairs
 
-// const salesPoints = [
-//     {
-//         nav: 'SalePointFarmer',
-//         img: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png',
-//         title: 'האתרוג 2, נתניה',
-//         address: '10.04.2024',
-//         nav2: 'Review',
-//         rank: '4.7',
-//         timer: 'עוד 8 ימים'
-//     },
-//     {
-//         nav: 'SalePointFarmer',
-//         img: 'https://mesheq77.co.il/wp-content/uploads/2018/06/logo300.png',
-//         title: 'החרוב 1, אחיטוב',
-//         address: '15.04.2024',
-//         nav2: 'Review',
-//         rank: '4.4',
-//         timer: 'עוד 13 ימים'
-//     },
-//     {
-//         nav: 'SalePointFarmer',
-//         img: 'https://michaelio.co.il/wp-content/uploads/2021/07/meshek_michaeli_logo.png',
-//         title: 'משק מיכאלי',
-//         address: '07.04.2024',
-//         nav2: 'Review',
-//         rank: '4.8',
-//         timer: 'עוד 5 ימים'
-//     },
-// ];//salesPoints
-
 const TenderList = () => {
     return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
         {tenders.map((item, index) => (
@@ -138,40 +106,47 @@ const FairsList = () => {
     );
 };
 
-
-
+let farmID = 0;
 export default function HomeFarmer() {
-
     const theme = useContext(themeContext);
     const navigation = useNavigation();
-    const { consumer } = useContext(UsersContext);
+    const { consumer, farm } = useContext(UsersContext);
     const { salePoints, getSalePoints } = useContext(SalePointContext);
+    const [farmPictures, setFarmPictures] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchSalePoints = async () => {
-            await getSalePoints();
+        const fetchSalePointsAndPictures = async () => {
+            await getSalePoints(); // Assuming getSalePoints sets salePoints state
+            const fetchedSalePoints = await read("api/SalePoints"); // Adjust based on your actual API and context
+            const pictures = {};
+            for (const point of fetchedSalePoints) {
+                const pic = await getFarmPic(point.farmNum);
+                pictures[point.farmNum] = pic;
+            }
+            setFarmPictures(pictures);
             setLoading(false);
-            console.log(salePoints[0]);
         };
-        fetchSalePoints();
+        fetchSalePointsAndPictures();
     }, []);
 
     if (loading) {
-        return <View><Text>Loading...</Text></View>; // Render a loading state while fetching data
+        return <Loading></Loading> // Render a loading state while fetching data
     }
 
     const SalePoiontsList = () => {
         return (
             <View style={[style.categorycontainer, { marginBottom: 10 }]}>
-                {salePoints.map((item, index) => (
+                {salePoints
+                .filter(item => item.farmNum === farm.id) // Filter sale points with farmNum equal to the farm ID that's in the context
+                .map((item, index) => (
                     <TouchableOpacity key={index} activeOpacity={0.8}>
                         <TenderHomeElement
                             nav={'SalePointFarmer'}
-                            img={(async () => { getFarmPic(item.farmNum)})}
+                            img={farmPictures[item.farmNum]} // Use preloaded picture
                             title={item.address}
                             address={(item.dateHour.split(" "))[0]}
-                            nav2={item.nav2}
+                            nav2={item.id}
                             rank={item.rankPrice}
                             timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
                         />
@@ -259,40 +234,32 @@ export default function HomeFarmer() {
     )
 }//HomeFarmer
 
-// ~ fixes the time format, so it can be manipulated
-// INPUT → string that contains a date in the following format: 3/1/2024 12:00:00 AM
-// OUTPUT → Date type varible that contains that date
 const fixDate = (dateTimeString) => {
-    // Split the date and time parts
     const [datePart, timePart, period] = dateTimeString.split(' ');
-
-    // Split the date part into month, day, and year
     const [month, day, year] = datePart.split('/').map(Number);
-
-    // Split the time part into hours, minutes, and seconds
     let [hours, minutes, seconds] = timePart.split(':').map(Number);
 
-    // Adjust hours based on AM/PM
     if (period === 'PM' && hours !== 12) {
         hours += 12;
     } else if (period === 'AM' && hours === 12) {
         hours = 0;
     }
 
-    // Create the Date object
     return new Date(year, month - 1, day, hours, minutes, seconds);
 }//fixDate
 
-
-// ~ gets the farm picture from the farmer's id
-// INPUT → farmer id
-// OUTPUT → the URL of the farm's picture
-async function getFarmPic(farmerID) {
-    let resFarm = await read("api/Farms/farmer/" + farmerID);
-
-    if (resFarm && resFarm.length > 0) {
-        return resFarm[0].mainPic;
-    } else {
-        return -1;
+const getFarmPic = async (farm_ID) => {
+    const resFarms = await read("api/Farms");
+    if (!resFarms || resFarms.length === 0) {
+        console.error("No farms data available or failed to fetch.");
+        return null;
     }
-}//getFarmPic
+
+    const farm = resFarms.find(item => item.id === farm_ID);
+    if (!farm) {
+        console.error("Farm not found.");
+        return null;
+    }
+
+    return farm.mainPic;
+};

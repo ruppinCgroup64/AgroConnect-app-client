@@ -61,7 +61,7 @@ export default function Settings() {
   const [value, setValue] = useState("התחבר כ-");
   tempItems = [{ label: "צרכן", value: "צרכן" }];
   if (consumer.isFarmer)
-    tempItems=[{ label: "צרכן", value: "צרכן" }, { label: "חקלאי", value: "חקלאי" }];
+    tempItems = [{ label: "צרכן", value: "צרכן" }, { label: "חקלאי", value: "חקלאי" }];
   const [items, setItems] = useState(tempItems);
 
   const [userType, setUserType] = useState("התחבר כ-");
@@ -84,7 +84,6 @@ export default function Settings() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log("1", profilePic, "0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let updatedRes = {};
@@ -123,7 +122,6 @@ export default function Settings() {
   }, [profilePic]);
 
   useEffect(() => {
-    console.log("2", profilePic, "0000000000000", consumer.profilePic);
     if (profilePic != consumer.profilePic) {
       const fetchData = async () => {
         let res = await updateUser(updatedConsumer); //update the user's image in the DB
@@ -133,11 +131,9 @@ export default function Settings() {
       };
       fetchData();
     }
-    console.log("sett", updatedConsumer);
   }, [updatedConsumer]);
 
   useEffect(() => {
-    console.log("3", profilePic, "0000000000000", consumer.profilePic);
     if (content != "") {
       setShow(true);
     }
@@ -204,33 +200,33 @@ export default function Settings() {
             </Text>
             {/* <Text style={[style.s14, { color: theme.txt, marginTop: 5 }]}>{consumer.phoneNum}</Text> */}
           </View>
-          <View style={{ paddingVertical: 20 }}>
+          <View>
             <View style={[style.divider, { backgroundColor: theme.border }]} />
           </View>
 
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[0].navTo}
-                t={settings_details[0].t}
-                i={settings_details[0].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20, paddingTop: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[0].navTo}
+              t={settings_details[0].t}
+              i={settings_details[0].i}
+            />
+          </View>
+
 
           {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
-          {
-            <View style={{ paddingBottom: 20 }}>
-              <Settings_option
-                theme
-                navTo={settings_details[1].navTo}
-                t={settings_details[1].t}
-                i={settings_details[1].i}
-              />
-            </View>
-          }
+
+          <View style={{ paddingBottom: 20 }}>
+            <Settings_option
+              theme
+              navTo={settings_details[1].navTo}
+              t={settings_details[1].t}
+              i={settings_details[1].i}
+            />
+          </View>
+
 
           {/* The "Connected As" drop down */}
           <DropDownPicker

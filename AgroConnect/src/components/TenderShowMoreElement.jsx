@@ -26,7 +26,8 @@ export default function TenderHomeElement({ nav, img, title, address, nav2, rank
                             wid={width / 2.25} hei={height / 5} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[style.apptitle, { color: theme.txt, marginTop: 10, textAlign: 'center' }]}>{title}</Text>
+                {/* <Text style={[style.apptitle, { color: theme.txt, marginTop: 10, textAlign: 'center' }]}>{title}</Text> */}
+                <Text style={[style.s10, { color: Colors.primary, fontSize: 25, textAlign:'center',marginBottom:10 }]}>{title}</Text>
                 <View style={[style.apptitle, { color: theme.txt, marginTop: -5, fontSize: 20, float: 'center' }]}>
                     <Text style={[style.apptitle, { color: theme.txt, marginTop: -5, fontSize: 20, textAlign: 'center' }]}>{address}</Text>
                 </View>

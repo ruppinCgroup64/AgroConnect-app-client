@@ -26,51 +26,67 @@ import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
+import { SalePointContext } from '../Context/SalePointContext';
+import Loading from '../components/Loading';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function SalePointFarmer() {
+
+//Products
+const product = [
+    {
+        title: "עגבנייה",
+        measure: 'ק"ג',
+        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
+    },
+    {
+        title: "חציל",
+        measure: 'ק"ג',
+        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
+    },
+    {
+        title: "תפוז",
+        measure: 'ק"ג',
+        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/orange.png",
+    },
+];//product
+
+export default function SalePointFarmer({ route }) {
+    const { salePointID } = route.params;
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const { products } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
-    const [amounts, setAmounts] = useState([0, 0, 0]);
-    const [total, setTotal] = useState(0);
-    const [prices, setPrices] = useState([0, 0, 0]);
+    const [amounts, setAmounts] = useState([100, 80, 115]);
+    const [prices, setPrices] = useState([12, 35, 14]);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = { uri: 'https://meshek-kirshner.co.il/wp-content/uploads/2022/02/%D7%9C%D7%95%D7%92%D7%95-%D7%9E%D7%A9%D7%A7-%D7%A7%D7%99%D7%A8%D7%A9%D7%A0%D7%A8.png' };
+    const image = { uri: farm.mainPic };
+    const { salePoint, getSalePoint } = useContext(SalePointContext);
+    const [loading, setLoading] = useState(true);
 
-    //Products
-    const product = [
-        {
-            title: "אבטיח",
-            measure: 'ק"ג',
-            uri: "https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
-        },
-        {
-            title: "עגבניה",
-            measure: 'ק"ג',
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s",
-        },
-        {
-            title: "אננס",
-            measure: "יח'",
-            uri: "https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg",
-        },
-    ];//product
+    useEffect(() => {
+        const fetchSalePoints = async () => {
+            await getSalePoint(salePointID);
+            setLoading(false);
+        };
+        fetchSalePoints();
+    }, []);
+    if (loading)
+        return <Loading></Loading> // Render a loading state while fetching data
+
 
     const ProductList = () => {
         return (<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
-            {products.map((product, index) => (
+            {product.map((product, index) => (
                 <View key={index} style={{ width: "100%" }}>
                     <SalePointProductFarmerReadOnly
                         i={index}
                         title={product.name}
                         measure={'ק"ג'}
-                        uri={product.pic}
+                        uri={product.uri}
                         amounts={amounts}
                         setAmounts={setAmounts}
                         prices={prices}
@@ -101,21 +117,21 @@ export default function SalePointFarmer() {
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, }]}>האתרוג 2, נתניה</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, }]}>{salePoint.address}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>10.04.2024</Text>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>|</Text>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginStart: 15 }]}>9:00-13:00</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(salePoint.dateHour.split(" "))[0]}</Text>
+                        {/* <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>|</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginStart: 15 }]}>9:00-13:00</Text> */}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farm.address}</Text>
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farm.name}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
+                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>{salePoint.rankPrice}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
@@ -147,13 +163,5 @@ export default function SalePointFarmer() {
             </View>
         </SafeAreaView>
     )//return
-
-    async function newTotal() {
-        sum = 0;
-        for (i = 0; i < amounts.length; i++) {
-            sum += amounts[i] * product[i].price;
-        }//for
-        setTotal(sum);
-    }//newTotal
 
 }//SalePointFarmer

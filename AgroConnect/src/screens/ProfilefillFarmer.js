@@ -21,10 +21,10 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { UsersContext } from "../Context/UserContext";
 import ImageProfile from "../components/ImageProfile";
+import { uploadFile } from "../api";
 
 export default function ProfilefillFarmer({ route }) {
-  //const { farmerID } = route.params;
-  const farmerID = 1015;
+  const { farmerID } = route.params;
 
   const theme = useContext(themeContext);
   const navigation = useNavigation();
@@ -46,6 +46,7 @@ export default function ProfilefillFarmer({ route }) {
       const fetchData = async () => {
         //register farm
         let res = await registerFarm(updatedFarm); //the res is the true- need to chang to object
+        console.log(res)
         if (res) {
           let updatedRes = {};
           if (updatedFarm.mainPic != "") {
@@ -114,7 +115,7 @@ export default function ProfilefillFarmer({ route }) {
       updatedFarm.mainPic.toLowerCase().includes("https")
     ) {
       setShow(true);
-      setContent("המשק שלך נרשם בהצלחה!");
+      setContent("המשק שלך נרשם בהצלחה");
     }
   }, [farm]);
 

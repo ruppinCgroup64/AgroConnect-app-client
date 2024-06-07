@@ -151,9 +151,9 @@ export default function EditProfile() {
             </View>
           </RBSheet>
           <ScrollView
-            style={[style.main, { marginTop: 15 }]}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
+             style={{ marginTop: 15 }}
+             showsVerticalScrollIndicator={false}
+             keyboardShouldPersistTaps="handled"
           >
             <Details
               consumer={updatedConsumer}
