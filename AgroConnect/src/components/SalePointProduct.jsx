@@ -47,9 +47,13 @@ export default function SalePointProduct({ i, title, price, measure, uri, amount
                         {/* START */}
                         <View style={{ flex: 1, alignItems: 'flex-end', marginEnd: 10 }}>
                             <View style={{ paddingHorizontal: 10, paddingVertical: 5, borderRadius: 15, backgroundColor: theme.bg3, flexDirection: 'row', alignItems: 'center', width: width / 4, justifyContent: 'space-between' }}>
-                                <Icon name='remove' size={12} color={Colors.primary} onPress={newAmountM}></Icon>
+                                <TouchableOpacity >
+                                    <Icon name='remove' size={40} color={Colors.primary} onPress={newAmountM}></Icon>
+                                </TouchableOpacity>
                                 <Text style={[style.b14, { color: Colors.primary }]}>{amount}</Text>
-                                <Icon name='add' size={12} color={Colors.primary} onPress={newAmountP}></Icon>
+                                <TouchableOpacity >
+                                    <Icon name='add' size={40} color={Colors.primary} onPress={newAmountP}></Icon>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         {/* END */}

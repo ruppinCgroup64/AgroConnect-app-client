@@ -71,7 +71,7 @@ export default function SalePoints() {
     const SalePoiontsList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
             {salePoints.map((item, index) => (
-                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', marginBottom: 15}}>
+                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', marginBottom: 15 }}>
                     <TenderShowMoreElement
                         key={index}
                         nav={'SalePoint'}
@@ -99,22 +99,10 @@ export default function SalePoints() {
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
-            {/* Tender Info */}
+            {/* Sale Points */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <SalePoiontsList />
-
-                    {/* Total amount and checkout */}
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60, }}>
-                        <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
-                                style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                                <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
-                                <Icons name='cart-outline' size={20} color={Colors.secondary}></Icons>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                 </ScrollView>
 
             </View>

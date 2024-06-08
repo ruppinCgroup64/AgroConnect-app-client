@@ -91,6 +91,7 @@ export default function SalePoint({ route }) {
     }
 
     const image = farm ? { uri: farm.mainPic } : null;
+    const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A"; // Use default "N/A" if dateHour is null
 
     const ProductList = () => {
         return (
@@ -133,7 +134,7 @@ export default function SalePoint({ route }) {
                         <Text style={[style.subtitle, { color: theme.txt }]}>{salePoint.address}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(salePoint.dateHour.split(" "))[0]}</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(dateHour)}</Text>
                     </View>
                     {farm && (
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

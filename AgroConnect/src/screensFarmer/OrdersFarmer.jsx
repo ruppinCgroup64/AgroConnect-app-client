@@ -40,15 +40,16 @@ const orders = [
         img: "https://yt3.googleusercontent.com/8id-4DSTsdgehTHSZnkHr8md0Dsitgp_5xbbtdE8hcglXBmoEtzz-HtyotsNjR8fnDCqjYEK=s900-c-k-c0x00ffffff-no-rj",
         name: "אברהם טל",
         dateTime: "26/02/2024",
+        total: 44,
         products: [{
             name: "עגבניה",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/uploadedFiles/tomato.png",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
             amount: "2",
             price: "14"
         },
         {
             name: "חציל",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/uploadedFiles/eggplant.png",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
             amount: "1",
             price: "16"
         }]
@@ -57,15 +58,16 @@ const orders = [
         img: "https://scontent.ftlv1-1.fna.fbcdn.net/v/t39.30808-6/264429031_480835666739170_8502532355458902715_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=P-6Z7fnc-BYQ7kNvgGGYf0b&_nc_ht=scontent.ftlv1-1.fna&oh=00_AYC_Wu6GZAKUcNtTY6dQAnzgh0jR2DuUn5dYG2ZYj7Ld0w&oe=66693085",
         name: "שחר חסון",
         dateTime: "02/03/2024",
+        total: 46,
         products: [{
             name: "עגבניה",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/uploadedFiles/tomato.png",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
             amount: "1",
             price: "14"
         },
         {
             name: "חציל",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/uploadedFiles/eggplant.png",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
             amount: "2",
             price: "16"
         }]
@@ -87,6 +89,7 @@ export default function SalePointsFarmer() {
                         name={item.name}
                         dateTime={item.dateTime}
                         products={item.products}
+                        total={item.total}
                         style={{ flex: 1 }} />
                 </View>
             ))}
@@ -105,22 +108,10 @@ export default function SalePointsFarmer() {
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
-            {/* Tender Info */}
+            {/* Orders */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <OrdersList />
-
-                    {/* Total amount and checkout */}
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60, }}>
-                        <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
-                                style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                                <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
-                                <Icons name='cart-outline' size={20} color={Colors.secondary}></Icons>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                 </ScrollView>
 
             </View>
