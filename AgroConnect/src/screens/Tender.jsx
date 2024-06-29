@@ -19,15 +19,12 @@ import themeContext from '../theme/themeContex'
 import { useNavigation } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Avatar } from 'react-native-paper'
-import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
-import { ProductContext } from "../Context/ProductsContext";
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import SquareImage from '../components/SquareImage';
-import Table from '../components/Table';
+import LeadTable from '../components/LeadTable';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -36,32 +33,11 @@ export default function Tender() {
 
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const { products } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
     const image = {uri: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg'};
 
-    //Products
-    const Categorylist = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-            {products.map((item, index) => (
-                <TouchableOpacity key={index} activeOpacity={0.8}>
-                    <View key={index}
-                        style={[[style.categoryText, { flexDirection: 'row', color: Colors.primary, backgroundColor: theme.bg }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                        <RoundedImage url={item.url} wid={width / 10.8} hei={height / 24} />
-                        <Text
-                            key={index}
-                            style={[[style.categoryText, { color: Colors.primary, backgroundColor: theme.bg, borderWidth: 0 }], categoryIndex == index && [style.categoryTextSelected, {}]]}>
-                            {item.name}
-                        </Text>
-
-                    </View>
-                </TouchableOpacity>
-            ))}
-        </View>
-        );
-    };
 
     //fairs
     const fairs = [
@@ -137,27 +113,23 @@ export default function Tender() {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4.9</Text>
+                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
                         </View>
                     </View>
 
-                    {/* Products */}
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
-                    </View>
-                    <View style={{ marginTop: 10 }}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true} >
-                            <Categorylist />
-                        </ScrollView>
-                    </View>
-
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
-                    <Table></Table>
+                    <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת המובילים</Text>
+                    <LeadTable></LeadTable>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
+                        style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
+                        <Text style={[style.btntxt, { marginRight: 5 }]}>הוסף הצעה</Text>
+                        <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
+                    </TouchableOpacity>
                     
 
                 </ScrollView>
