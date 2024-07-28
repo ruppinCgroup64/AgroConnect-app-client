@@ -104,7 +104,7 @@ export default function Tender() {
                         <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5}]}>  {farm.address}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10 }} />
                             <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4</Text>
@@ -112,7 +112,7 @@ export default function Tender() {
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary} />
                         </View>
-                    </View>
+                    </View> */}
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת המובילים</Text>
                     <LeadTable />
