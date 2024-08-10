@@ -1,5 +1,3 @@
-//get setDate and setDate to show in the screen and return comp with date time picker
-
 import { useState, useContext } from "react";
 import { TextInput, TouchableOpacity, View, Text } from "react-native";
 import style from "../theme/style";
@@ -57,6 +55,7 @@ export default function DateTimeSelect({
             mode="datetime"
             onConfirm={handleConfirm}
             onCancel={() => setDatePickerVisibility(false)}
+            textColor={Colors.primary}  // Add this line to set text color
           />
           <Icon name="calendar-outline" color={Colors.disable} size={20} />
         </TouchableOpacity>
