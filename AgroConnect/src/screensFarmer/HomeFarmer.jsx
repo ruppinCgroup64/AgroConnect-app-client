@@ -139,6 +139,7 @@ export default function HomeFarmer() {
             <View style={[style.categorycontainer, { marginBottom: 10 }]}>
                 {salePoints
                 .filter(item => item.farmNum === farm.id) // Filter sale points with farmNum equal to the farm ID that's in the context
+                .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
                 .map((item, index) => (
                     <TouchableOpacity key={index} activeOpacity={0.8}>
                         <TenderHomeElement

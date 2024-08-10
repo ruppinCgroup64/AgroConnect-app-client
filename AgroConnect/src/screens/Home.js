@@ -136,10 +136,13 @@ export default function Home() {
         return <Loading></Loading> // Render a loading state while fetching data
     }
 
+    
+
     const SalePoiontsList = () => {
         return (
             <View style={[style.categorycontainer, { marginBottom: 10 }]}>
                 {salePoints
+                .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
                 .map((item, index) => (
                     <TouchableOpacity key={index} activeOpacity={0.8}>
                         <TenderHomeElement

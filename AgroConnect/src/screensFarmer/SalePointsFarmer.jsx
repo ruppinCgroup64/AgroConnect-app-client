@@ -70,7 +70,9 @@ export default function SalePointsFarmer() {
 
     const SalePoiontsList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
-            {salePoints.map((item, index) => (
+            {salePoints
+            .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
+            .map((item, index) => (
                 <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
                     <TenderShowMoreElement
                         key={index}
