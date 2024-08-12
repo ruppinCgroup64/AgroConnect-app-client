@@ -17,6 +17,7 @@ const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 export default function SalePointProductFarmer({
   i,
+  id,
   title,
   measure,
   uri,
@@ -24,6 +25,8 @@ export default function SalePointProductFarmer({
   setAmounts,
   prices,
   setPrices,
+  products,
+  setProducts
 }) {
   const navigation = useNavigation();
   const theme = useContext(themeContext);
@@ -43,6 +46,12 @@ export default function SalePointProductFarmer({
     setAmounts(newAmounts);
   }, [amount]);
 
+  useEffect(() => {
+    const newProducts = products;
+    newProducts[i] = id;
+    setProducts(newProducts);
+  }, []);
+  
   return (
     <View style={{ padding: 5, marginTop: 10, width: "100%" }}>
       <View

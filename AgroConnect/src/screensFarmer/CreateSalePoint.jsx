@@ -1,5 +1,3 @@
-//Registration of consumer. register user without its image->post image in the server-> update the user's image
-
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +28,7 @@ export default function CreateSalePoint() {
   const theme = useContext(themeContext);
   const { farm } = useContext(UsersContext);
   const { createSalePoint, addProductsToPoint } = useContext(SalePointContext);
-  const { getProductsByFarm, productsByFarm } = useContext(ProductContext);
+  const { getProducts, productsByFarm } = useContext(ProductContext);
 
   const navigation = useNavigation();
 
@@ -51,7 +49,7 @@ export default function CreateSalePoint() {
   useEffect(() => {
     const fetchData = async () => {
       //register point
-      let res = await getProductsByFarm(farm.id);
+      let res = await getProducts();
       if (res) {
         //update the sale point=res now with id
         setProductsList(res);

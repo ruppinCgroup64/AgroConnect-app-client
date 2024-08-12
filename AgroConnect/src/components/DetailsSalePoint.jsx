@@ -22,6 +22,7 @@ import ImageProfile from "../components/ImageProfile";
 import AutoCompMap from "./AutoCompMap";
 import ValInput from "./ValInput";
 import SalePointProductFarmer from "./SalePointProductFarmer";
+import { ProductContext } from "../Context/ProductsContext";
 
 export default function DetailsSalePoint(props) {
   const {
@@ -40,6 +41,7 @@ export default function DetailsSalePoint(props) {
   } = props;
 
   const theme = useContext(themeContext);
+  const { getProducts, createProductInPoint } = useContext(ProductContext);
 
   const [flag, setFlag] = useState(false);
 
@@ -50,12 +52,16 @@ export default function DetailsSalePoint(props) {
   const [contactName, setContactName] = useState("");
   const [contactPhoneNum, setContactPhoneNum] = useState("");
   const [errors, setErrors] = useState({});
+  const [products, setProducts] = useState("");
+  const [point , setPoint] = useState("");
 
   const [closeDateHourShow, setCloseDateHourShow] = useState(null);
 
   const [isPlacesModalVisible, setPlacesModalVisible] = useState(false);
+  console.log("Products: ");
+  console.log(productsList);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       const updatedPoint = {
         address,
@@ -68,12 +74,40 @@ export default function DetailsSalePoint(props) {
         longitude: longitude.toString(),
         latitude: latitude.toString(),
       };
-      setSalePoint(updatedPoint);
-      setFlag(true);
-      setErrors({});
+  
+      try {
+        const createdSalePoint = await setSalePoint(updatedPoint); // Use await to wait for the sale point to be created
+        setPoint(createdSalePoint);
+        setFlag(true);
+        setErrors({});
+        await createProducts(createdSalePoint.id); // Pass the created sale point ID to create products
+      } catch (error) {
+        console.error("Error creating sale point or products:", error);
+      }
     }
   };
-
+  
+  async function createProducts(salePointId) {
+    try {
+      const productPromises = products.map(async (product) => {
+        const updatedProduct = {
+          id: 0,
+          salePointNum: salePointId,
+          productInFarmNum: product.id,
+          productAmount: 0,
+          unitPrice: prices[product.i]
+        };
+        let res = await createProductInPoint(updatedProduct);
+        return res;
+      });
+  
+      const results = await Promise.all(productPromises);
+      console.log("Products created:", results);
+    } catch (error) {
+      console.error("Error creating products:", error);
+    }
+  }
+  
   useEffect(() => {
     if (flag) {
       setNavContinue(true);
@@ -202,6 +236,7 @@ export default function DetailsSalePoint(props) {
           <View key={index} style={{ width: "100%" }}>
             <SalePointProductFarmer
               i={index}
+              id={product.id}
               title={product.name}
               measure={'ק"ג'}
               uri={product.pic}
@@ -209,6 +244,8 @@ export default function DetailsSalePoint(props) {
               setAmounts={setAmounts}
               prices={prices}
               setPrices={setPrices}
+              products={products}
+              setProducts={setProducts}
             />
           </View>
         ))}

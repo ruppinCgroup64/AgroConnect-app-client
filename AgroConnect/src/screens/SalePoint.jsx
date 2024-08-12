@@ -60,7 +60,7 @@ export default function SalePoint({ route }) {
     const { salePointID } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const { products } = useContext(ProductContext);
+    const { getProductsInPoint, getProducts } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const [amounts, setAmounts] = useState([0, 0, 0]);
     const [total, setTotal] = useState(0);
@@ -68,6 +68,24 @@ export default function SalePoint({ route }) {
     const { salePoint, getSalePoint } = useContext(SalePointContext);
     const [loading, setLoading] = useState(true);
     const [farm, setFarm] = useState(null);
+    const productsInPoint = getProductsInPoint();
+    const allProducts = getProducts();
+    const products = [];
+    i = 0;
+    productsInPoint.forEach(product => {
+        j = 0;
+        while (product.productInFarmNum != allProducts[i].id) {
+            j++;
+        }
+        products[i] = {
+            i: i,
+            salePointNum: salePoint.id,
+            productInFarmNum: allProducts[j],
+            productAmount: 0,
+            unitPrice: product.unitPrice
+        };
+        i++;
+    });
 
     useEffect(() => {
         const fetchSalePointFarm = async () => {
@@ -96,7 +114,7 @@ export default function SalePoint({ route }) {
     const ProductList = () => {
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
-                {product.map((item, index) => (
+                {products.map((item, index) => (
                     <View key={index} style={{ width: "100%" }}>
                         <SalePointProduct
                             i={index}
