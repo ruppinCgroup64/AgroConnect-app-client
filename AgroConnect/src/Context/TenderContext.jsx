@@ -32,8 +32,15 @@ export default function TenderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function getTenderDetails() {
+    let res = await read("api/tender");
+    if (res.status)
+      return res.json()
+    else alert("something went wrong");
+  }
+
   return (
-    <TenderContext.Provider value={{ tender, setTender, createTender }}>
+    <TenderContext.Provider value={{ tender, setTender, createTender, getTenderDetails }}>
       {props.children}
     </TenderContext.Provider>
   );

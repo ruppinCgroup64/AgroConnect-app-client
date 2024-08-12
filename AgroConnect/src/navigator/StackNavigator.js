@@ -79,6 +79,7 @@ import SalePointFarmer from "../screensFarmer/SalePointFarmer";
 import HomeFarmer from "../screensFarmer/HomeFarmer";
 import MyTabsFarmer from "./BottomNavigatorFarmer";
 import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
+import TenderPage from "../screens/TenderPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -111,14 +112,19 @@ export default function StackNavigator() {
           translucent={false}
         />
         <Stack.Navigator>
-          {showSplashScreen ? (
+          {/* {showSplashScreen ? (
             <Stack.Screen
               name="Splash"
               component={Splash}
               options={{ headerShown: false }}
             />
-          ) : null}
+          ) : null} */}
          
+         <Stack.Screen
+            name="TenderPage"
+            component={TenderPage}
+            options={{ headerShown: false }}
+          /> 
 
           <Stack.Screen
             name="Login"

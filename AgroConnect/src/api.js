@@ -37,7 +37,8 @@ export async function read(url) {
     });
     return await res.json();
   } catch (err) {
-    return { status: false, err };
+    console.error(err);
+    return { status: false, err: err.message };
   }
 }
 

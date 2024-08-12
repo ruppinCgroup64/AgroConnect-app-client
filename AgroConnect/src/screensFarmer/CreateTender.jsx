@@ -64,6 +64,7 @@ export default function CreateTender() {
   const [closeDateHourShow, setCloseDateHourShow] = useState(null);
   const [collectDateHourShow, setCollectDateHourShow] = useState(null);
 
+
   useEffect(() => {
     if (flag) {
       setTender({
@@ -73,10 +74,12 @@ export default function CreateTender() {
         closeDateHour,
         collectAddress,
         collectDateHour,
+        finalcollectDateHour,
         farmNum: farm.farmID,
         productNum,
         latitude,
         longitude,
+        active:1,
       });
     }
   }, [flag]);
