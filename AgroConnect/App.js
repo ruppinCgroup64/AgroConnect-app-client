@@ -8,6 +8,7 @@ import UsersContextProvider from "./src/Context/UserContext";
 import ProductContextProvider from "./src/Context/ProductsContext";
 import SalePointContextProvider, { SalePointContext } from "./src/Context/SalePointContext";
 import { LogBox } from 'react-native';
+import TenderContextProvider from "./src/Context/TenderContext";
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
@@ -36,6 +37,7 @@ export default function App() {
   }
 
   return (
+    <TenderContextProvider>
     <SalePointContextProvider>
     <ProductContextProvider>
     <UsersContextProvider>
@@ -43,5 +45,6 @@ export default function App() {
     </UsersContextProvider>
     </ProductContextProvider>
     </SalePointContextProvider>
+    </TenderContextProvider>
   );
 }
