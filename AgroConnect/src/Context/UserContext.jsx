@@ -11,6 +11,7 @@ export const UsersContext = createContext();
 export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
   const [farm, setFarm] = useState(null);
+  const [farmPoint, setFarmPoint] = useState(null);
 
 
   async function register(user) {
@@ -71,9 +72,14 @@ export default function UsersContextProvider(props) {
     else alert("something went wrong");
   }//login
 
+  async function getFarmBySalePoint(pointID){
+    let resFarm = await read("api/Farms/salePoint/" + pointID);
+    setFarmPoint(resFarm);
+    return 2;
+  }
 
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm}}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint}}>
       {props.children}
     </UsersContext.Provider>
   );
