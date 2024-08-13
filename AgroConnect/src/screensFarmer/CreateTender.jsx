@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Modal,
 } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
 import React, { useState, useContext, useEffect } from "react";
 import themeContext from "../theme/themeContex";
 import style from "../theme/style";
@@ -33,14 +34,40 @@ import DateTimeSelect from "../components/DateTimeSelect";
 import ValInput from "../components/ValInput";
 import { TenderContext } from "../Context/TenderContext";
 import DropDownSelect from "../components/DropDownSelect";
+import { read } from "../api";
+import Tender from "../screens/Tender";
+
 
 export default function CreateTender() {
-
   const theme = useContext(themeContext);
   const navigation = useNavigation();
   const { getProducts, getProductAveragePrice } = useContext(ProductContext); //נשים ברשימה של אייטמים
   const { farm } = useContext(UsersContext); //החקלאי שמחובר
   const { createTender } = useContext(TenderContext);
+  const [productsList, setProductsList] = useState([]);
+  const [currentProductPic, setcurrentProductPic] = useState("");
+
+  async function getProductsFromServer() {
+    let res = await read("api/products");
+    if (res) {
+      console.log(res);
+      var productData = [];
+      for (let i = 0; i < res.length; i++) {
+        productData.push({
+          key: `${i}`,
+          value: res[i].name,
+          id: res[i].id,
+          pic: res[i].pic,
+        });
+      }
+      setProductsList(productData);
+    } else alert("something went wrong");
+  }
+
+  useEffect(() => {
+    getProductsFromServer();
+  }, []);
+
 
   const [productAvgPrice, setProductAvgPrice] = useState(null);
   const [tender, setTender] = useState({});
@@ -57,28 +84,43 @@ export default function CreateTender() {
   const [closeDateHour, setCloseDateHour] = useState(null);
   const [collectAddress, setCollectAddress] = useState(null);
   const [collectDateHour, setCollectDateHour] = useState(null);
+  const [collectDateHourClose, setCollectDateHourClose] = useState(null);
   const [productNum, setProductNum] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
   const [closeDateHourShow, setCloseDateHourShow] = useState(null);
   const [collectDateHourShow, setCollectDateHourShow] = useState(null);
+  const [collectDateHourCloseShow, setCollectDateHourCloseShow] = useState(null);
+
 
   useEffect(() => {
     if (flag) {
-      setTender({
-        offeredPack,
+      var newTender={
+        offeredPacks:offeredPack,
         packsAmount,
         initialOffer,
         closeDateHour,
         collectAddress,
+        active: true,
         collectDateHour,
-        farmNum: farm.farmID,
-        productNum,
-        latitude,
-        longitude,
-      });
+        collectDateHourClose,
+       // farmNum: farm.farmID,
+        farmNum: 1067,
+        latitude:"string",
+        longitude:"string",
+        productNum:productNum
+      }
+
+      setTender(newTender);
+      console.log('Tender',tender);
+    console.log('newTender',newTender);
+    let res=createTender(newTender);
+    if(res!={}){
+      navigation.navigate("HomeFarmer");
     }
+    }
+    
   }, [flag]);
 
   useEffect(() => {
@@ -98,12 +140,17 @@ export default function CreateTender() {
 
   //select product=>show avg price, set the productID to the tender
   useEffect(() => {
-    if(selectedProduct){
-    console.log(selectedProduct);
-    setProductNum(selectedProduct.id);
-    //getProductAveragePrice(x.id) נפעיל גט מהשרת לממוצע מוצר זה
-    //אם מצליח:
-    //setProductAvgPrice(תשובה)
+    if (selectedProduct) {
+      console.log(selectedProduct);
+      productsList.forEach((product) => {
+        if (product.value == selectedProduct) {
+          setcurrentProductPic(product.pic);
+          setProductNum(product.id);
+        }
+      });
+      //getProductAveragePrice(x.id) נפעיל גט מהשרת לממוצע מוצר זה
+      //אם מצליח:
+      //setProductAvgPrice(תשובה)
     }
   }, [selectedProduct]);
 
@@ -253,64 +300,53 @@ export default function CreateTender() {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps={"always"}
           >
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <RoundedImage
-                url={selectedProduct ? selectedProduct.url : null}
-                wid={100}
-                hei={100}
-              />
-            </View>
-            <View>
-              {/* <DropDownSelect
-                list={getProducts}
-                content={"בחר מוצר"}
-                setSelectedItem={setSelectedProduct}
-              /> */}
-              {/* <DropDownPicker
-                listMode="MODAL"
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={(newValue) => {
-                  setValue(newValue);
-                }}
-                onSelectItem={(item) => {
-                  const p = products.find((x) => {
-                    if (x.id == item.value) {
-                      setSelectedProduct(x);
-                      setProductNum(x.id);
-                      //getProductAveragePrice(x.id) נפעיל גט מהשרת לממוצע מוצר זה
-                      //אם מצליח:
-                      //setProductAvgPrice(תשובה)
-                    }
-                  });
-                }}
-                setItems={setItems}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                minHeight: 150,
+              }}
+            >
+              <SelectList
                 placeholder="בחר מוצר"
-                placeholderStyle={{
-                  color: Colors.disable,
+                search={false}
+                boxStyles={{
+                  marginRight: 70,
+                  borderRadius: 15,
+                  height: 42,
+                  width: 120,
+                  marginLeft: 10,
+                  borderColor: "black",
+                  direction: "rtl",
                 }}
-                style={[
-                  {
-                    borderColor: theme.input,
-                    borderWidth: 1,
-                    backgroundColor: theme.input,
-                    color: theme.txt,
-                    flex: 1,
-                    borderRadius: 15,
-                    marginTop: 20,
-                  },
-                  style.s14,
-                ]}
-                textStyle={[
-                  style.s14,
-                  {
-                    textAlign: "left",
-                    color: theme.txt,
-                  },
-                ]}
-              /> */}
+                dropdownTextStyles={{
+                  textAlign: "left",
+                }}
+                dropdownStyles={{
+                  width: 120,
+                  marginLeft: 10,
+                }}
+                setSelected={setSelectedProduct}
+                data={productsList}
+                save="value"
+              />
+              <View
+                style={{
+                  position: "absolute",
+                  top: 20,
+                  marginLeft: 200,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <RoundedImage
+                  url={currentProductPic != "" ? currentProductPic : null}
+                  wid={100}
+                  hei={100}
+                />
+              </View>
+
+              <View></View>
               {errors.selectedProduct ? (
                 <Text style={style.errorText}>{errors.selectedProduct}</Text>
               ) : null}
@@ -333,6 +369,7 @@ export default function CreateTender() {
                 },
               ]}
             >
+              
               <TextInput
                 placeholder="כתובת איסוף"
                 textAlign="right"
@@ -383,7 +420,12 @@ export default function CreateTender() {
             {errors.collectDateHour ? (
               <Text style={style.errorText}>{errors.collectDateHour}</Text>
             ) : null}
-
+            <DateTimeSelect
+              setDateHour={setCollectDateHourClose}
+              setDateHourShow={setCollectDateHourCloseShow}
+              DateHourShow={collectDateHourCloseShow}
+              content={"מועד סגירת חלוקה"}
+            />
             <ValInput
               val={packsAmount}
               setVal={setPacksAmount}

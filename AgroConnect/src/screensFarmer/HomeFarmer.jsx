@@ -202,7 +202,7 @@ export default function HomeFarmer() {
                         {/* ~~~~~~~~~~~~~~  מכרזים  ~~~~~~~~~~~~~~ */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                             <Text style={[style.t1, { color: theme.txt, }]}>המכרזים שלי</Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={() => navigation.navigate('TendersFarmer')}>
                                 <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
                             </TouchableOpacity>
                         </View>

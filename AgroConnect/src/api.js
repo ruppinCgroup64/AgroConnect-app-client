@@ -35,11 +35,23 @@ export async function read(url) {
         "Accept": "application/json; charset=UTF-8",
       },
     });
+    console.log(`${BASE_URL}/${url}`)
     return await res.json();
   } catch (err) {
     return { status: false, err };
   }
 }
+
+
+// export async function Get(url){
+//   let res=await fetch(${baseURL}/${url},{
+//       method:'GET',
+//   });
+// if(res.status===404){
+//   return false;
+// }
+// return await res.json(); 
+// }
 
 export async function update(url, data) {
   try {

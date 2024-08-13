@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 export default function RoundedImage({url, wid, hei}) {
   return (
     <View style={[styles.container, { width: wid, height: hei }]}>
-      <Image source={{ uri: url }} style={styles.image} />
+      <Image source={{ uri: url }} style={[styles.image]} />
     </View>
   );
 }

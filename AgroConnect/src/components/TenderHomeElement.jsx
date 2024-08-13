@@ -11,7 +11,7 @@ const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 export default function TenderHomeElement({ nav, img, title, address, nav2, rank, timer }) {
-
+console.log('nav',nav)
     const theme = useContext(themeContext);
     const navigation = useNavigation();
     return (
@@ -22,7 +22,7 @@ export default function TenderHomeElement({ nav, img, title, address, nav2, rank
                         <Icon name='heart-outline' size={30} color={Colors.primary}></Icon>
                     </View>
                     <TouchableOpacity zIndex={1} style={{ marginTop: -30 }} onPress={() => navigation.navigate(nav, { salePointID: nav2 })}>
-                        <SquareImage url={img}
+                        <SquareImage url={{uri:img}}
                             wid={width / 2.25} hei={height / 5} />
                     </TouchableOpacity>
                 </View>
