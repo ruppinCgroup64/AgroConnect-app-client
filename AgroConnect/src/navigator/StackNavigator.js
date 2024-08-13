@@ -142,6 +142,7 @@ export default function StackNavigator() {
             component={TendersFarmer}
             options={{ headerShown: false }}
           />
+          
 
           <Stack.Screen
             name="MyTabs"

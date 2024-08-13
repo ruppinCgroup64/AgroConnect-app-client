@@ -16,53 +16,55 @@ import TenderHomeElement from '../components/TenderHomeElement';
 import HomeTopBar from '../components/HomeTopBar';
 import { SalePointContext } from '../Context/SalePointContext';
 import Loading from '../components/Loading';
+import { TenderContext } from '../Context/TenderContext';
 
 // import Demo from './Demo';
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-const tenders = [
-    {
-        nav: 'Tender',
-        img: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg',
-        title: '3 יחידות אננס',
-        address: 'אחד העם 101',
-        nav2: 'Tender',
-        rank: '4.3',
-        timer: 'נותרו 12 שעות ו-36 דקות'
-    },
-    {
-        nav: 'Tender',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s',
-        title: '2 ק"ג עגבניה',
-        address: 'רחוב מזה, פינת מפה',
-        nav2: 'Review',
-        rank: '4.8',
-        timer: 'נותרו 1 ימים ו-13 שעות'
-    },
-    {
-        nav: 'Tender',
-        img: 'https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
-        title: 'אבטיח בינוני',
-        address: 'אזור 51',
-        nav2: 'Review',
-        rank: '4.9',
-        timer: 'נותרו 1 ימים ו-3 שעות'
-    }
-];//tenders
 
-const TenderList = () => {
-    return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-        {tenders.map((item, index) => (
-            <TouchableOpacity key={index}
-                activeOpacity={0.8}>
-                <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
-                <View style={{ marginHorizontal: 115 }}></View>
-            </TouchableOpacity>
-        ))}
-    </View>
-    );
-};
+// const tenders = [
+//     {
+//         nav: 'Tender',
+//         img: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg',
+//         title: '3 יחידות אננס',
+//         address: 'אחד העם 101',
+//         nav2: 'Tender',
+//         rank: '4.3',
+//         timer: 'נותרו 12 שעות ו-36 דקות'
+//     },
+//     {
+//         nav: 'Tender',
+//         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s',
+//         title: '2 ק"ג עגבניה',
+//         address: 'רחוב מזה, פינת מפה',
+//         nav2: 'Review',
+//         rank: '4.8',
+//         timer: 'נותרו 1 ימים ו-13 שעות'
+//     },
+//     {
+//         nav: 'Tender',
+//         img: 'https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
+//         title: 'אבטיח בינוני',
+//         address: 'אזור 51',
+//         nav2: 'Review',
+//         rank: '4.9',
+//         timer: 'נותרו 1 ימים ו-3 שעות'
+//     }
+// ];//tenders
+
+// const TenderList = () => {
+//     return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
+//         {tenders.map((item, index) => (
+//             <TouchableOpacity key={index}
+//                 activeOpacity={0.8}>
+//                 <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
+//                 <View style={{ marginHorizontal: 115 }}></View>
+//             </TouchableOpacity>
+//         ))}
+//     </View>
+//     );
+// };
 
 
 export default function Home() {
@@ -71,8 +73,16 @@ export default function Home() {
     const navigation = useNavigation();
     const { consumer } = useContext(UsersContext);
     const { salePoints, getSalePoints } = useContext(SalePointContext);
+    const { getTenders } = useContext(TenderContext);
     const [farmPictures, setFarmPictures] = useState({});
     const [loading, setLoading] = useState(true);
+    const [tenders, settenders] = useState([]);
+
+    async function loadTenders(){
+        let res=await getTenders();
+        settenders(res);
+        console.log('tenders',res)
+    }
 
     useEffect(() => {
         const fetchSalePointsAndPictures = async () => {
@@ -87,7 +97,21 @@ export default function Home() {
             setLoading(false);
         };
         fetchSalePointsAndPictures();
+        loadTenders();
     }, []);
+
+    const TenderList = () => {
+        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
+            {tenders.map((item, index) => (
+                <TouchableOpacity key={index}
+                    activeOpacity={0.8}>
+                    <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
+                    <View style={{ marginHorizontal: 115 }}></View>
+                </TouchableOpacity>
+            ))}
+        </View>
+        );
+    };
 
     if (loading) {
         return <Loading></Loading> // Render a loading state while fetching data

@@ -19,6 +19,16 @@ export default function TenderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function createBid(bid) {
+    let res = await create("api/Bids", bid);
+    if (res!={}) {
+      console.log("bid created");
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
+
   async function updateTender(tenderId, tender) {
     let res = await update(`api/user/${tenderId}`, tender);
     if (res && res.status === 200) {
@@ -30,7 +40,7 @@ export default function TenderContextProvider(props) {
 
   async function getTenders() {
     let res = await read("api/Tenders");
-    if (res) setTenders(res);
+    if (res) {setTenders(res); return res}
     else alert("something went wrong");
     console.log("Tenders: ", res);
   }
@@ -56,7 +66,7 @@ export default function TenderContextProvider(props) {
 
 
   return (
-    <TenderContext.Provider value={{getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
+    <TenderContext.Provider value={{createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
       {props.children}
     </TenderContext.Provider>
   );
