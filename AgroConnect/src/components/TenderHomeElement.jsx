@@ -11,7 +11,6 @@ const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 export default function TenderHomeElement({ nav, img, title, address, nav2, rank, timer }) {
-console.log('nav',nav)
     const theme = useContext(themeContext);
     const navigation = useNavigation();
     return (

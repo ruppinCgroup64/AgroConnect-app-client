@@ -35,7 +35,7 @@ export async function read(url) {
         "Accept": "application/json; charset=UTF-8",
       },
     });
-    console.log(`${BASE_URL}/${url}`)
+    
     return await res.json();
   } catch (err) {
     return { status: false, err };

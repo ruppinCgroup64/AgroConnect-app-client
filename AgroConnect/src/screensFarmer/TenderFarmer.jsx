@@ -63,6 +63,15 @@ export default function TenderFarmer({route}) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>כמות מארזים למכירה: {item.offeredPacks}</Text>
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד סגירת מכרז: {item.closeDateHour}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד חלוקה: {item.collectDateHour}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד סגירת חלוקה: {item.collectDateHourClose}</Text>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                         <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5,marginLeft:10}]}>  {item.collectAddress}</Text>

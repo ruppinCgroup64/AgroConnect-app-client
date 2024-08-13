@@ -69,7 +69,6 @@ export default function CreateSalePoint() {
 
   //when the button was pressed->add the sale point to the DB
   useEffect(() => {
-    console.log("nav", navContinue);
     if (navContinue) {
       setIncorrectDetails(false);
       let flag = false;
@@ -83,7 +82,7 @@ export default function CreateSalePoint() {
         }
       }
       //if the flag is still false continue
-      console.log("flag", flag);
+      
       const fetchData = async () => {
         //register point
         let res = await createSalePoint(salePoint);
@@ -91,7 +90,7 @@ export default function CreateSalePoint() {
           //update the sale point=res now with id
           setSalePoint(res);
         }
-        console.log("salePoint", salePoint);
+        
       };
       if (!flag) {
         fetchData();
@@ -117,7 +116,6 @@ export default function CreateSalePoint() {
         let res = await addProductsToPoint(finalProducts);
         if (res) {
           setContent("נקודת המכירה נוצרה בהצלחה");
-          console.log("res", res);
         }
       };
       fetchData();
