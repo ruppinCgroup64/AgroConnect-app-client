@@ -19,10 +19,20 @@ export default function ProductContextProvider(props) {
   }
 
   async function getProductsByFarm(farmID) {
-    let res = await read("api/Products/farmer/"+farmID);
-    if (res)
-      {setProductsByFarm(res)
-      return res;}
+    let res = await read("api/Products/farmer/" + farmID);
+    if (res) {
+      setProductsByFarm(res)
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
+  async function getProductsInPoint(point) {
+    let res = await read("api/FarmProductsInPoint/" + point);
+    if (res) {
+      setProductsByFarm(res)
+      return res;
+    }
     else alert("something went wrong");
   }
 
@@ -33,8 +43,15 @@ export default function ProductContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function createProductInPoint(product) {
+    let res = await create("api/FarmProductsInPoint", product);
+    if (res)
+      return res
+    else alert("something went wrong");
+  }
+
   return (
-    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts,getProductsByFarm }}>
+    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts, getProductsByFarm, createProductInPoint ,getProductsInPoint }}>
       {props.children}
     </ProductContext.Provider>
   );
