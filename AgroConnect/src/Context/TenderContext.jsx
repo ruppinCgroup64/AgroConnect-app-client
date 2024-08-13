@@ -61,7 +61,6 @@ export default function TenderContextProvider(props) {
       return res;
     }
     else alert("something went wrong");
-    console.log("bids: ", res);
   }
 
 

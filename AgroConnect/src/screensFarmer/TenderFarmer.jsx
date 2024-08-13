@@ -60,12 +60,13 @@ export default function TenderFarmer({route}) {
                         <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
                         <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>כמות מארזים למכירה: {item.offeredPacks}</Text>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                         <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5,marginLeft:10}]}>  {item.collectAddress}</Text>
                     </View>
-
-
 
                     {/* ----------------------------- */}
                     {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>

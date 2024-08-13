@@ -36,7 +36,7 @@ export default function LeadTable({ tenderId }) {
   const BidTemplate = ({ bid }) => {
     return (
       <View style={[styles.row, styles.textData]}>
-        <Text>{bid.bidId}</Text>
+        <Text>{bid.bidSortedNum}</Text>
         <Text>{bid.consumerFirstName} {bid.consumerLastName}</Text>
         <Text>{bid.consumerPhoneNum}</Text>
         <Text>{bid.bidStatus.split(" ")[0] == "win" ? "כן" : "לא"}</Text>

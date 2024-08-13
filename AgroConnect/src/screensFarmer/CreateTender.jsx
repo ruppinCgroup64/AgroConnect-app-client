@@ -50,7 +50,6 @@ export default function CreateTender() {
   async function getProductsFromServer() {
     let res = await read("api/products");
     if (res) {
-      console.log(res);
       var productData = [];
       for (let i = 0; i < res.length; i++) {
         productData.push({
@@ -93,6 +92,12 @@ export default function CreateTender() {
   const [collectDateHourShow, setCollectDateHourShow] = useState(null);
   const [collectDateHourCloseShow, setCollectDateHourCloseShow] = useState(null);
 
+  const postTender = async () => {
+    let res = await createTender(tender);
+    console.log('res111',res)
+    if (res)
+      setNavContinue(true);
+  };
 
   useEffect(() => {
     if (flag) {
@@ -105,43 +110,31 @@ export default function CreateTender() {
         active: true,
         collectDateHour,
         collectDateHourClose,
-       // farmNum: farm.farmID,
-        farmNum: 1067,
+        farmNum: farm.id,
         latitude:"string",
         longitude:"string",
         productNum:productNum
       }
-
       setTender(newTender);
-      console.log('Tender',tender);
-    console.log('newTender',newTender);
-    let res=createTender(newTender);
-    if(res!={}){
-      navigation.navigate("HomeFarmer");
     }
-    }
-    
   }, [flag]);
 
   useEffect(() => {
     if (flag) {
-      //create Tender in the DB
-      //createTender(tender)
-      console.log(tender);
-      setNavContinue(true);
-      console.log(tender);
+      postTender()
+      console.log(tender)
     }
     setFlag(false);
   }, [tender]);
 
   useEffect(() => {
-    //navigation.navigate(""); //שליחת אובייקט המכרז לאחר פרסומו לעמוד מכרז צד חקלאי
+    if(navContinue)
+    {navigation.navigate("HomeFarmer")};
   }, [navContinue]);
 
   //select product=>show avg price, set the productID to the tender
   useEffect(() => {
     if (selectedProduct) {
-      console.log(selectedProduct);
       productsList.forEach((product) => {
         if (product.value == selectedProduct) {
           setcurrentProductPic(product.pic);
@@ -285,7 +278,7 @@ export default function CreateTender() {
                 <View style={{ margin: 5 }}></View>
                 <TouchableOpacity
                   onPress={() => {
-                    this.RBSheet14.close(), navigation.navigate("Login");
+                    this.RBSheet14.close(), navigation.navigate("HomeFarmer");
                   }}
                   style={[style.btn, { flex: 1 }]}
                 >
