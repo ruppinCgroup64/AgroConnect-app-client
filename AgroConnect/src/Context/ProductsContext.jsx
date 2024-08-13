@@ -9,11 +9,15 @@ export const ProductContext = createContext();
 
 export default function ProductContextProvider(props) {
   const [productsByFarm, setProductsByFarm] = useState([]);
+  const [productsInPoint, setProductsInPoint] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   async function getProducts() {
     let res = await read("api/products");
-    if (res)
+    if (res){
+      setAllProducts(res);
       return res
+    }
     else alert("something went wrong");
   }
 
@@ -29,7 +33,7 @@ export default function ProductContextProvider(props) {
   async function getProductsInPoint(point) {
     let res = await read("api/FarmProductsInPoint/" + point);
     if (res) {
-      setProductsByFarm(res)
+      setProductsInPoint(res)
       return res;
     }
     else alert("something went wrong");
@@ -50,7 +54,7 @@ export default function ProductContextProvider(props) {
   }
 
   return (
-    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts, getProductsByFarm, createProductInPoint ,getProductsInPoint }}>
+    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts, getProductsByFarm, createProductInPoint ,getProductsInPoint ,productsInPoint, allProducts}}>
       {props.children}
     </ProductContext.Provider>
   );
