@@ -20,29 +20,15 @@ export default function SalePointProductFarmerReadOnly({
   title,
   measure,
   uri,
-  amounts,
+  amount,
   setAmounts,
-  prices,
+  price,
   setPrices,
 }) {
   const navigation = useNavigation();
   const theme = useContext(themeContext);
   const image = { uri };
-  const [amount, setAmount] = useState(amounts[i]);
-  const [price, setPrice] = useState(prices[i]);
-
-  useEffect(() => {
-    const newPrices = prices;
-    newPrices[i] = price;
-    setPrices(newPrices);
-  }, [price]);
-
-  useEffect(() => {
-    const newAmounts = amounts;
-    newAmounts[i] = amount;
-    setAmounts(newAmounts);
-  }, [amount]);
-
+  
   return (
     <View style={{ padding: 5, marginTop: 10, width: "100%" }}>
       <View

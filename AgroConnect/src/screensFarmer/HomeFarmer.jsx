@@ -50,52 +50,10 @@ const tenders = [
     }
 ];//tenders
 
-const fairs = [
-    {
-        nav: 'ProDetail',
-        img: 'https://www.panoramacenter.co.il/wp-content/uploads/2017/07/shook-608x608.jpg',
-        title: 'שוק איכרים',
-        address: '12.04.2024',
-        nav2: 'Review',
-        rank: '4.6',
-        timer: 'עוד 10 ימים'
-    },
-    {
-        nav: 'ProDetail',
-        img: 'https://media.reshet.tv/image/upload/t_image_article_800/v1699546480/uploads/2023/903796167.jpg',
-        title: 'שוק צוק הדסה',
-        address: '11.04.2024',
-        nav2: 'Review',
-        rank: '4.8',
-        timer: 'עוד 9 ימים'
-    },
-    {
-        nav: 'ProDetail',
-        img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/433611051_903026805164816_7769755400387813259_n.jpg?stp=dst-jpg_s600x600&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jrCldMBMRjwQ7kNvgE_wJQG&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYBqe4OXaZ9yMvhc-i5czcrxnK3tWSzVzExAP-Sg2bPO9g&oe=664BE032',
-        title: 'שוק עמק חפר',
-        address: '05.04.2024',
-        nav2: 'Review',
-        rank: '4.8',
-        timer: 'עוד 3 ימים'
-    },
-];//fairs
 
 const TenderList = () => {
     return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
         {tenders.map((item, index) => (
-            <TouchableOpacity key={index}
-                activeOpacity={0.8}>
-                <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
-                <View style={{ marginHorizontal: 115 }}></View>
-            </TouchableOpacity>
-        ))}
-    </View>
-    );
-};
-
-const FairsList = () => {
-    return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-        {fairs.map((item, index) => (
             <TouchableOpacity key={index}
                 activeOpacity={0.8}>
                 <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
@@ -209,21 +167,6 @@ export default function HomeFarmer() {
                         <View style={{ marginTop: 15 }}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}>
                                 <TenderList />
-                            </ScrollView>
-                        </View>
-
-
-                        {/* ~~~~~~~~~~~~~~  ירידים  ~~~~~~~~~~~~~~ */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
-                            <Text style={[style.t1, { color: theme.txt, }]}>ירידים</Text>
-                            <TouchableOpacity >
-                                <Text style={[style.b16, { color: Colors.primary, }]}>ראה עוד</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{ marginTop: 15 }}>
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}>
-                                <FairsList />
                             </ScrollView>
                         </View>
 

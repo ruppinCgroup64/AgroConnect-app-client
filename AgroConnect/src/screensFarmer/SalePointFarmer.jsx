@@ -32,65 +32,91 @@ import Loading from '../components/Loading';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-//Products
-const product = [
-    {
-        title: "עגבנייה",
-        measure: 'ק"ג',
-        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
-    },
-    {
-        title: "חציל",
-        measure: 'ק"ג',
-        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
-    },
-    {
-        title: "תפוז",
-        measure: 'ק"ג',
-        uri: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/orange.png",
-    },
-];
-
 export default function SalePointFarmer({ route }) {
     const { salePointID } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const { products } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
-    const [amounts, setAmounts] = useState([100, 80, 115]);
-    const [prices, setPrices] = useState([12, 35, 14]);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = { uri: farm.mainPic };
     const { salePoint, getSalePoint } = useContext(SalePointContext);
     const [loading, setLoading] = useState(true);
+    const [productsList, setProductsList] = useState(null);
+    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
+    const { farmPoint, getFarmBySalePoint } = useContext(UsersContext);
+    const [image,setImage] = useState(null);
+
+    const init = async () => {
+        //get all products
+        await getProducts();
+
+        //get  all sales points 
+        await getSalePoint(salePointID);
+
+        //get all sales points 
+        await getSalePoint(salePointID);
+
+        //get all combine
+        await getProductsInPoint(salePointID);
+
+        //loads the farm's picture
+        await getFarmBySalePoint(salePointID);
+        await setImage({ uri: farmPoint.mainPic });
+    }//init
+
+    const manipulateData = () => {
+        // console.log('allProducts', allProducts);
+        // console.log('salePoint', salePoint);
+        // console.log('farmPoint', farmPoint);
+        // console.log('productsInPoint', productsInPoint);
+
+        //loads the products info.
+        let tempProducts = [];
+        for (i = 0; i < productsInPoint.length; i++) {
+            for (j = 0; j < allProducts.length; j++) {
+                if (productsInPoint[i].productInFarmNum == allProducts[j].id)
+                    tempProducts[i] = {
+                        i: i,
+                        title: allProducts[j].name,
+                        price: productsInPoint[i].unitPrice,
+                        uri: allProducts[j].pic,
+                        amount: productsInPoint[i].productAmount,
+                        price: productsInPoint[i].unitPrice
+                    };
+            }//for -> j
+        }//for -> i
+        setProductsList(tempProducts);
+        setLoading(false);
+    }//manipulateData
 
     useEffect(() => {
-        const fetchSalePoints = async () => {
-            await getSalePoint(salePointID);
-            setLoading(false);
-        };
-        fetchSalePoints();
-    }, []);
+        if (allProducts.length != 0 && productsInPoint.length && salePoint.address) {
+            manipulateData();
+        }
+    }, [allProducts, salePoint, productsInPoint])
+    useFocusEffect(useCallback(() => {
+        init();
+    }, []))
+
     if (loading)
         return <Loading></Loading>
 
     const ProductList = () => {
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
-                {product.map((product, index) => (
-                    <View key={index} style={{ width: "100%" }}>
-                        <SalePointProductFarmerReadOnly
-                            i={index}
-                            title={product.name}
-                            measure={'ק"ג'}
-                            uri={product.uri}
-                            amounts={amounts}
-                            setAmounts={setAmounts}
-                            prices={prices}
-                            setPrices={setPrices}
-                        />
-                    </View>
+                {productsList.map((product, index) => (
+                   <View key={index} style={{ width: "100%" }}>
+                   <SalePointProductFarmerReadOnly
+                       i={index}
+                       title={product.title}
+                       measure={'ק"ג'}
+                       uri={product.uri}
+                       amount={product.amount}
+                       setAmounts={setAmounts}
+                       price={product.price}
+                       setPrices={setPrices}
+                   />
+               </View>
                 ))}
             </View>
         );
