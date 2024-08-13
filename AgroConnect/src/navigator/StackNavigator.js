@@ -69,6 +69,7 @@ import ProDetail2 from "../screens/ProDetail2";
 import EditProfile from "../screens/EditProfile";
 import Welcome from "../screens/Welcome";
 import CreateTender from "../screensFarmer/CreateTender/";
+import TenderFarmer from "../screensFarmer/TenderFarmer/";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer/";
 import Farmer from "../screensFarmer/Farmer/";
 import About from "../screens/About";
@@ -81,6 +82,7 @@ import MyTabsFarmer from "./BottomNavigatorFarmer";
 import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
 import SalePoints from "../screens/SalePoints";
 import OrdersFarmer from "../screensFarmer/OrdersFarmer";
+import TendersFarmer from "../screensFarmer/TendersFarmer";
 
 const Stack = createNativeStackNavigator();
 
@@ -120,18 +122,27 @@ export default function StackNavigator() {
               options={{ headerShown: false }}
             />
           ) : null}
-
-          <Stack.Screen
-            name="CreateTender"
-            component={CreateTender}
-            options={{ headerShown: false }}
-          /> 
-
           <Stack.Screen
             name="Login"
             component={Login}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="CreateTender"
+            component={CreateTender}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TenderFarmer"
+            component={TenderFarmer}
+            options={{ headerShown: false }}
+          />
+               <Stack.Screen
+            name="TendersFarmer"
+            component={TendersFarmer}
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
