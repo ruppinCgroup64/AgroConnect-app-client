@@ -13,7 +13,8 @@ export default function ProductContextProvider(props) {
   async function getProducts() {
     let res = await read("api/products");
     if (res)
-      return res
+      {console.log(res)
+      return res}
     else alert("something went wrong");
   }
 
