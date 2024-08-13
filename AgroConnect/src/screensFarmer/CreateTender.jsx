@@ -38,7 +38,7 @@ export default function CreateTender() {
 
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const { products, getProductAveragePrice } = useContext(ProductContext); //נשים ברשימה של אייטמים
+  const { getProducts, getProductAveragePrice } = useContext(ProductContext); //נשים ברשימה של אייטמים
   const { farm } = useContext(UsersContext); //החקלאי שמחובר
   const { createTender } = useContext(TenderContext);
 
@@ -261,11 +261,11 @@ export default function CreateTender() {
               />
             </View>
             <View>
-              <DropDownSelect
-                list={products}
+              {/* <DropDownSelect
+                list={getProducts}
                 content={"בחר מוצר"}
                 setSelectedItem={setSelectedProduct}
-              />
+              /> */}
               {/* <DropDownPicker
                 listMode="MODAL"
                 open={open}
