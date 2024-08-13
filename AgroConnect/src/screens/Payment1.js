@@ -20,19 +20,28 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/Ionicons'
 import { RadioButton } from 'react-native-paper';
 import SuccessAlert from "../components/SuccessAlert";
+import { UsersContext } from '../Context/UserContext';
+import { OrderContext } from '../Context/OrderContext';
+
 
 
 const height = Dimensions.get('screen').height
 const width = Dimensions.get('screen').width
 
+const now = new Date();
+const formattedDateHour = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
 export default function Payment1({ route }) {
-    const {total} = route.params;
+    const { total, salePoint, productsInPoint, amounts } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [checked, setChecked] = useState(false);
     const [show, setShow] = useState(false);
     const [content, setContent] = useState("");
     const [navContinue, setNavContinue] = useState(false);
+    const { consumer } = useContext(UsersContext);
+    const { order, setOrder ,createOrder, createOrderInPoint, orderInPoint , getOrdersByConsumer } = useContext(OrderContext);
+
     useEffect(() => {
         if (navContinue) {
             setContent("ההזמנה בוצעה בהצלחה"); //שליטה בתוכן לפי מה שהשרת יחזיר
@@ -48,10 +57,46 @@ export default function Payment1({ route }) {
     useEffect(() => {
         if (navContinue) {
             const timer = setTimeout(() => {
-                navigation.navigate('Home');
+                navigation.navigate("MyTabs");
             }, 2000);
         }
     }, [show]);
+
+    const makeOrder = async () => {
+        const newOrder =
+        {
+            id: 0,
+            dateHour: formattedDateHour,
+            status: "שולם",
+            totalPrice: 0,
+            consumerNum: consumer.id
+        };
+        await createOrder(newOrder);
+        await getOrdersByConsumer(consumer.id);
+        await console.log("order Pay ", order[order.length - 1]);
+        await makeProductsOrder();
+    }//makeOrder
+
+    const makeProductsOrder = async () => {
+        let l = order.length;
+        console.log("order MakeProduct", order[l - 1]);
+        for (i = 0; i < productsInPoint.length; i++) {
+            const newOrderInPoint = [{
+                id: 0,
+                salePointNum: salePoint.id,
+                productInFarmNum: productsInPoint[i].productInFarmNum,
+                orderNum: order[l - 1].id,
+                amount: amounts[i],
+                rankProduct: 0
+            }]
+            console.log("productsInPoint[i] ", productsInPoint[i]);
+            console.log("newOrderInPoint ", newOrderInPoint);
+            await createOrderInPoint(newOrderInPoint);
+            await console.log("orderInPoint ", orderInPoint);
+        }//for -> i
+        setNavContinue(true);
+    }//makeProductsOrder
+
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
             <View style={[style.main, { backgroundColor: theme.bg, marginTop: 10 }]}>
@@ -147,9 +192,9 @@ export default function Payment1({ route }) {
                     </View>
 
                     <View style={{ paddingTop: 50, paddingBottom: 20 }}>
-                    <Text style={[style.b16, { color: theme.txt, fontFamily: 'Urbanist-Bold', marginHorizontal: 10, textAlign: 'center',marginBottom:10}]}>סה"כ לתשלום: {total}₪</Text>
+                        <Text style={[style.b16, { color: theme.txt, fontFamily: 'Urbanist-Bold', marginHorizontal: 10, textAlign: 'center', marginBottom: 10 }]}>סה"כ לתשלום: {total}₪</Text>
                         <TouchableOpacity
-                            onPress={() => { setNavContinue(true); }}
+                            onPress={() => { makeOrder() }}
                             style={[style.btn]}>
                             <Text style={[style.btntxt]}>בצע תשלום</Text>
                         </TouchableOpacity>
