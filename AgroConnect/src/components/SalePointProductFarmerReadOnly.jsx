@@ -21,14 +21,12 @@ export default function SalePointProductFarmerReadOnly({
   measure,
   uri,
   amount,
-  setAmounts,
   price,
-  setPrices,
 }) {
   const navigation = useNavigation();
   const theme = useContext(themeContext);
   const image = { uri };
-  
+
   return (
     <View style={{ padding: 5, marginTop: 10, width: "100%" }}>
       <View

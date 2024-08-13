@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color';
 import style from '../theme/style';
 import themeContext from '../theme/themeContex';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -112,9 +112,7 @@ export default function SalePointFarmer({ route }) {
                        measure={'ק"ג'}
                        uri={product.uri}
                        amount={product.amount}
-                       setAmounts={setAmounts}
                        price={product.price}
-                       setPrices={setPrices}
                    />
                </View>
                 ))}
