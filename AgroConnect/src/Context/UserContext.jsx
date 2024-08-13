@@ -12,6 +12,7 @@ export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
   const [farm, setFarm] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
+  const [allConsumers, setAllConsumers] = useState (null);
 
 
   async function register(user) {
@@ -78,8 +79,15 @@ export default function UsersContextProvider(props) {
     return 2;
   }
 
+  async function getAllConsumers(){
+    let res = await read("api/Consumers" );
+    console.log('res Consumers ', res);
+    setAllConsumers(res);
+    return 2;
+  }
+
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint}}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
       {props.children}
     </UsersContext.Provider>
   );

@@ -9,11 +9,22 @@ export const OrderContext = createContext();
 
 export default function OrderContextProvider(props) {
   const [order, setOrder] = useState();
+  const [orders, setOrders] = useState();
+  const [ordersInPoint, setOdersInPoint] = useState();
   const [orderInPoint, setOrderInPoint] = useState();
+
+  async function getOrders() {
+    let res = await read("api/orders");
+    if (res) {
+      setOrders(res);
+      return res
+    }
+    else alert("something went wrong");
+  }
 
   async function createOrder(o) {
     let res = await create("api/Orders", o);
-    if (res){
+    if (res) {
       setOrder(o);
       return res;
     }
@@ -22,7 +33,7 @@ export default function OrderContextProvider(props) {
 
   async function createOrderInPoint(o) {
     let res = await create("api/OrdersInPoint", o);
-    if (res){
+    if (res) {
       setOrderInPoint(res);
       return res;
     }
@@ -38,8 +49,17 @@ export default function OrderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function getOrdersInPoint() {
+    let res = await read("OrdersInPoint/");
+    if (res) {
+      setOrderInPoint(res);
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
   return (
-    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer}}>
+    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint }}>
       {props.children}
     </OrderContext.Provider>
   );
