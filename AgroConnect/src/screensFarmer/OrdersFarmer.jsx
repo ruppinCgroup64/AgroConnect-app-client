@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext, useEffect, useCallback } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
 import themeContext from '../theme/themeContex'
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -28,30 +28,60 @@ import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
 import TenderShowMoreElement from '../components/TenderShowMoreElement';
 import { SalePointContext } from '../Context/SalePointContext';
-import { OrderContext } from '../Context/OrderContext';
 import Loading from '../components/Loading';
 import { read } from '../api';
 import Order from '../components/Order';
+
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function SalePointsFarmer({ route }) {
+const orders = [
+    {
+        img: "https://yt3.googleusercontent.com/8id-4DSTsdgehTHSZnkHr8md0Dsitgp_5xbbtdE8hcglXBmoEtzz-HtyotsNjR8fnDCqjYEK=s900-c-k-c0x00ffffff-no-rj",
+        name: "אברהם טל",
+        dateTime: "26/02/2024",
+        total: 44,
+        products: [{
+            name: "עגבניה",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
+            amount: "2",
+            price: "14"
+        },
+        {
+            name: "חציל",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
+            amount: "1",
+            price: "16"
+        }]
+    },
+    {
+        img: "https://scontent.ftlv1-1.fna.fbcdn.net/v/t39.30808-6/264429031_480835666739170_8502532355458902715_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=P-6Z7fnc-BYQ7kNvgGGYf0b&_nc_ht=scontent.ftlv1-1.fna&oh=00_AYC_Wu6GZAKUcNtTY6dQAnzgh0jR2DuUn5dYG2ZYj7Ld0w&oe=66693085",
+        name: "שחר חסון",
+        dateTime: "02/03/2024",
+        total: 46,
+        products: [{
+            name: "עגבניה",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
+            amount: "1",
+            price: "14"
+        },
+        {
+            name: "חציל",
+            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
+            amount: "2",
+            price: "16"
+        }]
+    }
+]
 
-    const { salePointID } = route.params;
+export default function SalePointsFarmer() {
+
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const { farm } = useContext(UsersContext);
-    const { salePoint, getSalePoint } = useContext(SalePointContext);
-    const [loading, setLoading] = useState(true);
-    const [productsList, setProductsList] = useState(null);
-    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
-    const { getAllConsumers, allConsumers } = useContext(UsersContext);
-    const { orders, getOrders, ordersInPoint, getOrdersInPoint } = useContext(OrderContext);
-    const [AllOrders, setAllOrders] = useState(null);
 
     const OrdersList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
-            {AllOrders.map((item, index) => (
+            {orders.map((item, index) => (
                 <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
                     <Order
                         key={index}
@@ -66,100 +96,6 @@ export default function SalePointsFarmer({ route }) {
         </View>
         );
     };
-
-    const init = async () => {
-
-        await getOrders();
-
-        await getOrdersInPoint();
-
-        //get all products
-        await getProducts();
-
-        //get all combine
-        await getProductsInPoint(salePointID);
-
-        await getAllConsumers();
-    }//init
-
-    const manipulateData = () => {
-        // console.log('allProducts', allProducts);
-        // console.log('salePoint', salePoint);
-        // console.log('farmPoint', farmPoint);
-        // console.log('productsInPoint', productsInPoint);
-        console.log('allConsumers', allConsumers);
-        console.log('orders', orders);
-        console.log('ordersInPoint', ordersInPoint);
-
-        for (i = 0; i < orders.length; i++) {
-            let cNum = null;
-            for (k = 0; k < allConsumers.length; k++) {
-                if (orders[i].consumerNum == allConsumers[k].id)
-                    cNum = k;
-            }//for -> k
-            let tempProducts = [];
-            let Count = 0;
-            for (j = 0; j < ordersInPoint.length; j++) {
-                if (orders[i].id == ordersInPoint[j].orderNum) {
-                    let product = findProduct(ordersInPoint[j]);
-                    let productInPoint = findProductInPoint(ordersInPoint[j]);
-                    tempProducts[Count] = {
-                        name: product.name,
-                        pic: product.pic,
-                        amount: ordersInPoint[j].amount,
-                        price: productInPoint.unitPrice
-                    }//tempProducts
-                    count++;
-                }//if
-            }//for -> j
-            newOrders = AllOrders;
-            total = calTotal(tempProducts);
-            newOrders[i] = {
-                key: index,
-                img: allConsumers[cNum].profilePic,
-                name: allConsumers[cNum].firstName + " " + allConsumers[cNum].lastName,
-                dateTime: orders[i].dateHour,
-                products: tempProducts,
-                total: total
-            };
-            setAllOrders(newOrders);
-        }//for -> i
-        
-        setLoading(false);
-    }//manipulateData
-
-    const findProduct = (product) => {
-        for (i = 0; i < allProducts.length; i++) {
-            if(allProducts[i].id == product.productInFarmNum)
-                return allProducts[i]
-        }//for -> i
-    }//findProducts
-
-    const findProductInPoint = (product) => {
-        for (i = 0; i < productsInPoint.length; i++) {
-            if(productsInPoint[i].id == product.productInFarmNum)
-                return productsInPoint[i]
-        }//for -> i
-    }//findProducts
-
-    const calTotal = (p) => {
-        let total = 0;
-        for(i=0;i<p.length;i++){
-            total+= (p.amount * p.price);
-        }//for -> i
-    }//calTotal
-
-    useEffect(() => {
-        if (allProducts.length != 0 && productsInPoint.length && salePoint.address) {
-            manipulateData();
-        }
-    }, [allProducts, salePoint, productsInPoint])
-    useFocusEffect(useCallback(() => {
-        init();
-    }, []))
-
-    if (loading)
-        return <Loading></Loading>
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>

@@ -22,7 +22,7 @@ const height = Dimensions.get('screen').height
 
 const tenders = [
     {
-        nav: 'Tender',
+        nav: 'TenderFarmer',
         img: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg',
         title: '3 יחידות אננס',
         address: 'אחד העם 101',
@@ -31,7 +31,7 @@ const tenders = [
         timer: 'נותרו 12 שעות ו-36 דקות'
     },
     {
-        nav: 'Tender',
+        nav: 'TenderFarmer',
         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s',
         title: '2 ק"ג עגבניה',
         address: 'רחוב מזה, פינת מפה',
@@ -40,7 +40,7 @@ const tenders = [
         timer: 'נותרו 1 ימים ו-13 שעות'
     },
     {
-        nav: 'Tender',
+        nav: 'TenderFarmer',
         img: 'https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
         title: 'אבטיח בינוני',
         address: 'אזור 51',

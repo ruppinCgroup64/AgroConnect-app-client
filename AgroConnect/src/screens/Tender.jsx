@@ -21,6 +21,7 @@ import TenderHomeElement from "../components/TenderHomeElement";
 import LeadTable from "../components/LeadTable"; // ודא שהייבוא נכון
 import Icons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TenderContext } from "../Context/TenderContext";
+import ValInput from "../components/ValInput";
 
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
@@ -204,7 +205,7 @@ function postBid(){
           >
             טבלת המובילים
           </Text>
-          {/* <LeadTable /> */}
+          {/* <LeadTable />
           <ValInput
             val={packsAmount}
             setVal={setPacksAmount}
@@ -216,7 +217,7 @@ function postBid(){
               setVal={setPacksAmount}
               content={'כמות מארזים'}
               keyboardType={"numeric"}
-            />
+            /> */}
           <TouchableOpacity
            onPress={() => postBid()}
             style={[
