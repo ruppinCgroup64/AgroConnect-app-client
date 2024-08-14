@@ -33,7 +33,7 @@ const theTenders = [
         timer: 'נותרו 12 שעות ו-36 דקות'
     },
     {
-        nav: 'Tender',
+        nav: '',
         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWp9t0zqSSZd0kK2s8K_xXad6RYXHNXU41fqxC9LWxGg&s',
         title: '2 ק"ג עגבניה',
         address: 'רחוב מזה, פינת מפה',
@@ -42,7 +42,7 @@ const theTenders = [
         timer: 'נותרו 1 ימים ו-13 שעות'
     },
     {
-        nav: 'Tender',
+        nav: '',
         img: 'https://i5.walmartimages.com/asr/a83e3e11-9128-4d98-8f6f-8c144e0d8e5e.a5fafdef89b7430bd13cae9037294d87.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
         title: 'אבטיח בינוני',
         address: 'אזור 51',
@@ -141,10 +141,10 @@ export default function Home() {
                             <Text style={[style.t1, { color: theme.txt, textAlign: "left" }]}>{consumer.firstName + " " + consumer.lastName}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
+                            <TouchableOpacity>
                                 <Icons name='bell-outline' size={28} color={theme.txt} style={{}} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate('Mywishlist')}>
+                            <TouchableOpacity>
                                 <Icons name='heart-outline' size={28} color={theme.txt} style={{ marginLeft: 10 }} />
                             </TouchableOpacity>
                         </View>

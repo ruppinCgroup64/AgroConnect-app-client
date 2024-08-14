@@ -13,6 +13,7 @@ import MyCart from "../screens/MyCart";
 import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
 import Settings from "../screens/Settings";
+import SalePoints from "../screens/SalePoints";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,8 +34,8 @@ export default function MyTabs() {
       }}
     >
       <Tab.Screen
-        name="MyCart"
-        component={MyCart}
+        name="SalePoints"
+        component={SalePoints}
         options={{
           tabBarShowLabel: true,
           tabBarLabel: ({ focused, color }) => (
@@ -68,7 +69,7 @@ export default function MyTabs() {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="OrderTab"
         component={OrderTab}
         options={{
@@ -95,7 +96,7 @@ export default function MyTabs() {
           },
           headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Home"
         component={Home}
@@ -125,7 +126,7 @@ export default function MyTabs() {
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MyWallet"
         component={MyWallet}
         options={{
@@ -152,7 +153,7 @@ export default function MyTabs() {
           },
           headerShown: false,
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="Profile"

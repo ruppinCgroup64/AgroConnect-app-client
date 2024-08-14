@@ -13,6 +13,7 @@ import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
 import HomeFarmer from "../screensFarmer/HomeFarmer";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer";
+import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,8 +34,8 @@ export default function MyTabsFarmer() {
       }}
     >
       <Tab.Screen
-        name="MyCart"
-        component={MyCart}
+        name="SalePointsFarmer"
+        component={SalePointsFarmer}
         options={{
           tabBarShowLabel: true,
           tabBarLabel: ({ focused, color }) => (
@@ -68,7 +69,7 @@ export default function MyTabsFarmer() {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="OrderTab"
         component={OrderTab}
         options={{
@@ -95,7 +96,7 @@ export default function MyTabsFarmer() {
           },
           headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="HomeFarmer"
         component={HomeFarmer}
@@ -125,7 +126,7 @@ export default function MyTabsFarmer() {
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MyWallet"
         component={MyWallet}
         options={{
@@ -152,7 +153,7 @@ export default function MyTabsFarmer() {
           },
           headerShown: false,
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="Profile"

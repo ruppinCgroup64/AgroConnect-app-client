@@ -13,25 +13,22 @@ import { Colors } from '../theme/color'
 export default function LeadTable() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const state = this.state;
-  
-  this.state = {
-      tableHead: ['מיקום', 'מחיר ליחידה',"מס' יחידות"],
-      tableData: [
-          ['1', '25₪', '4'],
-          ['2', '24₪', '2'],
-          ['3', '22₪', '1'],
-          ['4', '21₪', '2']
-      ]
-  }
-
+  const [AAA, setAAA] = useState({
+    tableHead: ['מיקום', 'מחיר ליחידה',"מס' יחידות"],
+    tableData: [
+        ['1', '25₪', '4'],
+        ['2', '24₪', '2'],
+        ['3', '22₪', '1'],
+        ['4', '21₪', '2']
+    ]
+});
   
 
   return (
       <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.primary }}>
-              <Row data={state.tableHead} style={styles.head} textStyle={styles.text} />
-              <Rows data={state.tableData} textStyle={styles.text} />
+              <Row data={AAA.tableHead} style={styles.head} textStyle={styles.text} />
+              <Rows data={AAA.tableData} textStyle={styles.text} />
           </Table>
       </View>
   );//return
