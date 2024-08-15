@@ -23,7 +23,6 @@ import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Avatar } from 'react-native-paper'
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import { ProductContext } from "../Context/ProductsContext";
-import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
 import TenderShowMoreElement from '../components/TenderShowMoreElement';
@@ -31,6 +30,7 @@ import { SalePointContext } from '../Context/SalePointContext';
 import Loading from '../components/Loading';
 import { read } from '../api';
 import { TenderContext } from '../Context/TenderContext';
+import { UsersContext } from '../Context/UserContext';
 import SquareImage from '../components/SquareImage';
 import TenderShowMoreElementCons from '../components/TenderShowMoreElementCons';
 
@@ -42,9 +42,13 @@ export default function Tenders() {
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const { getTenders} = useContext(TenderContext);
+    const { getTenders, getWinTenders, getBidTenders} = useContext(TenderContext);
+    const { consumer} = useContext(UsersContext);
     const [loading, setLoading] = useState(true);
     const [tendersList, setTendersList] = useState([]);
+    const [bidTendersList, setBidTendersList] = useState([]);
+    const [winTendersList, setWinTendersList] = useState([]);
+
 
     const formatDate = (dateString) => {
         const [month, day, year] = dateString.split('/');
@@ -56,11 +60,24 @@ export default function Tenders() {
     }, []);
 
     async function loadTendersFarm(){
-        var result= await getTenders();
-        if(result!={}){
-            setTendersList(result);
+        let result1= await getTenders();
+        let result2= await getWinTenders(consumer.id);
+        let result3= await getBidTenders(consumer.id);
+
+        if(result1!=[]){
+            setTendersList(result1);
             setLoading(false);
-            console.log('result',result)
+            console.log('result',result1)
+        }
+
+        if(result2!=[]){
+            setBidTendersList(result2);
+            console.log('result2',result2)
+        }
+
+        if(result3!=[]){
+            setWinTendersList(result3);
+            console.log('result3',result3)
         }
     }
 
@@ -106,6 +123,31 @@ export default function Tenders() {
             </View>
         );
     };
+
+    const TendersList2 = () => {
+        return (
+            <View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
+                {tendersList.length !== 0 ? tendersList.map((item, index) => (
+                    <TouchableOpacity 
+                        key={index} 
+                        style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                        
+                        <TenderShowMoreElementCons
+                            item={item}
+                            nav={'Tender'}
+                            img={item.productPic}
+                            title={item.productName}
+                            Fname={item.farmName}
+                            address={formatDate(item.closeDateHour.split(" ")[0])}
+                            timer={calculateTimeRemaining(item.closeDateHour)}
+                            style={{ flex: 1 }} 
+                        />
+                    </TouchableOpacity>  
+                )) : null}
+            </View>
+        );
+    };
+
     
 
     return (
@@ -118,13 +160,21 @@ export default function Tenders() {
                 <Text style={[style.s18, { color: theme.txt, fontSize: 25, textAlign: 'center', flex: 1 }]}>מכרזים</Text>
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
-
-            {/* Sale Points */}
+            {/* Tenders */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
+                {bidTendersList.length>0 ? (
+                                    <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
+                                    >מכרזים אליהם הגשתי הצעה</Text>
+                                ) : null}
+                {winTendersList.length>0 ? (
+                <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
+                >מכרזים שזכיתי בהם</Text>
+                ) : null}
+                <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
+                >כל המכרזים</Text>
                     <TendersList />
                 </ScrollView>
-
             </View>
         </SafeAreaView>
     )//return

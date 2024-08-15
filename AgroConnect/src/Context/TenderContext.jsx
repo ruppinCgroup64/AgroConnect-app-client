@@ -44,6 +44,18 @@ export default function TenderContextProvider(props) {
     else alert("something went wrong");
     console.log("Tenders: ", res);
   }
+  async function getBidTenders(consumerId) {
+    let res = await read(`api/Tenders/BidsDetails/${consumerId}`);
+    if (res) {return res}
+    else alert("something went wrong");
+    console.log("Tenders bids: ", res);
+  }
+  async function getWinTenders(consumerId) {
+    let res = await read(`api/Tenders/Win/ShowInOrders/${consumerId}`);
+    if (res) {return res}
+    else alert("something went wrong");
+    console.log("Tenders win: ", res);
+  }
 
   async function getTendersByFarm(farmID) {
     let res = await read(`api/Tenders/farm/${farmID}`,farmID);
@@ -63,9 +75,18 @@ export default function TenderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function getTendersBidsConsumer(tenderId) {
+    console.log('tenderId',tenderId)
+    let res = await read(`api/Bids/${tenderId}`,tenderId);
+    if (res) {
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
 
   return (
-    <TenderContext.Provider value={{createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
+    <TenderContext.Provider value={{getTendersBidsConsumer,getBidTenders,getWinTenders,createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
       {props.children}
     </TenderContext.Provider>
   );
