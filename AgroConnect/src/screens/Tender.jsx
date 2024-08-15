@@ -61,8 +61,7 @@ export default function Tender({route}) {
 
     return (
        <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
-                <ImageBackground source={image} resizeMode='cover' style={{ height: height / 2.2, flex: 1 }} >
+            
                     <AppBar
                         elevation={0}
                         style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}
@@ -79,10 +78,9 @@ export default function Tender({route}) {
                             />
                         </TouchableOpacity>}
                     />
-                </ImageBackground>
-            </View>
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
+                <Image source={image} style={{ width: '100%', height: height / 3, borderRadius: 15, marginBottom: 15 }} />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
                         <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>

@@ -12,6 +12,7 @@ import { TenderContext } from '../Context/TenderContext';
 import { UsersContext } from '../Context/UserContext';
 import style from '../theme/style';
 import ValInput from './ValInput';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
@@ -28,6 +29,7 @@ export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
   const [unitprice, setUnitprice] = useState("") 
   const [newUnitprice, setNewUnitprice] = useState("") 
   const [flag, setFlag] = useState(false);
+  const [arr, setArr] = useState({});
 
   function filterByStatus(inputArray) {
     return inputArray.filter(item => item.bidStatus !== 'deleted');
@@ -42,10 +44,11 @@ export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
   function convertArray(inputArray) {
     return inputArray.map(item => [item.bidSortedNum, item.bidAmount]);
   }
-  const [arr, setArr] = useState({});
+
 
 useEffect(() => {
   funcRead();
+  console.log("1")
 }, [tenderId]);
 
 useEffect(() => {
@@ -56,6 +59,7 @@ useEffect(() => {
         tableData: convertArray(bids)})
         setConsumerBids(filterByConsumerId(bids,consumer.id))
         setLastBid(filterByStatus(bids,consumer.id))
+        console.log("2", bids)
     }
 }, [bids]);
   
@@ -139,7 +143,7 @@ const validateForm = () => {
             val={amount}
             setVal={setAmount}
             content={"כמות מוצעת"}
-            keyboardType={"default"}
+            keyboardType={"numeric"}
           />
           {errors.pack ? (
             <Text style={style.errorText}>{errors.pack}</Text>
@@ -148,7 +152,7 @@ const validateForm = () => {
             val={unitprice}
             setVal={setUnitprice}
             content={"מחיר מוצע"}
-            keyboardType={"default"}
+            keyboardType={"numeric"}
           />
           {errors.min ? (
           <Text style={style.errorText}>{errors.min}</Text>
@@ -166,13 +170,13 @@ const validateForm = () => {
                                     >ההצעה שלי:</Text>
                                     <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}
                                     >{}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
+          <TouchableOpacity onPress={handleSubmit}
                         style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                        <Text style={[style.btn, { marginRight: 5 }]}>מחק הצעה</Text>
-                        <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}
-                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
-                        <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
+                        <Text style={[style.btntxt, { marginRight: 5 }]}>מחק הצעה</Text>
+                        <Icons name='trash-can-outline' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
+          <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
+                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
           </View>:null}
       </View>
   );//return
