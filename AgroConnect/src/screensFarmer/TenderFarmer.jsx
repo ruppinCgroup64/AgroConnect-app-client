@@ -19,6 +19,7 @@ import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
 import LeadTable from '../components/LeadTable'; // ודא שהייבוא נכון
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LeadTableFarmer from '../components/LeadTableFarmer';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -90,7 +91,7 @@ export default function TenderFarmer({route}) {
                          {/* ----------------------------- */}
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת ההצעות</Text>
-                    <LeadTable tenderId={item.id}/>
+                    <LeadTableFarmer tenderId={item.id}/>
                 </ScrollView>
             </View>
         </SafeAreaView>

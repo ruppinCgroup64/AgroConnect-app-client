@@ -15,7 +15,6 @@ export default function TenderShowMoreElement({ item ,nav, img, title, address, 
     const navigation = useNavigation();
 
 function goToPage(item){
-    console.log('itemmm',item)
     //navigation.navigate('TenderFarmer', item:{item} )
 }
 
