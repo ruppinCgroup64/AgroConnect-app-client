@@ -56,6 +56,20 @@ export default function TendersFarmer() {
         loadTendersFarm();
     }, []))
    
+    const calculateTimeRemaining = (dateTime) => {
+        const now = new Date();
+        const targetDate = fixDate(dateTime);
+        const timeDifference = targetDate.getTime() - now.getTime();
+    
+        if (timeDifference <= 0) {
+            return "הזמן עבר";
+        }
+    
+        const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursRemaining = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+        return `נותרו ${daysRemaining} ימים ${hoursRemaining} שעות`;
+    };
 
     async function loadTendersFarm(){
         var result= await getTendersByFarm(farm.id);
@@ -82,8 +96,9 @@ export default function TendersFarmer() {
                         nav={'TenderFarmer'}
                         img={item.productPic}
                         title={item.productName}
+                        place={item.collectAddress}
                         address={(item.closeDateHour.split(" "))[0]}
-                        timer={"עוד " + Math.floor(((fixDate(item.closeDateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
+                        timer={calculateTimeRemaining(item.closeDateHour)}
                         style={{ flex: 1 }} />
                 </TouchableOpacity>  
             )):null}

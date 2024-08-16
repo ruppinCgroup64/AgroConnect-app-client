@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { create, read, update } from '../api';
+import { create, read, remove, update } from '../api';
 
 
 export const TenderContext = createContext();
@@ -28,6 +28,15 @@ export default function TenderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function deleteBid(bidId,tenderId) {
+    let res = await remove(`api/Bids/${bidId}/${tenderId}`);
+    if (res!={}) {
+      console.log("bid deleted");
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
 
   async function updateTender(tenderId, tender) {
     let res = await update(`api/user/${tenderId}`, tender);
@@ -45,13 +54,14 @@ export default function TenderContextProvider(props) {
     console.log("Tenders: ", res);
   }
   async function getBidTenders(consumerId) {
-    let res = await read(`api/Tenders/BidsDetails/${consumerId}`);
+    let res = await read(`api/Tenders/${consumerId}`);
+    console.log("1111111111", res)
     if (res) {return res}
     else alert("something went wrong");
     console.log("Tenders bids: ", res);
   }
   async function getWinTenders(consumerId) {
-    let res = await read(`api/Tenders/Win/ShowInOrders/${consumerId}`);
+    let res = await read(`api/Tenders/Win/${consumerId}`);
     if (res) {return res}
     else alert("something went wrong");
     console.log("Tenders win: ", res);
@@ -86,7 +96,7 @@ export default function TenderContextProvider(props) {
 
 
   return (
-    <TenderContext.Provider value={{getTendersBidsConsumer,getBidTenders,getWinTenders,createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
+    <TenderContext.Provider value={{deleteBid,getTendersBidsConsumer,getBidTenders,getWinTenders,createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
       {props.children}
     </TenderContext.Provider>
   );

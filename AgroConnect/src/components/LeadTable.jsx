@@ -18,17 +18,17 @@ import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
   const theme = useContext(themeContext);
-  const { getTendersBidsConsumer, createBid} = useContext(TenderContext);
+  const { getTendersBidsConsumer, createBid,deleteBid} = useContext(TenderContext);
   const { consumer } = useContext(UsersContext);
   const [bids, setBids] = useState([]);
   const [newBid, setNewBid] = useState([]);
   const [consumerBids, setConsumerBids] = useState([]);
-  const [lastBid, setLastBid] = useState({});
+  const [lastBid, setLastBid] = useState([]);
   const navigation = useNavigation();
   const [errors, setErrors] = useState({});
   const [amount, setAmount] = useState("") 
   const [unitprice, setUnitprice] = useState("") 
-  const [newUnitprice, setNewUnitprice] = useState("") 
+  const [newUnitprice, setNewUnitprice] = useState(0) 
   const [flag, setFlag] = useState(false);
   const [arr, setArr] = useState({});
 
@@ -37,14 +37,16 @@ export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
   }
   
   const funcRead = async () => {
-    console.log("tenderId4444", tenderId);
     let arr = await getTendersBidsConsumer(tenderId);
-    arr.sort((a, b) => a.bidSortedNum - b.bidSortedNum);
+    arr.sort((a, b) => a.sortedNum - b.sortedNum);
     setBids(arr);
+    setAmount("")
+    setUnitprice("")
   };
 
   function convertArray(inputArray) {
-    return inputArray.map(item => [item.sortedNum, item.amount]);
+    let arr2=inputArray.filter(item => item.status  !== 'Deleted');
+    return arr2.map(item => [item.sortedNum, item.amount]);
   }
 
 
@@ -64,10 +66,6 @@ useEffect(() => {
         console.log("2", bids)
     }
 }, [bids]);
-
-useEffect(()=>{
-  console.log("3", lastBid)
-   },[lastBid])
   
 const AddBid = async () => {
   let arr = await createBid(newBid);
@@ -76,7 +74,9 @@ const AddBid = async () => {
 };
 
 function filterByConsumerId(inputArray, consumerId) {
-  return inputArray.filter(item => item.consumerId === consumerId);
+  let arr=inputArray.filter(item => item.consumerNum === consumerId);
+  console.log("7",arr)
+  return arr
 }
 
 const handleSubmit = () => {
@@ -84,14 +84,23 @@ const handleSubmit = () => {
     setNewUnitprice(unitprice)
   else
   {
-    let counter= bids.filter(item => item.status == 'Deleted');
-    return setNewUnitprice(unitprice*counter*1.1)
+    let counter= bids.filter(item => item.status == 'Deleted').length;
+    let unitprice1 = parseFloat(unitprice);
+    let counter1 = parseFloat(counter);
+    let calc=(unitprice1*counter1*0.05)+unitprice1;
+    return setNewUnitprice(calc)
   }
 }
 
+const handleDelete=async()=>{
+  let arr = await deleteBid(lastBid[0].id, tenderId);
+  funcRead()
+}
+
 useEffect(()=>{
-  if(newUnitprice!="")
+  if(newUnitprice>0)
   {
+    console.log("unit price", newUnitprice)
   if (validateForm()) {
     const updatedBid = {
       tenderNum: tenderId,
@@ -137,6 +146,7 @@ const validateForm = () => {
   return Object.keys(errors).length === 0;
 }
 
+
   return (
     
     <KeyboardAvoidingView behavior='padding'>
@@ -147,7 +157,6 @@ const validateForm = () => {
           </Table>
           {lastBid.length == 0?
           <View>
-          <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}>על המחיר להיות גבוה מ- {minPrice}</Text>
             <ValInput
             val={amount}
             setVal={setAmount}
@@ -162,7 +171,8 @@ const validateForm = () => {
             setVal={setUnitprice}
             content={"מחיר מוצע"}
             keyboardType={"numeric"}
-          />
+          />           
+          <Text style={style.errorText}>על המחיר להיות גבוה מ- {minPrice}</Text>
           {errors.min ? (
           <Text style={style.errorText}>{errors.min}</Text>
           ) : null}
@@ -172,18 +182,32 @@ const validateForm = () => {
                         <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
           </View>:null}
-          {lastBid.length > 0?
+          {lastBid.length > 0 ?
           <View>
-            <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}
-                                    >ההצעה שלי:</Text>
-                                    <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}
-                                    >{}</Text>
-          <TouchableOpacity onPress={handleSubmit}
+            <View style={{ 
+    flexDirection: 'row', 
+     justifyContent: 'center',
+    alignItems: 'center', 
+    borderColor: '#01B763', 
+    borderWidth: 1, 
+    borderRadius: 5,
+    padding: 5, 
+    margin: 5
+}}>
+    <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'left', marginLeft: 5 }]}>
+        ההצעה שלי:
+    </Text>
+    <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'left', marginLeft: 5 }]}>
+        {lastBid[0].status.split(" ")[1] !== undefined ? lastBid[0].status.split(" ")[1] : lastBid[0].amount} מארזים במחיר של {lastBid[0].unitPrice}
+    </Text>
+</View>
+
+          <TouchableOpacity onPress={handleDelete}
                         style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                         <Text style={[style.btntxt, { marginRight: 5 }]}>מחק הצעה</Text>
                         <Icons name='trash-can-outline' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
-          <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
+          <Text style={[style.m16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
                                     >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
           </View>:null}
       </View>

@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
 import themeContext from '../theme/themeContex'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -50,33 +50,61 @@ export default function Tenders() {
     const [winTendersList, setWinTendersList] = useState([]);
 
 
+    //sort the tenders from the closest location
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+        const toRad = (x) => x * Math.PI / 180;
+    
+        const R = 6371; // רדיוס כדור הארץ בקילומטרים
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+    
+        return d;
+    }
+    
+    function sortTendersByDistance(tenders, currentLat, currentLon) {
+        return tenders.sort((a, b) => {
+            const distanceA = haversineDistance(currentLat, currentLon, parseFloat(a.latitude), parseFloat(a.longitude));
+            const distanceB = haversineDistance(currentLat, currentLon, parseFloat(b.latitude), parseFloat(b.longitude));
+            return distanceA - distanceB;
+        });
+    }
+
+
     const formatDate = (dateString) => {
         const [month, day, year] = dateString.split('/');
         return `${day}/${month}/${year}`;
     };
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         loadTendersFarm();
-    }, []);
+    }, []))
 
     async function loadTendersFarm(){
         let result1= await getTenders();
         let result2= await getWinTenders(consumer.id);
         let result3= await getBidTenders(consumer.id);
 
-        if(result1!=[]){
-            setTendersList(result1);
+        console.log('result',result1)
+        if(result1.length>0){
+            const sortedTenders = sortTendersByDistance(result1, consumer.latitude, consumer.longitude); 
+            setTendersList(sortedTenders);
             setLoading(false);
             console.log('result',result1)
         }
 
-        if(result2!=[]){
-            setBidTendersList(result2);
+        if(result2.length>0){
+            setWinTendersList(result2);
             console.log('result2',result2)
         }
 
-        if(result3!=[]){
-            setWinTendersList(result3);
+        if(result3.length>0){
+            setBidTendersList(result3);
             console.log('result3',result3)
         }
     }
@@ -114,6 +142,7 @@ export default function Tenders() {
                             img={item.productPic}
                             title={item.productName}
                             Fname={item.farmName}
+                            place={item.collectAddress}
                             address={formatDate(item.closeDateHour.split(" ")[0])}
                             timer={calculateTimeRemaining(item.closeDateHour)}
                             style={{ flex: 1 }} 
@@ -124,10 +153,35 @@ export default function Tenders() {
         );
     };
 
-    const TendersList2 = () => {
+    const TendersListBid = () => {
         return (
             <View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
-                {tendersList.length !== 0 ? tendersList.map((item, index) => (
+                {bidTendersList.length !== 0 ? bidTendersList.map((item, index) => (
+                    <TouchableOpacity 
+                        key={index} 
+                        style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                        
+                        <TenderShowMoreElementCons
+                           item={item}
+                           nav={'Tender'}
+                           img={item.productPic}
+                           title={item.productName}
+                           Fname={item.farmName}
+                           place={item.collectAddress}
+                           address={formatDate(item.closeDateHour.split(" ")[0])}
+                           timer={calculateTimeRemaining(item.closeDateHour)}
+                           style={{ flex: 1 }} 
+                        />
+                    </TouchableOpacity>  
+                )) : null}
+            </View>
+        );
+    };
+
+    const TendersListWin = () => {
+        return (
+            <View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
+                {winTendersList.length !== 0 ? winTendersList.map((item, index) => (
                     <TouchableOpacity 
                         key={index} 
                         style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
@@ -138,6 +192,7 @@ export default function Tenders() {
                             img={item.productPic}
                             title={item.productName}
                             Fname={item.farmName}
+                            place={item.collectAddress}
                             address={formatDate(item.closeDateHour.split(" ")[0])}
                             timer={calculateTimeRemaining(item.closeDateHour)}
                             style={{ flex: 1 }} 
@@ -163,13 +218,21 @@ export default function Tenders() {
             {/* Tenders */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                {bidTendersList.length>0 ? (
-                                    <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
-                                    >מכרזים אליהם הגשתי הצעה</Text>
-                                ) : null}
+                {bidTendersList.length > 0 ? (
+                <View>
+                    <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}>
+                        מכרזים אליהם הגשתי הצעה
+                    </Text>
+                    <TendersListBid />
+                </View>
+            ) : null}
                 {winTendersList.length>0 ? (
-                <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
-                >מכרזים שזכיתי בהם</Text>
+                <View>
+                <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}>
+                   מכרזים שזכיתי בהם
+                </Text>
+                <TendersListWin />
+            </View>
                 ) : null}
                 <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
                 >כל המכרזים</Text>

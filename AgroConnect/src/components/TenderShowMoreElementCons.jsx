@@ -10,7 +10,7 @@ import SquareImage from './SquareImage';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-export default function TenderShowMoreElementCons({ item, nav, img, title, Fname, address, nav2, rank, timer }) {
+export default function TenderShowMoreElementCons({ item, nav, img, title, Fname,place, address, nav2, rank, timer }) {
     const theme = useContext(themeContext);
     const navigation = useNavigation();
 
@@ -26,12 +26,10 @@ export default function TenderShowMoreElementCons({ item, nav, img, title, Fname
                         
                         {/* Text on the Right */}
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => liked()}>
-                                <Icon name='heart-outline' size={30} color={Colors.primary} style={{ marginBottom: 5 }} />
-                            </TouchableOpacity>
                             <Text style={[style.s10, { color: Colors.primary, fontSize: 25, textAlign: 'center', marginBottom: 0 }]}>{Fname}</Text>
                             <Text style={[style.s10, { color: Colors.primary, fontSize: 15, textAlign: 'center', marginBottom: 5 }]}>{title}</Text>
                             <Text style={[style.apptitle, { color: theme.txt, fontSize: 20, textAlign: 'center' }]}>{address}</Text>
+                            <Text style={[style.apptitle, { color: theme.txt, fontSize: 12, textAlign: 'center' }]}>{place}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                                 {rank ? (
                                     <View style={{ flexDirection: 'row', marginRight: 10 }}>

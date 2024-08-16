@@ -33,62 +33,78 @@ export default function TenderFarmer({route}) {
     const { farm } = useContext(UsersContext);
     const image = { uri: item.productPic };
 
+    const formatDateTime = (dateTimeString) => {
+        // Split the date and time parts
+        const [datePart, timePart, period] = dateTimeString.split(' ');
+        
+        // Extract day, month, and year from datePart
+        const [month, day, year] = datePart.split('/');
+        
+        // Extract hours and minutes from timePart
+        let [hours, minutes, seconds] = timePart.split(':');
+        
+        // Convert hours to 24-hour format if needed
+        if (period === 'PM' && hours !== '12') {
+            hours = String(Number(hours) + 12);
+        } else if (period === 'AM' && hours === '12') {
+            hours = '00';
+        }
+  
+        // Return formatted date and time
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    };
+
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
-                <ImageBackground source={image} resizeMode='cover' style={{ height: height / 2.2, flex: 1 }} >
-                    <AppBar
-                        elevation={0}
-                        style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}
-                        leading={<TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon
-                                name="arrow-forward"
-                                color={theme.txt}
-                                size={30}
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                    borderRadius: 10,
-                                }}
-                            />
-                        </TouchableOpacity>}
-                    />
-                </ImageBackground>
-            </View>
-            <View style={{ flex: 1, backgroundColor: theme.bg }}>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>כמות מארזים למכירה: {item.offeredPacks}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד סגירת מכרז: {item.closeDateHour}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד חלוקה: {item.collectDateHour}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>מועד סגירת חלוקה: {item.collectDateHourClose}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                        <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5,marginLeft:10}]}>  {item.collectAddress}</Text>
-                    </View>
-
-                    {/* ----------------------------- */}
-                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10 }} />
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='logo-whatsapp' size={30} color={Colors.primary} />
-                        </View>
-                    </View> */}
-                         {/* ----------------------------- */}
+        <AppBar
+            elevation={0}
+            style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}
+            leading={<TouchableOpacity onPress={() => navigation.goBack()}>
+                <Icon
+                    name="arrow-forward"
+                    color={theme.txt}
+                    size={30}
+                    style={{
+                        padding: 10,
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                        borderRadius: 10,
+                    }}
+                />
+            </TouchableOpacity>}
+        />
+<View style={{ flex: 1, backgroundColor: theme.bg }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
+    <Image source={image} style={{ width: '100%', height: height / 3, borderRadius: 15, marginBottom: 15 }} />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
+            <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                <Text style={{ textDecorationLine: 'underline' }}>כמות מארזים למכירה</Text>: {item.offeredPacks}
+            </Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת מכרז</Text>: {formatDateTime(item.closeDateHour)}
+            </Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                <Text style={{ textDecorationLine: 'underline' }}>מועד חלוקה</Text>: {formatDateTime(item.collectDateHour)}
+            </Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת חלוקה</Text>: {formatDateTime(item.collectDateHourClose)}
+            </Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
+            <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5, marginLeft: 10}]}>
+                {item.collectAddress}
+            </Text>
+        </View>
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת ההצעות</Text>
                     <LeadTableFarmer tenderId={item.id}/>
