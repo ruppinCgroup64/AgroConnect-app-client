@@ -68,7 +68,7 @@ export default function TenderContextProvider(props) {
 
   async function getTendersBidsFarmer(tenderId) {
     console.log('tenderId',tenderId)
-    let res = await read(`api/Tenders/BidsDetails/${tenderId}`,tenderId);
+    let res = await read(`api/Tenders/BidsDetails/${tenderId}`);
     if (res) {setTenderBidsFarm(res);
       return res;
     }
@@ -77,7 +77,7 @@ export default function TenderContextProvider(props) {
 
   async function getTendersBidsConsumer(tenderId) {
     console.log('tenderId',tenderId)
-    let res = await read(`api/Bids/${tenderId}`,tenderId);
+    let res = await read(`api/Bids/${tenderId}`);
     if (res) {
       return res;
     }

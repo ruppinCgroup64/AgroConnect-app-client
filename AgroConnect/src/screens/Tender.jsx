@@ -38,6 +38,7 @@ export default function Tender({route}) {
     const { farm } = useContext(UsersContext);
     const image = { uri: item.productPic };
     
+
     const formatDateTime = (dateTimeString) => {
       // Split the date and time parts
       const [datePart, timePart, period] = dateTimeString.split(' ');
@@ -61,7 +62,6 @@ export default function Tender({route}) {
 
     return (
        <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            
                     <AppBar
                         elevation={0}
                         style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}

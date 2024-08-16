@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
 import themeContext from '../theme/themeContex'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -52,9 +52,10 @@ export default function TendersFarmer() {
     const [loading, setLoading] = useState(true);
     const [TendersFarmList, setTendersFarmList] = useState([]);
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         loadTendersFarm();
-    }, []);
+    }, []))
+   
 
     async function loadTendersFarm(){
         var result= await getTendersByFarm(farm.id);

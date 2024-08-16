@@ -1,7 +1,8 @@
 import {
   View, Text,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  KeyboardAvoidingView
 } from 'react-native'
 import React, { useState, useContext, Component, useEffect } from 'react'
 import themeContext from '../theme/themeContex'
@@ -32,7 +33,7 @@ export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
   const [arr, setArr] = useState({});
 
   function filterByStatus(inputArray) {
-    return inputArray.filter(item => item.bidStatus !== 'deleted');
+    return inputArray.filter(item => item.consumerNum==consumer.id && item.status  !== 'Deleted');
   }
   
   const funcRead = async () => {
@@ -41,8 +42,9 @@ export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
     arr.sort((a, b) => a.bidSortedNum - b.bidSortedNum);
     setBids(arr);
   };
+
   function convertArray(inputArray) {
-    return inputArray.map(item => [item.bidSortedNum, item.bidAmount]);
+    return inputArray.map(item => [item.sortedNum, item.amount]);
   }
 
 
@@ -62,11 +64,15 @@ useEffect(() => {
         console.log("2", bids)
     }
 }, [bids]);
+
+useEffect(()=>{
+  console.log("3", lastBid)
+   },[lastBid])
   
 const AddBid = async () => {
-  let arr = await createBid(tenderId);
+  let arr = await createBid(newBid);
   arr.sort((a, b) => a.bidSortedNum - b.bidSortedNum);
-  setBids(arr);
+  funcRead()
 };
 
 function filterByConsumerId(inputArray, consumerId) {
@@ -78,7 +84,7 @@ const handleSubmit = () => {
     setNewUnitprice(unitprice)
   else
   {
-    let counter= bids.filter(item => item.bidStatus == 'deleted');
+    let counter= bids.filter(item => item.status == 'Deleted');
     return setNewUnitprice(unitprice*counter*1.1)
   }
 }
@@ -104,11 +110,13 @@ useEffect(()=>{
   },[newUnitprice])
   
   useEffect(() => {
+    console.log("4", newBid)
     if (flag) {
       AddBid();
+      setFlag(false);
+      console.log("5", newBid)
     }
-    setFlag(false);
-  }, [newBid]);
+  }, [newBid, flag]);
 
 
 const validateForm = () => {
@@ -125,18 +133,19 @@ const validateForm = () => {
     {
       errors.pack = "לא ניתן לבחור כמות גדולה מהכמות המוצעת";
     }
-    
   setErrors(errors);
   return Object.keys(errors).length === 0;
 }
 
   return (
+    
+    <KeyboardAvoidingView behavior='padding'>
       <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.primary }}>
               <Row data={arr.tableHead} style={styles.head} textStyle={styles.text} />
               <Rows data={arr.tableData} textStyle={styles.text} />
           </Table>
-          {Object.keys(lastBid).length > 0?
+          {lastBid.length == 0?
           <View>
           <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}>על המחיר להיות גבוה מ- {minPrice}</Text>
             <ValInput
@@ -162,9 +171,8 @@ const validateForm = () => {
                         <Text style={[style.btntxt, { marginRight: 5 }]}>הוסף הצעה</Text>
                         <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
-          
           </View>:null}
-          {Object.keys(lastBid).length > 0?
+          {lastBid.length > 0?
           <View>
             <Text style={[style.r16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red" }]}
                                     >ההצעה שלי:</Text>
@@ -179,6 +187,7 @@ const validateForm = () => {
                                     >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
           </View>:null}
       </View>
+      </KeyboardAvoidingView>
   );//return
 
 }//Table

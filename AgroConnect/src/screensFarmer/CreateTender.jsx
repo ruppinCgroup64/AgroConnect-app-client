@@ -278,7 +278,7 @@ export default function CreateTender() {
                 <View style={{ margin: 5 }}></View>
                 <TouchableOpacity
                   onPress={() => {
-                    this.RBSheet14.close(), navigation.navigate("HomeFarmer");
+                    this.RBSheet14.close(), navigation.navigate("TendersFarmer");
                   }}
                   style={[style.btn, { flex: 1 }]}
                 >
