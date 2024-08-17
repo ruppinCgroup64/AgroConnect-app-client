@@ -195,7 +195,7 @@ export default function Home() {
               >
                 שלום 👋
               </Text>
-              <Text style={[style.t1, { color: theme.txt, textAlign: "left" }]}>
+              <Text style={[style.t1, { color: theme.txt, textAlign: "left",fontFamily: "Heebo-SemiBold" }]}>
                 {consumer.firstName + " " + consumer.lastName}
               </Text>
             </View>
