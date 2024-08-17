@@ -240,11 +240,13 @@ export default function Tender({ route }) {
             </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity onPress={() => navigation.navigate("FarmPage", {item:item.farmNum})}>
             <RoundedImage
               url={item.farmPic}
               wid={width / 9}
               hei={height / 20}
             />
+            </TouchableOpacity>
             <Text
               style={[
                 style.s18,

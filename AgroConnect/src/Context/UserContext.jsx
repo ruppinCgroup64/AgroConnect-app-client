@@ -97,8 +97,17 @@ export default function UsersContextProvider(props) {
     console.log("Alerts: ", res);
   }
 
+  async function getFarms() {
+    let res = await read(`api/Farms`);
+    if (res) {
+      return res
+    }
+    else alert("something went wrong");
+    console.log("Farms: ", res);
+  }
+
   return (
-    <UsersContext.Provider value={{ alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
+    <UsersContext.Provider value={{ getFarms,alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
       {props.children}
     </UsersContext.Provider>
   );
