@@ -111,8 +111,8 @@ export default function CreateTender() {
         collectDateHour,
         collectDateHourClose,
         farmNum: farm.id,
-        latitude:"string",
-        longitude:"string",
+        longitude: longitude.toString(),
+        latitude: latitude.toString(),
         productNum:productNum
       }
       setTender(newTender);
@@ -129,7 +129,7 @@ export default function CreateTender() {
 
   useEffect(() => {
     if(navContinue)
-    {navigation.navigate("HomeFarmer")};
+    {navigation.navigate("TendersFarmer")};
   }, [navContinue]);
 
   //select product=>show avg price, set the productID to the tender
@@ -278,7 +278,7 @@ export default function CreateTender() {
                 <View style={{ margin: 5 }}></View>
                 <TouchableOpacity
                   onPress={() => {
-                    this.RBSheet14.close(), navigation.navigate("HomeFarmer");
+                    this.RBSheet14.close(), navigation.navigate("TendersFarmer");
                   }}
                   style={[style.btn, { flex: 1 }]}
                 >

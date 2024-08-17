@@ -29,109 +29,97 @@ import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-export default function Tender() {
+export default function Tender({route}) {
+  const { item } = route.params;
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const { farm } = useContext(UsersContext);
-    const image = {uri: 'https://bellvillemarket.co.za/wp-content/uploads/2020/11/pineapples.jpg'};
+    const image = { uri: item.productPic };
+    
 
+    const formatDateTime = (dateTimeString) => {
+      // Split the date and time parts
+      const [datePart, timePart, period] = dateTimeString.split(' ');
+      
+      // Extract day, month, and year from datePart
+      const [month, day, year] = datePart.split('/');
+      
+      // Extract hours and minutes from timePart
+      let [hours, minutes, seconds] = timePart.split(':');
+      
+      // Convert hours to 24-hour format if needed
+      if (period === 'PM' && hours !== '12') {
+          hours = String(Number(hours) + 12);
+      } else if (period === 'AM' && hours === '12') {
+          hours = '00';
+      }
 
-    //fairs
-    const fairs = [
-        {
-            nav: 'ProDetail',
-            img: 'https://www.panoramacenter.co.il/wp-content/uploads/2017/07/shook-608x608.jpg',
-            title: 'שוק איכרים',
-            address: '12.04.2024',
-            nav2: 'Review',
-            rank: '4.6',
-            timer: 'עוד 10 ימים'
-        },
-        {
-            nav: 'ProDetail',
-            img: 'https://media.reshet.tv/image/upload/t_image_article_800/v1699546480/uploads/2023/903796167.jpg',
-            title: 'שוק צוק הדסה',
-            address: '11.04.2024',
-            nav2: 'Review',
-            rank: '4.8',
-            timer: 'עוד 9 ימים'
-        },
-        {
-            nav: 'ProDetail',
-            img: 'https://scontent.ftlv27-1.fna.fbcdn.net/v/t39.30808-6/433611051_903026805164816_7769755400387813259_n.jpg?stp=dst-jpg_s600x600&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jrCldMBMRjwQ7kNvgE_wJQG&_nc_ht=scontent.ftlv27-1.fna&oh=00_AYBqe4OXaZ9yMvhc-i5czcrxnK3tWSzVzExAP-Sg2bPO9g&oe=664BE032',
-            title: 'שוק עמק חפר',
-            address: '05.04.2024',
-            nav2: 'Review',
-            rank: '4.8',
-            timer: 'עוד 3 ימים'
-        },
-    ];//fairs
-
-    //Making the elements that show each fair
-    const FairsList = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10 }]}>
-            {fairs.map((item, index) => (
-                <TouchableOpacity key={index}
-                    activeOpacity={0.8}>
-                    <TenderHomeElement key={index} nav={item.nav} img={item.img} title={item.title} address={item.address} nav2={item.nav2} rank={item.rank} timer={item.timer} />
-                    <View style={{ marginHorizontal: 115 }}></View>
-                </TouchableOpacity>
-            ))}
-        </View>
-        );
-    };//Fairs List
+      // Return formatted date and time
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
 
     return (
-        <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
-            <View style={{ backgroundColor: theme.bg3, flex: 1 }}>
-                <ImageBackground source={image} resizeMode='cover' style={{ height: height / 2.2, flex: 1, }} >
+       <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
                     <AppBar
                         elevation={0}
                         style={{ paddingHorizontal: 20, backgroundColor: 'transparent', paddingTop: 15 }}
                         leading={<TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-forward" color={theme.txt} size={30} />
-                        </TouchableOpacity>
-                        }
+                            <Icon
+                                name="arrow-forward"
+                                color={theme.txt}
+                                size={30}
+                                style={{
+                                    padding: 10,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    borderRadius: 10,
+                                }}
+                            />
+                        </TouchableOpacity>}
                     />
-                </ImageBackground>
-            </View>
-
-            {/* Tender Info */}
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={[style.subtitle, { color: theme.txt, }]}>3 יח' אננס</Text>
+                <Image source={image} style={{ width: '100%', height: height / 3, borderRadius: 15, marginBottom: 15 }} />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
                         <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>כמות מארזים למכירה</Text>: {item.offeredPacks}
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת מכרז</Text>: {formatDateTime(item.closeDateHour)}
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>מועד חלוקה</Text>: {formatDateTime(item.collectDateHour)}
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת חלוקה</Text>: {formatDateTime(item.collectDateHourClose)}
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>מיקום חלוקה</Text>: {item.collectAddress}
+                        </Text>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                    <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
-                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5}]}>  {farm.address}</Text>
+                        <RoundedImage url={item.farmPic} wid={width / 9} hei={height / 20} />
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5, marginLeft: 10}]}>
+                            {item.farmName}
+                        </Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10, }}></Icon>
-                            <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>4</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name='logo-whatsapp' size={30} color={Colors.primary}></Icon>
-                        </View>
-                    </View>
-
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
                     <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת המובילים</Text>
-                    <LeadTable></LeadTable>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('CreateSalePoint')}
-                        style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-                        <Text style={[style.btntxt, { marginRight: 5 }]}>הוסף הצעה</Text>
-                        <Icons name='plus-circle' size={20} color={Colors.secondary}></Icons>
-                    </TouchableOpacity>
-                    
-
+                    <LeadTable tenderId={item.id} closeTime={item.closeDateHour} minPrice={item.initialOffer} offeredPacks={item.offeredPacks}></LeadTable>
                 </ScrollView>
 
             </View>

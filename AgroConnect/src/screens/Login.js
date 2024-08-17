@@ -37,8 +37,8 @@ export default function Login() {
   const [isChecked, setChecked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   //login data
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("Adi@gmail.com");
+  const [password, setPassword] = useState("A1!");
   const [errors, setErrors] = useState({});
   const [probLogin, setProbLogin] = useState("");
   const { consumer } = useContext(UsersContext);

@@ -43,6 +43,7 @@ export async function read(url) {
 }
 
 
+
 // export async function Get(url){
 //   let res=await fetch(${baseURL}/${url},{
 //       method:'GET',

@@ -146,7 +146,7 @@ export default function Settings() {
         <AppBar
           color={theme.bg}
           title="הגדרות"
-          titleStyle={{ color: theme.txt, fontFamily: "Urbanist-Bold" }}
+          titleStyle={{ color: theme.txt, fontFamily: "Heebo-Bold", textAlign:"center" }}
           elevation={0}
           leading={
             <TouchableOpacity>

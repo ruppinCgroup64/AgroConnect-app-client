@@ -10,13 +10,13 @@ import SquareImage from './SquareImage';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-export default function TenderShowMoreElement({ item, nav, img, title,place, address, rank, timer }) {
+export default function TenderShowMoreElementCons({ item, nav, img, title, Fname,place, address, rank, timer }) {
     const theme = useContext(themeContext);
     const navigation = useNavigation();
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.bg }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate(nav, { item: item })}>
                 <View style={{ width: width * 0.9, alignSelf: 'center', marginBottom: 20 }}>
                     <View style={{ backgroundColor: theme.bg3, padding: 10, borderRadius: 15, flexDirection: 'row' }}>
                         {/* Image on the Left */}
@@ -26,6 +26,7 @@ export default function TenderShowMoreElement({ item, nav, img, title,place, add
                         
                         {/* Text on the Right */}
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={[style.s10, { color: Colors.primary, fontSize: 25, textAlign: 'center', marginBottom: 0 }]}>{Fname}</Text>
                             <Text style={[style.s10, { color: Colors.primary, fontSize: 15, textAlign: 'center', marginBottom: 5 }]}>{title}</Text>
                             <Text style={[style.apptitle, { color: theme.txt, fontSize: 20, textAlign: 'center' }]}>{address}</Text>
                             <Text style={[style.apptitle, { color: theme.txt, fontSize: 12, textAlign: 'center' }]}>{place}</Text>

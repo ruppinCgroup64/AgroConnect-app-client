@@ -129,7 +129,6 @@ export default StyleSheet.create({
     color: Colors.disable,
     fontFamily: "Heebo-Bold",
   },
-
   btn: {
     backgroundColor: Colors.primary,
     alignItems: "center",

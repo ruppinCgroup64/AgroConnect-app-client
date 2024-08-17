@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
 import themeContext from '../theme/themeContex'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -52,9 +52,29 @@ export default function TendersFarmer() {
     const [loading, setLoading] = useState(true);
     const [TendersFarmList, setTendersFarmList] = useState([]);
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         loadTendersFarm();
-    }, []);
+    }, []))
+
+    const formatDate = (dateString) => {
+        const [month, day, year] = dateString.split('/');
+        return `${day}/${month}/${year}`;
+    };
+    
+    const calculateTimeRemaining = (dateTime) => {
+        const now = new Date();
+        const targetDate = fixDate(dateTime);
+        const timeDifference = targetDate.getTime() - now.getTime();
+    
+        if (timeDifference <= 0) {
+            return "הזמן עבר";
+        }
+    
+        const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursRemaining = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+        return `נותרו ${daysRemaining} ימים ${hoursRemaining} שעות`;
+    };
 
     async function loadTendersFarm(){
         var result= await getTendersByFarm(farm.id);
@@ -81,8 +101,9 @@ export default function TendersFarmer() {
                         nav={'TenderFarmer'}
                         img={item.productPic}
                         title={item.productName}
-                        address={(item.closeDateHour.split(" "))[0]}
-                        timer={"עוד " + Math.floor(((fixDate(item.closeDateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
+                        place={item.collectAddress}
+                        address={formatDate(item.closeDateHour.split(" ")[0])}
+                        timer={calculateTimeRemaining(item.closeDateHour)}
                         style={{ flex: 1 }} />
                 </TouchableOpacity>  
             )):null}
