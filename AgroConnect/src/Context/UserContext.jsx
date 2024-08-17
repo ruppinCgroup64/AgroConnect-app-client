@@ -93,8 +93,6 @@ export default function UsersContextProvider(props) {
     return 2;
   }
 
-  return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint, farmPoint, getAllConsumers, allConsumers ,getAllFarms, allFarms}}>
   async function getAlerts(consumerId) {
     let res = await read(`api/Tenders/alerts/${consumerId}`);
     if (res) {
@@ -106,7 +104,7 @@ export default function UsersContextProvider(props) {
   }
 
   return (
-    <UsersContext.Provider value={{ alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
+    <UsersContext.Provider value={{ alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers ,getAllFarms, allFarms}}>
       {props.children}
     </UsersContext.Provider>
   );
