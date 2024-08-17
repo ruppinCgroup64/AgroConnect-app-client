@@ -160,18 +160,11 @@ export default function Home() {
               <TenderHomeElement
                 nav={"SalePoint"}
                 img={farmPictures[item.farmNum]} // Use preloaded picture
-                title={item.address}
                 address={item.dateHour.split(" ")[0]}
+                place={item.address}
                 nav2={item.id}
                 rank={item.rankPrice}
-                timer={
-                  "עוד " +
-                  Math.floor(
-                    (fixDate(item.dateHour).getTime() - new Date().getTime()) /
-                      (1000 * 3600 * 24)
-                  ) +
-                  " ימים"
-                }
+                timer={calculateTimeRemaining(item.dateHour)}
               />
               <View style={{ marginHorizontal: 115 }}></View>
             </TouchableOpacity>
@@ -207,20 +200,12 @@ export default function Home() {
               </Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
                 <Icons
                   name="bell-outline"
                   size={28}
                   color={theme.txt}
                   style={{}}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Icons
-                  name="heart-outline"
-                  size={28}
-                  color={theme.txt}
-                  style={{ marginLeft: 10 }}
                 />
               </TouchableOpacity>
             </View>

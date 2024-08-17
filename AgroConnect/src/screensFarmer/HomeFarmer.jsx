@@ -84,9 +84,6 @@ const calculateTimeRemaining = (dateTime) => {
     return `נותרו ${daysRemaining} ימים ${hoursRemaining} שעות`;
 };
 
-useEffect(()=>{
-    loadTendersFarm()
-     },[])
      
   async function loadTendersFarm() {
     var result = await getTendersByFarm(farm.id);
@@ -109,6 +106,7 @@ useEffect(()=>{
       setLoading(false);
     };
     fetchSalePointsAndPictures();
+    loadTendersFarm()
   }, []);
 
   if (loading) {
@@ -133,17 +131,10 @@ useEffect(()=>{
                 nav={"SalePointFarmer"}
                 img={farmPictures[item.farmNum]} // Use preloaded picture
                 title={item.address}
-                address={item.dateHour.split(" ")[0]}
+                address={formatDate(item.dateHour.split(" ")[0])}
                 nav2={item.id}
                 rank={item.rankPrice}
-                timer={
-                  "עוד " +
-                  Math.floor(
-                    (fixDate(item.dateHour).getTime() - new Date().getTime()) /
-                      (1000 * 3600 * 24)
-                  ) +
-                  " ימים"
-                }
+                timer={calculateTimeRemaining(item.dateHour)}
               />
               <View style={{ marginHorizontal: 115 }}></View>
             </TouchableOpacity>
@@ -177,24 +168,6 @@ useEffect(()=>{
               <Text style={[style.t1, { color: theme.txt, textAlign: "left" }]}>
                 {consumer.firstName + " " + consumer.lastName}
               </Text>
-            </View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity>
-                <Icons
-                  name="bell-outline"
-                  size={28}
-                  color={theme.txt}
-                  style={{}}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Icons
-                  name="heart-outline"
-                  size={28}
-                  color={theme.txt}
-                  style={{ marginLeft: 10 }}
-                />
-              </TouchableOpacity>
             </View>
           </View>
 
