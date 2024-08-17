@@ -83,6 +83,7 @@ import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
 import SalePoints from "../screens/SalePoints";
 import OrdersFarmer from "../screensFarmer/OrdersFarmer";
 import TendersFarmer from "../screensFarmer/TendersFarmer";
+import Orders from "../screens/Orders";
 
 const Stack = createNativeStackNavigator();
 
@@ -469,6 +470,11 @@ export default function StackNavigator() {
           <Stack.Screen
             name="OrdersFarmer"
             component={OrdersFarmer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Orders"
+            component={Orders}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

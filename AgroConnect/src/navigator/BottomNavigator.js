@@ -14,6 +14,7 @@ import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
 import Settings from "../screens/Settings";
 import SalePoints from "../screens/SalePoints";
+import Orders from "../screens/Orders";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,8 +35,8 @@ export default function MyTabs() {
       }}
     >
       <Tab.Screen
-        name="SalePoints"
-        component={SalePoints}
+        name="Orders"
+        component={Orders}
         options={{
           tabBarShowLabel: true,
           tabBarLabel: ({ focused, color }) => (

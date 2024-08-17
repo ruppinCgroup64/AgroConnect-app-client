@@ -10,7 +10,7 @@ export const OrderContext = createContext();
 export default function OrderContextProvider(props) {
   const [order, setOrder] = useState();
   const [orders, setOrders] = useState();
-  const [ordersInPoint, setOdersInPoint] = useState();
+  const [ordersInPoint, setOrdersInPoint] = useState();
   const [orderInPoint, setOrderInPoint] = useState();
 
   async function getOrders() {
@@ -40,10 +40,31 @@ export default function OrderContextProvider(props) {
     else alert("something went wrong");
   }//createOrderInPoint
 
+  async function getOrderInPoint(o) {
+    try {
+      let res = await create("api/OrdersInPoint/ordersInPointDetails", o);
+
+      // בדיקה אם הבקשה לא הצליחה או אם res הוא null או undefined
+      if (!res || !res.status) {
+        console.log("No data found or an error occurred.");
+        return -1;
+      }//if
+
+      // אם הבקשה הצליחה ויש נתונים
+      setOrderInPoint(res);
+      return res;
+    } catch (error) {
+      // טיפול בשגיאה כאן כדי למנוע מהאפליקציה להקפיץ שגיאה
+      console.error("An error occurred:", error);
+      return -1;
+    }//catch
+  }//getOrderInPoint
+
+
   async function getOrdersByConsumer(cID) {
     let res = await read("Orders/" + cID);
     if (res) {
-      setOrder(res);
+      setOrders(res);
       return res;
     }
     else alert("something went wrong");
@@ -52,14 +73,14 @@ export default function OrderContextProvider(props) {
   async function getOrdersInPoint() {
     let res = await read("OrdersInPoint/");
     if (res) {
-      setOrderInPoint(res);
+      setOrdersInPoint(res);
       return res;
     }
     else alert("something went wrong");
   }
 
   return (
-    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint }}>
+    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint, getOrderInPoint }}>
       {props.children}
     </OrderContext.Provider>
   );

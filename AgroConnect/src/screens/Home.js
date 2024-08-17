@@ -67,7 +67,6 @@ export default function Home() {
     async function loadTenders() {
         let res = await getTenders();
         settenders(res);
-        console.log('tenders', res)
     }
 
     useEffect(() => {

@@ -40,7 +40,7 @@ export default function Payment1({ route }) {
     const [content, setContent] = useState("");
     const [navContinue, setNavContinue] = useState(false);
     const { consumer } = useContext(UsersContext);
-    const { order, setOrder ,createOrder, createOrderInPoint, orderInPoint , getOrdersByConsumer } = useContext(OrderContext);
+    const { orders, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer } = useContext(OrderContext);
 
     useEffect(() => {
         if (navContinue) {
@@ -72,20 +72,19 @@ export default function Payment1({ route }) {
             consumerNum: consumer.id
         };
         await createOrder(newOrder);
-        await getOrdersByConsumer(consumer.id);
-        await console.log("order Pay ", order[order.length - 1]);
+        await console.log("consumer: ", consumer.id);
+        await console.log("Created Order: ", orders[orders.length - 1]);
         await makeProductsOrder();
     }//makeOrder
 
     const makeProductsOrder = async () => {
-        let l = order.length;
-        console.log("order MakeProduct", order[l - 1]);
+        let l = orders.length;
         for (i = 0; i < productsInPoint.length; i++) {
             const newOrderInPoint = [{
                 id: 0,
                 salePointNum: salePoint.id,
                 productInFarmNum: productsInPoint[i].productInFarmNum,
-                orderNum: order[l - 1].id,
+                orderNum: orders[l - 1].id,
                 amount: amounts[i],
                 rankProduct: 0
             }]

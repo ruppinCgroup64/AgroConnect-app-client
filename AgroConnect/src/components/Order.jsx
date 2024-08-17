@@ -60,22 +60,23 @@ export default function Order({ img, name, dateTime, total, products }) {
 
                             {/* Content */}
                             <View style={{ flex: 1, marginLeft: 10 }}>
-
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <RoundedImage url={img} wid={width / 7.2} hei={height / 16} justifyContent='flex-start' />
-                                    <Text style={[style.s10, { color: Colors.primary, fontSize: 22, textAlign: 'left' }]}>
-                                        {name}
-                                    </Text>
-
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                                     {/* dateTime */}
-                                    <Text style={[style.s10, { color: theme.txt, fontSize: 15, textAlign: 'right' }]}>
+                                    <Text style={[style.s10, { color: theme.txt, fontSize: 15, textAlign: 'center' }]}>
                                         {dateTime}
                                     </Text>
                                 </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RoundedImage url={img} wid={width / 7.2} hei={height / 16} justifyContent='flex-start' />
+                                    <Text style={[style.s10, { color: Colors.primary, fontSize: 22, textAlign: 'right' }]}>
+                                        {name}
+                                    </Text>
+                                </View>
+
                                 <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
                                 {/* Products */}
-                                <ProductsList/>
+                                <ProductsList />
                                 <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
                                 {/* Total */}

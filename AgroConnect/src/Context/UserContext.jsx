@@ -1,10 +1,10 @@
 
 //Users management- consumer, farmers, login user
 
-import { useState, createContext, useEffect} from "react";
+import { useState, createContext, useEffect } from "react";
 import { create, read, update, remove } from "../api";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import {navigateLogin} from "../screens/Login";
+import { navigateLogin } from "../screens/Login";
 
 export const UsersContext = createContext();
 
@@ -12,7 +12,8 @@ export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
   const [farm, setFarm] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
-  const [allConsumers, setAllConsumers] = useState (null);
+  const [allConsumers, setAllConsumers] = useState(null);
+  const [allFarms, setAllFarms] = useState(null);
 
 
   async function register(user) {
@@ -46,7 +47,7 @@ export default function UsersContextProvider(props) {
   async function updateFarm(f) {
     let res = await update(`api/Farms`, f);
     if (res) {
-      console.log("upp far",res)
+      console.log("upp far", res)
       setFarm(res);
       return res;
     } else {
@@ -73,21 +74,26 @@ export default function UsersContextProvider(props) {
     else alert("something went wrong");
   }//login
 
-  async function getFarmBySalePoint(pointID){
+  async function getFarmBySalePoint(pointID) {
     let resFarm = await read("api/Farms/salePoint/" + pointID);
     setFarmPoint(resFarm);
     return 2;
   }
 
-  async function getAllConsumers(){
-    let res = await read("api/Consumers" );
-    console.log('res Consumers ', res);
+  async function getAllConsumers() {
+    let res = await read("api/Consumers");
     setAllConsumers(res);
     return 2;
   }
 
+  async function getAllFarms() {
+    let res = await read("api/Farms");
+    setAllFarms(res);
+    return 2;
+  }
+
   return (
-    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
+    <UsersContext.Provider value={{ consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint, farmPoint, getAllConsumers, allConsumers ,getAllFarms, allFarms}}>
       {props.children}
     </UsersContext.Provider>
   );
