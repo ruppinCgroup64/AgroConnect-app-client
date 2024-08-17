@@ -16,7 +16,7 @@ import ValInput from './ValInput';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
-export default function LeadTable({ tenderId, minPrice, offeredPacks }) {
+export default function LeadTable({ tenderId, closeTime, minPrice, offeredPacks }) {
   const theme = useContext(themeContext);
   const { getTendersBidsConsumer, createBid,deleteBid} = useContext(TenderContext);
   const { consumer } = useContext(UsersContext);
@@ -146,6 +146,28 @@ const validateForm = () => {
   return Object.keys(errors).length === 0;
 }
 
+const parseDateString = (dateString) => {
+  const [datePart, timePart, period] = dateString.split(' '); // מפריד בין התאריך, השעה והתקופה (AM/PM)
+  const [month, day, year] = datePart.split('/').map(Number); // מפרק את התאריך לפורמט mm/dd/yyyy
+  let [hours, minutes, seconds] = timePart.split(':').map(Number); // מפרק את השעה לפורמט hh:mm:ss
+
+  // התאמת השעה לפי AM/PM
+  if (period === 'PM' && hours !== 12) {
+    hours += 12;
+  } else if (period === 'AM' && hours === 12) {
+    hours = 0;
+  }
+
+  return new Date(year, month - 1, day, hours, minutes, seconds); // יוצר אובייקט Date
+};
+
+const checkIfTimePassed = () => {
+  const currentTime = new Date(); // הזמן הנוכחי
+  const closeTimeDate = parseDateString(closeTime); // המרת ה-closeTime לאובייקט Date
+  let ans=  closeTimeDate>currentTime;
+  console.log("dates", ans,currentTime,closeTimeDate)
+  return ans; // אם הזמן הנוכחי גדול מ-closeTime, הפונקציה תחזיר true
+};
 
   return (
     
@@ -185,15 +207,15 @@ const validateForm = () => {
           {lastBid.length > 0 ?
           <View>
             <View style={{ 
-    flexDirection: 'row', 
-     justifyContent: 'center',
-    alignItems: 'center', 
-    borderColor: '#01B763', 
-    borderWidth: 1, 
-    borderRadius: 5,
-    padding: 5, 
-    margin: 5
-}}>
+              flexDirection: 'row', 
+              justifyContent: 'center',
+              alignItems: 'center', 
+              borderColor: '#01B763', 
+              borderWidth: 1, 
+              borderRadius: 5,
+              padding: 5, 
+              margin: 5
+          }}>
     <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'left', marginLeft: 5 }]}>
         ההצעה שלי:
     </Text>
@@ -201,14 +223,15 @@ const validateForm = () => {
         {lastBid[0].status.split(" ")[1] !== undefined ? lastBid[0].status.split(" ")[1] : lastBid[0].amount} מארזים במחיר של {lastBid[0].unitPrice}
     </Text>
 </View>
-
-          <TouchableOpacity onPress={handleDelete}
+          {checkIfTimePassed()?
+          <View><TouchableOpacity onPress={handleDelete}
                         style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                         <Text style={[style.btntxt, { marginRight: 5 }]}>מחק הצעה</Text>
                         <Icons name='trash-can-outline' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
           <Text style={[style.m16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
                                     >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
+          </View>:null}
           </View>:null}
       </View>
       </KeyboardAvoidingView>
@@ -219,5 +242,7 @@ const validateForm = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 15, backgroundColor: '#fff' },
   head: { height: 40, backgroundColor: Colors.primary }, 
-  text: { margin: 6, textAlign: 'center' }
+  text: { margin: 6, textAlign: 'center',
+    fontSize: 14,
+    fontFamily: "Heebo-Regular"}
 });

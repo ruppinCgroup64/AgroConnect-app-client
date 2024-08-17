@@ -55,7 +55,12 @@ export default function TendersFarmer() {
     useFocusEffect(useCallback(() => {
         loadTendersFarm();
     }, []))
-   
+
+    const formatDate = (dateString) => {
+        const [month, day, year] = dateString.split('/');
+        return `${day}/${month}/${year}`;
+    };
+    
     const calculateTimeRemaining = (dateTime) => {
         const now = new Date();
         const targetDate = fixDate(dateTime);
@@ -97,7 +102,7 @@ export default function TendersFarmer() {
                         img={item.productPic}
                         title={item.productName}
                         place={item.collectAddress}
-                        address={(item.closeDateHour.split(" "))[0]}
+                        address={formatDate(item.closeDateHour.split(" ")[0])}
                         timer={calculateTimeRemaining(item.closeDateHour)}
                         style={{ flex: 1 }} />
                 </TouchableOpacity>  

@@ -17,8 +17,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import TenderHomeElement from '../components/TenderHomeElement';
-import LeadTable from '../components/LeadTable'; // ודא שהייבוא נכון
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LeadTableFarmer from '../components/LeadTableFarmer';
 
 const width = Dimensions.get('screen').width;
@@ -53,6 +51,27 @@ export default function TenderFarmer({route}) {
         // Return formatted date and time
         return `${day}/${month}/${year} ${hours}:${minutes}`;
     };
+    const parseDateString = (dateString) => {
+        const [datePart, timePart, period] = dateString.split(' '); // מפריד בין התאריך, השעה והתקופה (AM/PM)
+        const [month, day, year] = datePart.split('/').map(Number); // מפרק את התאריך לפורמט mm/dd/yyyy
+        let [hours, minutes, seconds] = timePart.split(':').map(Number); // מפרק את השעה לפורמט hh:mm:ss
+      
+        // התאמת השעה לפי AM/PM
+        if (period === 'PM' && hours !== 12) {
+          hours += 12;
+        } else if (period === 'AM' && hours === 12) {
+          hours = 0;
+        }
+      
+        return new Date(year, month - 1, day, hours, minutes, seconds); // יוצר אובייקט Date
+      };
+      
+      const checkIfTimePassed = () => {
+        const currentTime = new Date(); // הזמן הנוכחי
+        const closeTimeDate = parseDateString(item.closeDateHour); // המרת ה-closeTime לאובייקט Date
+        let ans=  closeTimeDate<currentTime;
+        return ans; // אם הזמן הנוכחי גדול מ-closeTime, הפונקציה תחזיר true
+      };
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -72,44 +91,54 @@ export default function TenderFarmer({route}) {
                 />
             </TouchableOpacity>}
         />
-<View style={{ flex: 1, backgroundColor: theme.bg }}>
-    <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
-    <Image source={image} style={{ width: '100%', height: height / 3, borderRadius: 15, marginBottom: 15 }} />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
-            <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
+        <View style={{ flex: 1, backgroundColor: theme.bg }}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
+                <Image source={image} style={{ width: '100%', height: height / 3, borderRadius: 15, marginBottom: 15 }} />
+                {checkIfTimePassed() ?<View style={{ 
+                    borderColor: 'red', 
+                    borderWidth: 1, 
+                    borderRadius: 5, 
+                    padding: 5, 
+                    marginBottom: 15,
+                    alignItems: 'center'
+                }}>
+                    <Text style={[style.subtitle, { color: 'red', fontSize: 20 }]}>מכרז סגור</Text>
+                </View>
+                :null}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt }]}>{item.packsAmount} ק"ג {item.productName}</Text>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5 }]}>  / מארז</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                        <Text style={{ textDecorationLine: 'underline' }}>כמות מארזים למכירה</Text>: {item.offeredPacks}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                        <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת מכרז</Text>: {formatDateTime(item.closeDateHour)}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                        <Text style={{ textDecorationLine: 'underline' }}>מועד חלוקה</Text>: {formatDateTime(item.collectDateHour)}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                        <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת חלוקה</Text>: {formatDateTime(item.collectDateHourClose)}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                        <Text style={{ textDecorationLine: 'underline' }}>מיקום חלוקה</Text>: {item.collectAddress}
+                    </Text>
+                </View>
+                <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
+                <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת ההצעות</Text>
+                <LeadTableFarmer tenderId={item.id} offeredPacks={item.offeredPacks}/>
+            </ScrollView>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
-                <Text style={{ textDecorationLine: 'underline' }}>כמות מארזים למכירה</Text>: {item.offeredPacks}
-            </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
-                <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת מכרז</Text>: {formatDateTime(item.closeDateHour)}
-            </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
-                <Text style={{ textDecorationLine: 'underline' }}>מועד חלוקה</Text>: {formatDateTime(item.collectDateHour)}
-            </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
-                <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת חלוקה</Text>: {formatDateTime(item.collectDateHourClose)}
-            </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-            <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
-            <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5, marginLeft: 10}]}>
-                {item.collectAddress}
-            </Text>
-        </View>
-                    <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
-                    <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת ההצעות</Text>
-                    <LeadTableFarmer tenderId={item.id}/>
-                </ScrollView>
-            </View>
-        </SafeAreaView>
+    </SafeAreaView>
     );
 }

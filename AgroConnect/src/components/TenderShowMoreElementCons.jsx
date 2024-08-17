@@ -10,13 +10,13 @@ import SquareImage from './SquareImage';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-export default function TenderShowMoreElementCons({ item, nav, img, title, Fname,place, address, nav2, rank, timer }) {
+export default function TenderShowMoreElementCons({ item, nav, img, title, Fname,place, address, rank, timer }) {
     const theme = useContext(themeContext);
     const navigation = useNavigation();
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.bg }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate(nav, { item: item })}>
                 <View style={{ width: width * 0.9, alignSelf: 'center', marginBottom: 20 }}>
                     <View style={{ backgroundColor: theme.bg3, padding: 10, borderRadius: 15, flexDirection: 'row' }}>
                         {/* Image on the Left */}

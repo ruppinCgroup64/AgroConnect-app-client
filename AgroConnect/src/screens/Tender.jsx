@@ -105,16 +105,21 @@ export default function Tender({route}) {
                             <Text style={{ textDecorationLine: 'underline' }}>מועד סגירת חלוקה</Text>: {formatDateTime(item.collectDateHourClose)}
                         </Text>
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 15, marginTop: 5, marginBottom: 5 }]}>
+                            <Text style={{ textDecorationLine: 'underline' }}>מיקום חלוקה</Text>: {item.collectAddress}
+                        </Text>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                        <RoundedImage url={item.farmPic} wid={width / 7.2} hei={height / 16} />
+                        <RoundedImage url={item.farmPic} wid={width / 9} hei={height / 20} />
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5, marginLeft: 10}]}>
-                            {item.collectAddress}
+                            {item.farmName}
                         </Text>
                     </View>
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
                     <Text style={[style.t1, { color: Colors.primary , textAlign: 'center' }]}>טבלת המובילים</Text>
-                    <LeadTable tenderId={item.id} minPrice={item.initialOffer} offeredPacks={item.offeredPacks}></LeadTable>
+                    <LeadTable tenderId={item.id} closeTime={item.closeDateHour} minPrice={item.initialOffer} offeredPacks={item.offeredPacks}></LeadTable>
                 </ScrollView>
 
             </View>

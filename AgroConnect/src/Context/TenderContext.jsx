@@ -69,7 +69,8 @@ export default function TenderContextProvider(props) {
 
   async function getTendersByFarm(farmID) {
     let res = await read(`api/Tenders/farm/${farmID}`,farmID);
-    if (res) {setTendersByFarm(res);
+    if (res) {
+      setTendersByFarm(res);
       return res;
     }
     else alert("something went wrong");
@@ -96,7 +97,7 @@ export default function TenderContextProvider(props) {
 
 
   return (
-    <TenderContext.Provider value={{deleteBid,getTendersBidsConsumer,getBidTenders,getWinTenders,createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
+    <TenderContext.Provider value={{TendersByFarm,deleteBid,getTendersBidsConsumer,getBidTenders,getWinTenders,createBid,getTendersBidsFarmer,TenderBidsFarm,getTendersByFarm, tender, setTender, createTender, updateTender, getTenders, Tenders }}>
       {props.children}
     </TenderContext.Provider>
   );
