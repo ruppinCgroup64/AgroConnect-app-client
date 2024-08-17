@@ -182,7 +182,7 @@ const checkIfTimePassed = () => {
             <ValInput
             val={amount}
             setVal={setAmount}
-            content={"כמות מוצעת"}
+            content={"כמות מארזים"}
             keyboardType={"numeric"}
           />
           {errors.pack ? (

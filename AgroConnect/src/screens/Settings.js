@@ -203,6 +203,9 @@ export default function Settings() {
           <View>
             <View style={[style.divider, { backgroundColor: theme.border }]} />
           </View>
+          <View>
+            <Text style={{paddingBottom: 1}} ></Text>
+          </View>
 
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
 
@@ -342,7 +345,7 @@ export default function Settings() {
               </RBSheet>
               <View style={{ flexDirection: "row" }}>
                 <Icon name="logout" size={25} color="#F75555" />
-                <Text style={[style.txt, { color: "#F75555", marginLeft: 10 }]}>
+                <Text style={[style.s14, { color: "#F75555", marginLeft: 10 }]}>
                   התנתק
                 </Text>
               </View>
