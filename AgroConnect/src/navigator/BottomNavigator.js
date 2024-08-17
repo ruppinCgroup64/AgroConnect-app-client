@@ -14,6 +14,7 @@ import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
 import Settings from "../screens/Settings";
 import SalePoints from "../screens/SalePoints";
+import MapScreen from "../screens/MapScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -97,6 +98,34 @@ export default function MyTabs() {
           headerShown: false,
         }}
       /> */}
+      <Tab.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          tabBarShowLabel: true,
+          tabBarLabel: ({ focused, color }) => (
+            <Text
+              style={{
+                color: focused ? Colors.primary : Colors.disable,
+                fontFamily: "Urbanist-Medium",
+                fontSize: 10,
+              }}
+            >
+              {focused ? "" : ""}
+            </Text>
+          ),
+          tabBarIcon: ({ focused, color }) => {
+            return (
+              <Icons
+                name="map"
+                size={30}
+                color={focused ? Colors.primary : Colors.disable}
+              />
+            );
+          },
+          headerShown: false,
+        }}
+      />
       <Tab.Screen
         name="Home"
         component={Home}
@@ -183,6 +212,7 @@ export default function MyTabs() {
           headerShown: false,
         }}
       />
+      
     </Tab.Navigator>
   );
 }

@@ -46,7 +46,7 @@ export default function HomeFarmer() {
   const TenderList = () => {
     return (
       <View style={[style.categorycontainer, { marginBottom: 10 }]}>
-        {TendersByFarm.map((item, index) => (
+        {TendersByFarm.slice(0, 5).map((item, index) => (
           <TouchableOpacity key={index} activeOpacity={0.8}>
             <TenderHomeElement
                item={item}
@@ -165,7 +165,7 @@ const calculateTimeRemaining = (dateTime) => {
               >
                 שלום 👋
               </Text>
-              <Text style={[style.t1, { color: theme.txt, textAlign: "left" }]}>
+              <Text style={[style.t1, { color: theme.txt, textAlign: "left",fontFamily: "Heebo-SemiBold" }]}>
                 {consumer.firstName + " " + consumer.lastName}
               </Text>
             </View>
@@ -206,7 +206,7 @@ const calculateTimeRemaining = (dateTime) => {
                 showsHorizontalScrollIndicator={false}
                 nestedScrollEnabled={true}
               >
-                <SalePoiontsList />
+                {/* <SalePoiontsList /> */}
               </ScrollView>
             </View>
 

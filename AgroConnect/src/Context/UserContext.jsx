@@ -10,7 +10,7 @@ export const UsersContext = createContext();
 
 export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
-  const [alerts, setAlerts] = useState(null);
+  const [alerts, setAlerts] = useState([]);
   const [farm, setFarm] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
   const [allConsumers, setAllConsumers] = useState (null);

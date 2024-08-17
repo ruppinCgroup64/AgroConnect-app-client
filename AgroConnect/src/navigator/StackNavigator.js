@@ -84,6 +84,7 @@ import SalePoints from "../screens/SalePoints";
 import OrdersFarmer from "../screensFarmer/OrdersFarmer";
 import TendersFarmer from "../screensFarmer/TendersFarmer";
 import Tenders from "../screens/Tenders";
+import MapScreen from "../screens/MapScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -148,8 +149,11 @@ export default function StackNavigator() {
             component={TendersFarmer}
             options={{ headerShown: false }}
           />
-          
-
+          <Stack.Screen
+            name="MapScreen"
+            component={MapScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="MyTabs"
             component={MyTabs}
