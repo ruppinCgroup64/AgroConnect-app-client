@@ -12,6 +12,7 @@ export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
   const [alerts, setAlerts] = useState([]);
   const [farm, setFarm] = useState(null);
+  const [allFarms, setAllFarms] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
   const [allConsumers, setAllConsumers] = useState (null);
 
@@ -100,6 +101,7 @@ export default function UsersContextProvider(props) {
   async function getFarms() {
     let res = await read(`api/Farms`);
     if (res) {
+      setAllFarms(res)
       return res
     }
     else alert("something went wrong");
@@ -107,7 +109,7 @@ export default function UsersContextProvider(props) {
   }
 
   return (
-    <UsersContext.Provider value={{ getFarms,alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
+    <UsersContext.Provider value={{ allFarms,getFarms,alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers}}>
       {props.children}
     </UsersContext.Provider>
   );

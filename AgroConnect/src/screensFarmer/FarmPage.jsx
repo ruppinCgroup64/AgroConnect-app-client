@@ -23,7 +23,7 @@ const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
 export default function FarmPage({ route }) {
-  const { item } = route.params;
+  const { item } = route.params;//this is id of farm
 
   const navigation = useNavigation();
   const theme = useContext(themeContext);
