@@ -28,7 +28,7 @@ export default function CreateSalePoint() {
   const theme = useContext(themeContext);
   const { farm } = useContext(UsersContext);
   const { createSalePoint, addProductsToPoint } = useContext(SalePointContext);
-  const { getProducts, productsByFarm } = useContext(ProductContext);
+  const { getProducts, productsByFarm, allProducts } = useContext(ProductContext);
 
   const navigation = useNavigation();
 
@@ -59,13 +59,13 @@ export default function CreateSalePoint() {
   }, []);
 
   useEffect(() => {
-    if (productsByFarm.length > 0) {
-      let newAmounts = productsByFarm.map(() => 0);
-      let newPrices = productsByFarm.map(() => 0);
+    if (allProducts.length > 0) {
+      let newAmounts = allProducts.map(() => 0);
+      let newPrices = allProducts.map(() => 0);
       setAmounts(newAmounts);
       setPrices(newPrices);
     }
-  }, [productsByFarm]);
+  }, [allProducts]);
 
   //when the button was pressed->add the sale point to the DB
   useEffect(() => {
@@ -107,15 +107,21 @@ export default function CreateSalePoint() {
   useEffect(() => {
     if (salePoint && salePoint.id) {
       //register its products- send list of products
-      const finalProducts = productsList
-        .filter((product, index) => amounts[index] > 0)
-        .map((product, index) => ({
-          id: 0,
-          salePointNum: salePoint.id,
-          productInFarmNum: product.id,
-          productAmount: amounts[index],
-          unitPrice: prices[index],
-        }));
+      let finalProducts = [];
+      let count = 0;
+      for (i = 0; i < productsList.length; i++) {
+        if (amounts[i] && amounts[i] > 0) {
+          count++;
+          finalProducts[count] = {
+            id: 0,
+            salePointNum: salePoint.id,
+            productInFarmNum: productsList[i].id,
+            productAmount: amounts[i],
+            unitPrice: prices[i]
+          }//finalProducts
+        }//if
+      }//fot -> i
+
       const fetchData = async () => {
         for (i = 0; i < finalProducts.length; i++) {
           let res = await addProductsToPoint(finalProducts[i]);

@@ -80,7 +80,7 @@ export default function Orders() {
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const { consumer, allFarms, getAllFarms } = useContext(UsersContext);
-    const { getOrdersByConsumer, orders, orderInPoint, getOrderInPoint } = useContext(OrderContext);
+    const { getOrdersByConsumer, orders, orderInPoint, getOrdersConsumerView } = useContext(OrderContext);
     const [orderDetails, setOrderDetails] = useState(null);
     const { products, getProducts } = useContext(ProductContext);
     const [loading, setLoading] = useState(true);
@@ -105,21 +105,18 @@ export default function Orders() {
     };
 
     const init = async () => {
-        await getOrdersByConsumer(consumer.id);
-        await getProducts();
-        await getAllFarms();
+        await getOrdersConsumerView(consumer.id);
     }//init
 
     const manipulateData = async () => {
         let newOrders = [];
-        console.log("orders before length:", orders);
         for (i = 0; i < orders.length; i++) {
             let newProducts = await addOrderInPoint(orders[i].id);
             newOrder = {
                 key: i,
-                img: "",
-                name: orders[i].id,
-                dateTime: orders[i].dateHour,
+                img: orders[i].FarmPic,
+                name: orders[i].salePointAddress,
+                dateTime: orders[i].salePointDateHour,
                 products: newProducts,
                 total: orders[i].total,
                 style: { flex: 1 }

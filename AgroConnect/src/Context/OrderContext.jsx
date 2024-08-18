@@ -79,8 +79,17 @@ export default function OrderContextProvider(props) {
     else alert("something went wrong");
   }
 
+  async function getOrdersConsumerView(id) {
+    let res = await read("orders/ConsumerView/"+id);
+    if (res) {
+      setOrders(res);
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
   return (
-    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint, getOrderInPoint }}>
+    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint, getOrderInPoint,getOrdersConsumerView }}>
       {props.children}
     </OrderContext.Provider>
   );
