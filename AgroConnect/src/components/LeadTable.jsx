@@ -130,15 +130,15 @@ useEffect(()=>{
 
 const validateForm = () => {
   const errors = {};
-  if(unitprice<minPrice)
+  if(Number(unitprice)<Number(minPrice))
   {
     errors.min = "המחיר חייב להיות גבוהה מהמחיר המינימלי להצעה";
   }
-  if(amount<=0)
+  if(Number(amount)<=0)
     {
       errors.pack = "הכמות המוצעת חייבת להיות גדולה מ-0";
     }
-  else if(amount>offeredPacks)
+  else if(Number(amount)>Number(offeredPacks))
     {
       errors.pack = "לא ניתן לבחור כמות גדולה מהכמות המוצעת";
     }
@@ -174,8 +174,8 @@ const checkIfTimePassed = () => {
     <KeyboardAvoidingView behavior='padding'>
       <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.primary }}>
-              <Row data={arr.tableHead} style={styles.head} textStyle={styles.text} />
-              <Rows data={arr.tableData} textStyle={styles.text} />
+              <Row data={arr.tableHead} style={styles.head} textStyle={[styles.text]} />
+              <Rows data={arr.tableData} textStyle={[styles.text]} />
           </Table>
           {lastBid.length == 0?
           <View>

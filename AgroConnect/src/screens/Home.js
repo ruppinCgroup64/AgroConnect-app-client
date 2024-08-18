@@ -160,7 +160,7 @@ export default function Home() {
               <TenderHomeElement
                 nav={"SalePoint"}
                 img={farmPictures[item.farmNum]} // Use preloaded picture
-                address={item.dateHour.split(" ")[0]}
+                address={formatDate(item.dateHour.split(" ")[0])}
                 place={item.address}
                 nav2={item.id}
                 rank={item.rankPrice}
