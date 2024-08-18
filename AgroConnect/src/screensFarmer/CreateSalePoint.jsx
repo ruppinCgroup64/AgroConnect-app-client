@@ -35,7 +35,7 @@ export default function CreateSalePoint() {
   const [navContinue, setNavContinue] = useState(false);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
-  const [salePoint, setSalePoint] = useState(null);
+  const [salePoint, setSalePoint] = useState({});
   const [productsList, setProductsList] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [updated, setUpdated] = useState(false); //products in sale point updated
@@ -82,15 +82,16 @@ export default function CreateSalePoint() {
         }
       }
       //if the flag is still false continue
-      
+
       const fetchData = async () => {
         //register point
         let res = await createSalePoint(salePoint);
-        if (res) {
-          //update the sale point=res now with id
-          setSalePoint(res);
+        if (res && res.id) {
+          console.log("Created Sale Point: ", res);
+          setSalePoint(res); //update the sale point=res now with id
+        } else {
+          console.error("Failed to create Sale Point or missing ID");
         }
-        
       };
       if (!flag) {
         fetchData();
@@ -99,28 +100,37 @@ export default function CreateSalePoint() {
     setNavContinue(false);
   }, [navContinue]);
 
+
+
+
   //when the sale point registred in the DB-> register its products
   useEffect(() => {
     if (salePoint && salePoint.id) {
       //register its products- send list of products
       const finalProducts = productsList
-        //only the products that have
         .filter((product, index) => amounts[index] > 0)
         .map((product, index) => ({
+          id: 0,
           salePointNum: salePoint.id,
           productInFarmNum: product.id,
           productAmount: amounts[index],
           unitPrice: prices[index],
         }));
       const fetchData = async () => {
-        let res = await addProductsToPoint(finalProducts);
+        for (i = 0; i < finalProducts.length; i++) {
+          let res = await addProductsToPoint(finalProducts[i]);
+          console.log("Created Products: ", res);
+        }//for -> i
         if (res) {
           setContent("נקודת המכירה נוצרה בהצלחה");
         }
       };
       fetchData();
+    } else {
+      console.error("SalePoint is undefined or missing ID");
     }
   }, [salePoint]);
+
 
   useEffect(() => {
     if (content != "") {

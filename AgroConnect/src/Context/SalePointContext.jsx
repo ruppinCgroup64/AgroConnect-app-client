@@ -16,8 +16,8 @@ export default function SalePointContextProvider(props) {
     else alert("something went wrong");
   }
 
-  async function addProductsToPoint(point) {
-    let res = await create("api/FarmProductsInPoint", point);
+  async function addProductsToPoint(productInPoint) {
+    let res = await create("api/FarmProductsInPoint", productInPoint);
     if (res)
       return res
     else alert("something went wrong");

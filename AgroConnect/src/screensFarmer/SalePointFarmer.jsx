@@ -33,7 +33,7 @@ const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 export default function SalePointFarmer({ route }) {
-    const { salePointID } = route.params;
+    const { item } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
@@ -43,7 +43,6 @@ export default function SalePointFarmer({ route }) {
     const [loading, setLoading] = useState(true);
     const [productsList, setProductsList] = useState(null);
     const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
-    const { farmPoint, getFarmBySalePoint } = useContext(UsersContext);
     const [image,setImage] = useState(null);
 
     const init = async () => {
@@ -51,24 +50,19 @@ export default function SalePointFarmer({ route }) {
         await getProducts();
 
         //get  all sales points 
-        await getSalePoint(salePointID.id);
+        await getSalePoint(item.id);
 
         //get all sales points 
-        await getSalePoint(salePointID.id);
+        await getSalePoint(item.id);
 
         //get all combine
-        await getProductsInPoint(salePointID.id);
+        await getProductsInPoint(item.id);
 
         //loads the farm's picture
-        await getFarmBySalePoint(salePointID.id);
-        await setImage({ uri: farmPoint.mainPic });
+        await setImage({ uri: farm.mainPic });
     }//init
 
     const manipulateData = () => {
-        // console.log('allProducts', allProducts);
-        // console.log('salePoint', salePoint);
-        // console.log('farmPoint', farmPoint);
-        // console.log('productsInPoint', productsInPoint);
 
         //loads the products info.
         let tempProducts = [];
@@ -176,7 +170,7 @@ export default function SalePointFarmer({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',salePointID.id)}
+                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',item.id)}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

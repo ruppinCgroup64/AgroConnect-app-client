@@ -39,63 +39,24 @@ export default function SalePoint({ route }) {
     const { item } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
     const [amounts, setAmounts] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [total, setTotal] = useState(0);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const { salePoint, getSalePoint } = useContext(SalePointContext);
     const [loading, setLoading] = useState(true);
-    const { farmPoint, getFarmBySalePoint } = useContext(UsersContext);
     const [productsList, setProductsList] = useState(null);
     const [image, setImage] = useState(null);
-
-    useFocusEffect(useCallback(() => {
-        init();
-    }, []))
+    const { salePoint, getSalePoint } = useContext(SalePointContext);
+    const [farmPoint, setFarmPoint] = useState({});
+    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
+    const { allFarms, getAllFarms } = useContext(UsersContext);
 
     const init = async () => {
         await getProducts();
-    }//init
-
-    useEffect(() => {
-        if (allProducts) {
-            init2();
-        }
-    }, [allProducts])
-
-    const init2 = async () => {
         await getSalePoint(item.id);
-    }//init
-
-    useEffect(() => {
-        if (salePoint) {
-            init3();
-        }
-    }, [salePoint])
-
-    const init3 = async () => {
         await getProductsInPoint(item.id);
-    }//init
-
-    useEffect(() => {
-        if (productsInPoint) {
-            init4();
-        }
-    }, [productsInPoint])
-
-    const init4 = async () => {
-        await getFarmBySalePoint(item.id);
-        if (farmPoint?.mainPic) {
-            setImage({ uri: farmPoint.mainPic });
-        }
-    }//init
-
-    useEffect(() => {
-        if (image != null) {
-            manipulateData();
-        }
-    }, [image])
+        await getAllFarms();
+        await manipulateData();
+    };
 
     const manipulateData = () => {
         if (!productsInPoint || !Array.isArray(productsInPoint) || !allProducts || !Array.isArray(allProducts)) {
@@ -103,17 +64,18 @@ export default function SalePoint({ route }) {
             return;
         }
 
+        console.log("allFarms: ",allFarms)
+        for (i = 0; i < allFarms.length; i++) {
+            console.log("Farm: ",allFarms[i].id)
+            if (allFarms[i].id == item.farmNum) {
+                setImage({ uri: allFarms[i].mainPic });
+                setFarmPoint(allFarms[i]);
+            }
+        }//for -> i
+
         let tempProducts = [];
         for (let i = 0; i < productsInPoint.length; i++) {
-            if (!productsInPoint[i] || !productsInPoint[i].productInFarmNum) {
-                console.error(`productsInPoint[${i}] is undefined or missing productInFarmNum`);
-                continue;
-            }
             for (let j = 0; j < allProducts.length; j++) {
-                if (!allProducts[j] || !allProducts[j].id) {
-                    console.error(`allProducts[${j}] is undefined or missing id`);
-                    continue;
-                }
                 if (productsInPoint[i].productInFarmNum == allProducts[j].id) {
                     tempProducts[i] = {
                         i: i,
@@ -125,16 +87,29 @@ export default function SalePoint({ route }) {
                 }
             }
         }
-        console.log("tempProducts: ", tempProducts);
         setProductsList(tempProducts);
         setLoading(false);
-    }//manipulateData
+    };
+
+    useEffect(() => {
+        if (allProducts.length != 0 && productsInPoint.length && salePoint?.address) {
+            manipulateData();
+        }
+    }, [allProducts, salePoint, productsInPoint]);
+
+    useFocusEffect(
+        useCallback(() => {
+            setLoading(true);
+            setProductsList(null);
+            init();
+        }, [item.id])
+    );
 
     if (loading) {
         return <Loading />;
     }
 
-    const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A"; // Use default "N/A" if dateHour is null
+    const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A";
 
     const ProductList = () => {
         if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
@@ -187,18 +162,15 @@ export default function SalePoint({ route }) {
             <View style={{ flex: 1, backgroundColor: theme.bg }}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[style.subtitle, { color: theme.txt }]}>{salePoint.address}</Text>
+                        <Text style={[style.subtitle, { color: theme.txt }]}>{salePoint?.address}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(dateHour)}</Text>
                     </View>
-                    {farmPoint && (
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <RoundedImage url={farmPoint.mainPic} wid={width / 7.2} hei={height / 16} />
-                            <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farmPoint.name}</Text>
-                        </View>
-                    )}
-
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <RoundedImage url={farmPoint?.mainPic} wid={width / 7.2} hei={height / 16} />
+                        <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farmPoint?.name}</Text>
+                    </View>
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>מוצרים</Text>
