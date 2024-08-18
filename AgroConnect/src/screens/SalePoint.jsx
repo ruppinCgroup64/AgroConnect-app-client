@@ -36,7 +36,7 @@ const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 export default function SalePoint({ route }) {
-    const { salePointID } = route.params;
+    const { item } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
@@ -48,65 +48,99 @@ export default function SalePoint({ route }) {
     const [loading, setLoading] = useState(true);
     const { farmPoint, getFarmBySalePoint } = useContext(UsersContext);
     const [productsList, setProductsList] = useState(null);
-    const [image,setImage] = useState(null);
+    const [image, setImage] = useState(null);
 
-    const init = async () => {
-        //get all products
-        await getProducts();
-
-        //get  all sales points 
-        await getSalePoint(salePointID);
-
-        //get all sales points 
-        await getSalePoint(salePointID);
-
-        //get all combine
-        await getProductsInPoint(salePointID);
-
-        //loads the farm's picture
-        await getFarmBySalePoint(salePointID);
-        await setImage({ uri: farmPoint.mainPic });
-    }//init
-
-    const manipulateData = () => {
-        // console.log('allProducts', allProducts);
-        // console.log('salePoint', salePoint);
-        // console.log('farmPoint', farmPoint);
-        // console.log('productsInPoint', productsInPoint);
-
-        //loads the products info.
-        let tempProducts = [];
-        for (i = 0; i < productsInPoint.length; i++) {
-            for (j = 0; j < allProducts.length; j++) {
-                if (productsInPoint[i].productInFarmNum == allProducts[j].id)
-                    tempProducts[i] = {
-                        i: i,
-                        title: allProducts[j].name,
-                        price: productsInPoint[i].unitPrice,
-                        uri: allProducts[j].pic
-                    };
-            }//for -> j
-        }//for -> i
-        setProductsList(tempProducts);
-        setLoading(false);
-    }//manipulateData
-
-    useEffect(() => {
-        if (allProducts.length != 0 && productsInPoint.length && salePoint.address) {
-            manipulateData();
-        }
-    }, [allProducts, salePoint, productsInPoint])
     useFocusEffect(useCallback(() => {
         init();
     }, []))
 
+    const init = async () => {
+        await getProducts();
+    }//init
+
+    useEffect(() => {
+        if (allProducts) {
+            init2();
+        }
+    }, [allProducts])
+
+    const init2 = async () => {
+        await getSalePoint(item.id);
+    }//init
+
+    useEffect(() => {
+        if (salePoint) {
+            init3();
+        }
+    }, [salePoint])
+
+    const init3 = async () => {
+        await getProductsInPoint(item.id);
+    }//init
+
+    useEffect(() => {
+        if (productsInPoint) {
+            init4();
+        }
+    }, [productsInPoint])
+
+    const init4 = async () => {
+        await getFarmBySalePoint(item.id);
+        if (farmPoint?.mainPic) {
+            setImage({ uri: farmPoint.mainPic });
+        }
+    }//init
+
+    useEffect(() => {
+        if (image != null) {
+            manipulateData();
+        }
+    }, [image])
+
+    const manipulateData = () => {
+        if (!productsInPoint || !Array.isArray(productsInPoint) || !allProducts || !Array.isArray(allProducts)) {
+            console.error("productsInPoint or allProducts is not an array or is undefined");
+            return;
+        }
+
+        let tempProducts = [];
+        for (let i = 0; i < productsInPoint.length; i++) {
+            if (!productsInPoint[i] || !productsInPoint[i].productInFarmNum) {
+                console.error(`productsInPoint[${i}] is undefined or missing productInFarmNum`);
+                continue;
+            }
+            for (let j = 0; j < allProducts.length; j++) {
+                if (!allProducts[j] || !allProducts[j].id) {
+                    console.error(`allProducts[${j}] is undefined or missing id`);
+                    continue;
+                }
+                if (productsInPoint[i].productInFarmNum == allProducts[j].id) {
+                    tempProducts[i] = {
+                        i: i,
+                        id: allProducts[j].id,
+                        title: allProducts[j].name,
+                        price: productsInPoint[i].unitPrice,
+                        uri: allProducts[j].pic
+                    };
+                }
+            }
+        }
+        console.log("tempProducts: ", tempProducts);
+        setProductsList(tempProducts);
+        setLoading(false);
+    }//manipulateData
 
     if (loading) {
-        return <Loading></Loading>
+        return <Loading />;
     }
+
     const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A"; // Use default "N/A" if dateHour is null
 
     const ProductList = () => {
+        if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
+            return <Text>No products available</Text>;
+        }
+
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
                 {productsList.map((item, index) => (
@@ -176,7 +210,7 @@ export default function SalePoint({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total,salePoint, productsInPoint, amounts })}
+                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total, salePoint, productsInPoint, amounts })}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>ביצוע קנייה</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />
@@ -193,6 +227,8 @@ export default function SalePoint({ route }) {
     );
 
     async function newTotal() {
+        if (!productsList || !Array.isArray(productsList) || productsList.length === 0) return;
+
         let sum = 0;
         for (let i = 0; i < productsList.length; i++) {
             sum += amounts[i] * productsList[i].price;

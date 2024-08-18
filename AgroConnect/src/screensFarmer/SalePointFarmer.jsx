@@ -51,16 +51,16 @@ export default function SalePointFarmer({ route }) {
         await getProducts();
 
         //get  all sales points 
-        await getSalePoint(salePointID);
+        await getSalePoint(salePointID.id);
 
         //get all sales points 
-        await getSalePoint(salePointID);
+        await getSalePoint(salePointID.id);
 
         //get all combine
-        await getProductsInPoint(salePointID);
+        await getProductsInPoint(salePointID.id);
 
         //loads the farm's picture
-        await getFarmBySalePoint(salePointID);
+        await getFarmBySalePoint(salePointID.id);
         await setImage({ uri: farmPoint.mainPic });
     }//init
 
@@ -176,7 +176,7 @@ export default function SalePointFarmer({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',salePointID)}
+                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',salePointID.id)}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

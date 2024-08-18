@@ -13,7 +13,7 @@ import OrderTab from "../screens/OrderTab";
 import MyWallet from "../screens/MyWallet";
 import HomeFarmer from "../screensFarmer/HomeFarmer";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer";
-import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
+import OrdersFarmer from "../screensFarmer/OrdersFarmer";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,8 +34,8 @@ export default function MyTabsFarmer() {
       }}
     >
       <Tab.Screen
-        name="SalePointsFarmer"
-        component={SalePointsFarmer}
+        name="OrdersFarmer"
+        component={OrdersFarmer}
         options={{
           tabBarShowLabel: true,
           tabBarLabel: ({ focused, color }) => (

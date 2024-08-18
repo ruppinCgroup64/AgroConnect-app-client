@@ -84,7 +84,6 @@ const calculateTimeRemaining = (dateTime) => {
     return `נותרו ${daysRemaining} ימים ${hoursRemaining} שעות`;
 };
 
-     
   async function loadTendersFarm() {
     var result = await getTendersByFarm(farm.id);
     if (result != {}) {
@@ -95,25 +94,30 @@ const calculateTimeRemaining = (dateTime) => {
 
   useEffect(() => {
     const fetchSalePointsAndPictures = async () => {
-      await getSalePoints(); // Assuming getSalePoints sets salePoints state
-      const fetchedSalePoints = await read("api/SalePoints"); // Adjust based on your actual API and context
+      await getSalePoints();
+      console.log("salePoints: ",salePoints);
+      const fetchedSalePoints = await read("api/SalePoints");
       const pictures = {};
       for (const point of fetchedSalePoints) {
         const pic = await getFarmPic(point.farmNum);
         pictures[point.farmNum] = pic;
-      }
+      }//for
       setFarmPictures(pictures);
       setLoading(false);
     };
     fetchSalePointsAndPictures();
-    loadTendersFarm()
+    loadTendersFarm();
   }, []);
 
   if (loading) {
     return <Loading></Loading>; // Render a loading state while fetching data
-  }
+  }//if -> loading
 
   const SalePoiontsList = () => {
+    if (!salePoints || !Array.isArray(salePoints)) {
+      return <Text>No sale points available</Text>;
+    }
+
     return (
       <View style={[style.categorycontainer, { marginBottom: 10 }]}>
         {salePoints
@@ -133,6 +137,7 @@ const calculateTimeRemaining = (dateTime) => {
                 title={item.address}
                 address={formatDate(item.dateHour.split(" ")[0])}
                 nav2={item.id}
+                item = {item}
                 rank={item.rankPrice}
                 timer={calculateTimeRemaining(item.dateHour)}
               />
@@ -206,7 +211,7 @@ const calculateTimeRemaining = (dateTime) => {
                 showsHorizontalScrollIndicator={false}
                 nestedScrollEnabled={true}
               >
-                {/* <SalePoiontsList /> */}
+                <SalePoiontsList />
               </ScrollView>
             </View>
 

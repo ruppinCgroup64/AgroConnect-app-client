@@ -163,6 +163,7 @@ export default function Home() {
                 address={item.dateHour.split(" ")[0]}
                 place={item.address}
                 nav2={item.id}
+                item = { item }
                 rank={item.rankPrice}
                 timer={calculateTimeRemaining(item.dateHour)}
               />
