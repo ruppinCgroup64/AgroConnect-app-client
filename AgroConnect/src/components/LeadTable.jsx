@@ -230,7 +230,7 @@ const checkIfTimePassed = () => {
                         <Icons name='trash-can-outline' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
           <Text style={[style.m16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
-                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
+                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקנס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
           </View>:null}
           </View>:null}
       </View>

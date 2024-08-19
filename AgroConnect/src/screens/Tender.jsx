@@ -85,6 +85,8 @@ export default function Tender({ route }) {
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
       <AppBar
         elevation={0}
+        title='מכרז'
+        titleStyle={[style.apptitle,{ color: theme.txt, textAlign:"center", paddingRight:50 }]}
         style={{
           paddingHorizontal: 20,
           backgroundColor: "transparent",

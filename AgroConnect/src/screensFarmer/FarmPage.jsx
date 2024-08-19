@@ -118,6 +118,8 @@ export default function FarmPage({ route }) {
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
       <AppBar
         elevation={0}
+        title='עמוד משק'
+        titleStyle={[style.apptitle,{ color: theme.txt, textAlign:"center", paddingRight:50 }]}
         style={{
           paddingHorizontal: 20,
           backgroundColor: "transparent",
