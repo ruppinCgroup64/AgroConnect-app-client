@@ -2,7 +2,8 @@ import {
   View, Text,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  LogBox
 } from 'react-native'
 import React, { useState, useContext, Component, useEffect } from 'react'
 import themeContext from '../theme/themeContex'
@@ -13,8 +14,8 @@ import { TenderContext } from '../Context/TenderContext';
 import { UsersContext } from '../Context/UserContext';
 import style from '../theme/style';
 import ValInput from './ValInput';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+LogBox.ignoreAllLogs();
 
 export default function LeadTable({ tenderId, closeTime, minPrice, offeredPacks }) {
   const theme = useContext(themeContext);
@@ -174,8 +175,8 @@ const checkIfTimePassed = () => {
     <KeyboardAvoidingView behavior='padding'>
       <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.primary }}>
-              <Row data={arr.tableHead} style={styles.head} textStyle={[styles.text]} />
-              <Rows data={arr.tableData} textStyle={[styles.text]} />
+              <Row data={arr.tableHead} style={styles.head} textStyle={{...styles.text}} />
+              <Rows data={arr.tableData} textStyle={{...styles.text}} />
           </Table>
           {lastBid.length == 0?
           <View>
