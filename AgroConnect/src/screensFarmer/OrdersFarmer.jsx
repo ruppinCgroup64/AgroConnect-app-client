@@ -83,6 +83,7 @@ export default function OrdersFarmer({ route }) {
     };
 
     const manipulateData = async () => {
+        console.log("orders",orders);
         if (!orders || orders.length === 0) {
             setLoading(false);
             return;
@@ -92,7 +93,6 @@ export default function OrdersFarmer({ route }) {
         let newProducts = [];
         let productsCount = 0;
         let ordersCount = 0;
-        let total = 0;
         for (let i = 0; i < orders.length; i++) {
             if (currentOrderID !== orders[i].ordersId) {
                 newOrders.push({
@@ -100,21 +100,19 @@ export default function OrdersFarmer({ route }) {
                     consumerName: orders[i].consumerName,
                     orderDateHour: orders[i].orderDateHour,
                     products: newProducts,
-                    total: total
+                    total: orders[i].orderTotalPrice
                 });
                 currentOrderID = orders[i].ordersId;
                 productsCount = 0;
                 ordersCount++;
-                total = 0;
                 newProducts = [];
             }
             newProducts.push({
                 name: orders[i].productName,
                 pic: orders[i].productPic,
-                amount: orders[i].productOrderAmount,
-                price: orders[i].unitPriceForSale
+                amount: orders[i].orderAmount,
+                price: orders[i].unitpriceForSale
             });
-            total += (orders[i].unitPriceForSale * orders[i].productOrderAmount);
             productsCount++;
         }
         newOrders.push({
@@ -122,8 +120,9 @@ export default function OrdersFarmer({ route }) {
             consumerName: orders[orders.length - 1].consumerName,
             orderDateHour: orders[orders.length - 1].orderDateHour,
             products: newProducts,
-            total: total
+            total: orders[orders.length - 1].orderTotalPrice
         });
+        console.log("newOrders",newOrders);
         setStatus(true);
         setOrderDetails(newOrders);
         setLoading(false);

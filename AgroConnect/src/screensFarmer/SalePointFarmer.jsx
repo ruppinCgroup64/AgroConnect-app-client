@@ -38,6 +38,7 @@ export default function SalePointFarmer({ route }) {
     const [productsList, setProductsList] = useState([]);
     const [image, setImage] = useState(null);
     const { getProductsInPoint, getProducts, productsInPoint } = useContext(ProductContext);
+    const [loadingHelper, setLoadingHelper] = useState(1);
 
     const init = async () => {
         // איפוס state לפני הטעינה
@@ -92,10 +93,17 @@ export default function SalePointFarmer({ route }) {
     useFocusEffect(
         useCallback(() => {
             setLoading(true);
-            setProductsList([]); // איפוס רשימת המוצרים
             init();
-        }, [item.id]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
+        }, [item.id, loadingHelper]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
     );
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoadingHelper(0); // שנה את הערך ל-0 אחרי 2 שניות
+        }, 750);
+
+        return () => clearTimeout(timer); // נקה את הטיימר אם הקומפוננטה לא מורצת
+    }, []); // הפעל את הקוד הזה רק פעם אחת כשהקומפוננטה מוטענת
 
     if (loading) {
         return <Loading />;
@@ -109,16 +117,16 @@ export default function SalePointFarmer({ route }) {
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
                 {productsList.map((product, index) => (
-                   <View key={index} style={{ width: "100%" }}>
-                       <SalePointProductFarmerReadOnly
-                           i={index}
-                           title={product.title}
-                           measure={'ק"ג'}
-                           uri={product.uri}
-                           amount={product.amount}
-                           price={product.price}
-                       />
-                   </View>
+                    <View key={index} style={{ width: "100%" }}>
+                        <SalePointProductFarmerReadOnly
+                            i={index}
+                            title={product.title}
+                            measure={'ק"ג'}
+                            uri={product.uri}
+                            amount={product.amount}
+                            price={product.price}
+                        />
+                    </View>
                 ))}
             </View>
         );
@@ -182,7 +190,7 @@ export default function SalePointFarmer({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',{ id: salePoint.id })}
+                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer', { id: salePoint.id })}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

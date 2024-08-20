@@ -48,6 +48,7 @@ export default function SalePoint({ route }) {
     const [farmPoint, setFarmPoint] = useState({});
     const { getProductsInPoint, productsInPoint } = useContext(ProductContext);
     const { allFarms, getAllFarms } = useContext(UsersContext);
+    const [loadingHelper, setLoadingHelper] = useState(1);
 
     const init = async () => {
         // איפוס state לפני הטעינה
@@ -101,9 +102,16 @@ export default function SalePoint({ route }) {
     useFocusEffect(
         useCallback(() => {
             init();
-        }, [item]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
+        }, [item, loadingHelper]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
     );
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoadingHelper(0); // שנה את הערך ל-0 אחרי 2 שניות
+        }, 1000);
+
+        return () => clearTimeout(timer); // נקה את הטיימר אם הקומפוננטה לא מורצת
+    }, []); // הפעל את הקוד הזה רק פעם אחת כשהקומפוננטה מוטענת
 
     if (loading) {
         return <Loading />;
@@ -183,7 +191,7 @@ export default function SalePoint({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total, salePointID: item.id, productsList, amounts })}
+                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total, item, productsList, amounts })}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>ביצוע קנייה</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

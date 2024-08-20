@@ -89,14 +89,12 @@ const calculateTimeRemaining = (dateTime) => {
     let res1= await getFarms();
     if (result != {}) {
       setLoading(false);
-      console.log("result", result);
     }
   }
 
   useEffect(() => {
     const fetchSalePointsAndPictures = async () => {
       await getSalePoints();
-      console.log("salePoints: ",salePoints);
       const fetchedSalePoints = await read("api/SalePoints");
       const pictures = {};
       for (const point of fetchedSalePoints) {

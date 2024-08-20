@@ -19,25 +19,32 @@ export default function OrderContextProvider(props) {
       setOrders(res);
       return res
     }
-    else alert("something went wrong");
+    else alert("getOrders - something went wrong");
   }
 
   async function createOrder(o) {
+    console.log("createOrder");
     let res = await create("api/Orders", o);
     if (res) {
-      setOrder(o);
+      setOrder(res);
+      console.log("createOrder - res", res);
       return res;
     }
-    else alert("something went wrong");
+    else {
+      console.log("problem");
+      alert("createOrder - something went wrong");
+    }
   }//createOrder
 
   async function createOrderInPoint(o) {
+    console.log("createOrderInPoint - o", o);
     let res = await create("api/OrdersInPoint", o);
     if (res) {
       setOrderInPoint(res);
+      console.log("createOrderInPoint - res", res);
       return res;
     }
-    else alert("something went wrong");
+    else alert("createOrderInPoint - something went wrong");
   }//createOrderInPoint
 
   async function getOrderInPoint(o) {
@@ -46,7 +53,7 @@ export default function OrderContextProvider(props) {
 
       // בדיקה אם הבקשה לא הצליחה או אם res הוא null או undefined
       if (!res || !res.status) {
-        console.log("No data found or an error occurred.");
+        console.log("getOrderInPoint - No data found or an error occurred.");
         return -1;
       }//if
 
@@ -67,7 +74,7 @@ export default function OrderContextProvider(props) {
       setOrders(res);
       return res;
     }
-    else alert("something went wrong");
+    else alert("getOrdersByConsumer - something went wrong");
   }
 
   async function getOrdersInPoint() {
@@ -76,7 +83,7 @@ export default function OrderContextProvider(props) {
       setOrdersInPoint(res);
       return res;
     }
-    else alert("something went wrong");
+    else alert("getOrdersInPoint - something went wrong");
   }
 
   async function getOrdersConsumerView(id) {
@@ -85,16 +92,16 @@ export default function OrderContextProvider(props) {
       setOrders(res);
       return res;
     }
-    else alert("something went wrong");
+    else alert("getOrdersConsumerView - something went wrong");
   }
 
   async function getOrdersFarmerView(id) {
-    let res = await read("orders/ConsumerView/" + id);
+    let res = await read("orders/FarmerView/" + id);
     if (res) {
       setOrders(res);
       return res;
     }
-    else alert("something went wrong");
+    else alert("getOrdersFarmerView - something went wrong");
   }
 
   return (

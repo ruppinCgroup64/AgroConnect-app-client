@@ -47,6 +47,7 @@ export default function Orders() {
     const [loading, setLoading] = useState(true);
     const [currentFarm, setCurrentFarm] = useState();
     const [status, setStatus] = useState(false);
+    const [loadingHelper, setLoadingHelper] = useState(1);
 
     const OrdersList = () => {
         if (status) {
@@ -140,7 +141,15 @@ export default function Orders() {
     }, [orders])
     useFocusEffect(useCallback(() => {
         init();
-    }, []))
+    }, [loadingHelper]))
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setLoadingHelper(prevValue => (prevValue === 1 ? 0 : 1)); // שנה את הערך בין 1 ל-0
+        }, 1000); // הפוך את הערך כל 5 שניות
+
+        return () => clearInterval(interval); // נקה את ה-interval אם הקומפוננטה לא מורצת
+    }, []); // הפעל את הקוד הזה רק פעם אחת כשהקומפוננטה מוטענת
 
     if (loading) {
         return <Loading></Loading>

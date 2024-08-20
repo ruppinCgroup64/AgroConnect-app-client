@@ -32,7 +32,7 @@ const now = new Date();
 const formattedDateHour = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
 export default function Payment1({ route }) {
-    const { total, salePointID, productsList, amounts } = route.params;
+    const { total, item, productsList, amounts } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [checked, setChecked] = useState(false);
@@ -40,7 +40,7 @@ export default function Payment1({ route }) {
     const [content, setContent] = useState("");
     const [navContinue, setNavContinue] = useState(false);
     const { consumer } = useContext(UsersContext);
-    const { orders, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer } = useContext(OrderContext);
+    const { order, orders, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer } = useContext(OrderContext);
 
     useEffect(() => {
         if (navContinue) {
@@ -72,20 +72,20 @@ export default function Payment1({ route }) {
             consumerNum: consumer.id
         };
         await createOrder(newOrder);
-        await console.log("consumer: ", consumer.id);
+        await console.log("new order: ", order);
         await getOrdersByConsumer(consumer.id);
         await makeProductsOrder();
     }//makeOrder
 
     const makeProductsOrder = async () => {
-        console.log("orders:",orders);
+        console.log("orders:", orders);
         let l = orders.length;
         for (i = 0; i < productsList.length; i++) {
             const newOrderInPoint = [{
                 id: 0,
-                salePointNum: salePointID,
+                salePointNum: item.id,
                 productInFarmNum: productsList[i].id,
-                orderNum: orders[l-1].id,
+                orderNum: orders[l - 1].id,
                 amount: amounts[i],
                 rankProduct: 0
             }]

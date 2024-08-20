@@ -15,7 +15,6 @@ export default function UsersContextProvider(props) {
   const [allFarms, setAllFarms] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
   const [allConsumers, setAllConsumers] = useState(null);
-  const [allFarms, setAllFarms] = useState(null);
 
 
   async function register(user) {
