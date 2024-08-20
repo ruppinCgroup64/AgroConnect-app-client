@@ -23,10 +23,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Order({ farmPic, salePointAddress, salePointDateHour, farmName, products, total }) {
+export default function Order({ farmPic, salePointAddress, salePointDateHour, orderDateHour, farmName, products, total }) {
 
     const theme = useContext(themeContext);
     const navigation = useNavigation();
+    const datePart = salePointDateHour.split(' ')[0]; // חילוץ התאריך בלבד
+
+    const [month, day, year] = datePart.split('/'); // מפרקים את החלקים לפי הסלאש
+
+    // הרכבת התאריך בפורמט DD/MM/YYYY
+    const formattedDate = `${day}/${month}/${year}`;
+
 
     // Products List
     const ProductsList = () => {
@@ -63,7 +70,7 @@ export default function Order({ farmPic, salePointAddress, salePointDateHour, fa
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                                     {/* dateTime */}
                                     <Text style={[style.s10, { color: theme.txt, fontSize: 15, textAlign: 'center' }]}>
-                                        {salePointDateHour}
+                                        {orderDateHour}
                                     </Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -71,9 +78,14 @@ export default function Order({ farmPic, salePointAddress, salePointDateHour, fa
                                         {salePointAddress}
                                     </Text>
                                 </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                                    <Text style={[style.s10, { color: Colors.primary, fontSize: 18, textAlign: 'center' }]}>
+                                        {formattedDate}
+                                    </Text>
+                                </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RoundedImage url={farmPic} wid={width / 7.2} hei={height / 16} justifyContent='flex-start' />
-                                    <Text style={[style.s10, {marginStart: 10, color: theme.txt, fontSize: 22, textAlign: 'right' }]}>
+                                    <Text style={[style.s10, { marginStart: 10, color: theme.txt, fontSize: 22, textAlign: 'right' }]}>
                                         {farmName}
                                     </Text>
                                 </View>

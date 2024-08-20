@@ -62,6 +62,8 @@ export default function Payment1({ route }) {
         }
     }, [show]);
 
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     const makeOrder = async () => {
         const newOrder =
         {
@@ -74,12 +76,13 @@ export default function Payment1({ route }) {
         await createOrder(newOrder);
         await console.log("new order: ", order);
         await getOrdersByConsumer(consumer.id);
+        await delay(1000);
         await makeProductsOrder();
     }//makeOrder
 
     const makeProductsOrder = async () => {
-        console.log("orders:", orders);
         let l = orders.length;
+        await console.log("orders: ", orders);
         for (i = 0; i < productsList.length; i++) {
             const newOrderInPoint = [{
                 id: 0,

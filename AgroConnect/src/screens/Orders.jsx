@@ -60,6 +60,7 @@ export default function Orders() {
                                 farmPic={item.farmPic}
                                 salePointAddress={item.salePointAddress}
                                 salePointDateHour={item.salePointDateHour}
+                                orderDateHour = {item.orderDateHour}
                                 farmName={item.farmName}
                                 products={item.products}
                                 total={item.total} />
@@ -102,6 +103,7 @@ export default function Orders() {
                     farmPic: orders[i].farmPic,
                     salePointAddress: orders[i].salePointAddress,
                     salePointDateHour: orders[i].salePointDateHour,
+                    orderDateHour:  orders[i].orderDateHour,
                     farmName: orders[i].farmName,
                     products: newProducts,
                     total: total
@@ -125,6 +127,7 @@ export default function Orders() {
             farmPic: orders[orders.length - 1].farmPic,
             salePointAddress: orders[orders.length - 1].salePointAddress,
             salePointDateHour: orders[orders.length - 1].salePointDateHour,
+            orderDateHour:  orders[orders.length - 1].orderDateHour,
             farmName: orders[orders.length - 1].farmName,
             products: newProducts,
             total: total

@@ -23,7 +23,7 @@ export default function OrderContextProvider(props) {
   }
 
   async function createOrder(o) {
-    console.log("createOrder");
+    console.log("~~~~ createOrder ~~~~");
     let res = await create("api/Orders", o);
     if (res) {
       setOrder(res);
