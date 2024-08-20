@@ -101,7 +101,7 @@ export default function SalePoint({ route }) {
     useFocusEffect(
         useCallback(() => {
             init();
-        }, [item.id]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
+        }, [item]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
     );
 
 

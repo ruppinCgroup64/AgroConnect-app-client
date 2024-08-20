@@ -40,7 +40,7 @@ export default function SalePointsFarmer() {
     const theme = useContext(themeContext);
     const { products } = useContext(ProductContext);
     const [categoryIndex, setcategoryIndex] = useState(-1);
-    const [amounts, setAmounts] = useState([0, 0, 0]);
+    const [amounts, setAmounts] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
     const [total, setTotal] = useState(0);
     const [prices, setPrices] = useState([0, 0, 0]);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -71,21 +71,22 @@ export default function SalePointsFarmer() {
     const SalePoiontsList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
             {salePoints
-            .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
-            .map((item, index) => (
-                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
-                    <TenderShowMoreElement
-                        key={index}
-                        nav={'SalePoint'}
-                        img={farmPictures[item.farmNum]}
-                        title={item.address}
-                        address={(item.dateHour.split(" "))[0]}
-                        nav2={item.nav2}
-                        rank={item.rank}
-                        timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
-                        style={{ flex: 1 }} />
-                </View>
-            ))}
+                .filter((item) => item.farmNum === farm.id)
+                .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
+                .map((item, index) => (
+                    <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                        <TenderShowMoreElement
+                            key={index}
+                            nav={'SalePoint'}
+                            img={farmPictures[item.farmNum]}
+                            title={item.address}
+                            address={(item.dateHour.split(" "))[0]}
+                            nav2={item.nav2}
+                            rank={item.rank}
+                            timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
+                            style={{ flex: 1 }} />
+                    </View>
+                ))}
         </View>
         );
     };

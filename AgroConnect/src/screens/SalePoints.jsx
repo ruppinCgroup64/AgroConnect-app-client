@@ -70,20 +70,22 @@ export default function SalePoints() {
 
     const SalePoiontsList = () => {
         return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
-            {salePoints.map((item, index) => (
-                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', marginBottom: 15 }}>
-                    <TenderShowMoreElement
-                        key={index}
-                        nav={'SalePoint'}
-                        img={farmPictures[item.farmNum]}
-                        title={item.address}
-                        address={(item.dateHour.split(" "))[0]}
-                        nav2={item.nav2}
-                        rank={item.rank}
-                        timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
-                        style={{ flex: 1 }} />
-                </View>
-            ))}
+            {salePoints
+                .filter(item => Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) > 0)
+                .map((item, index) => (
+                    <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', marginBottom: 15 }}>
+                        <TenderShowMoreElement
+                            key={index}
+                            nav={'SalePoint'}
+                            img={farmPictures[item.farmNum]}
+                            title={item.address}
+                            address={(item.dateHour.split(" "))[0]}
+                            nav2={item.nav2}
+                            rank={item.rank}
+                            timer={"עוד " + Math.floor(((fixDate(item.dateHour)).getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) + " ימים"}
+                            style={{ flex: 1 }} />
+                    </View>
+                ))}
         </View>
         );
     };
