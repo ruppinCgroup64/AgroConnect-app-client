@@ -11,12 +11,12 @@ import {
     ScrollView,
     Switch,
 } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color'
 import style from '../theme/style'
 import themeContext from '../theme/themeContex'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -30,72 +30,118 @@ import TenderShowMoreElement from '../components/TenderShowMoreElement';
 import { SalePointContext } from '../Context/SalePointContext';
 import Loading from '../components/Loading';
 import { read } from '../api';
-import Order from '../components/Order';
+import { OrderContext } from '../Context/OrderContext';
+import OrderFarmer from '../components/OrderFarmer';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-const orders = [
-    {
-        img: "https://yt3.googleusercontent.com/8id-4DSTsdgehTHSZnkHr8md0Dsitgp_5xbbtdE8hcglXBmoEtzz-HtyotsNjR8fnDCqjYEK=s900-c-k-c0x00ffffff-no-rj",
-        name: "אברהם טל",
-        dateTime: "26/02/2024",
-        total: 44,
-        products: [{
-            name: "עגבניה",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
-            amount: "2",
-            price: "14"
-        },
-        {
-            name: "חציל",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
-            amount: "1",
-            price: "16"
-        }]
-    },
-    {
-        img: "https://scontent.ftlv1-1.fna.fbcdn.net/v/t39.30808-6/264429031_480835666739170_8502532355458902715_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=P-6Z7fnc-BYQ7kNvgGGYf0b&_nc_ht=scontent.ftlv1-1.fna&oh=00_AYC_Wu6GZAKUcNtTY6dQAnzgh0jR2DuUn5dYG2ZYj7Ld0w&oe=66693085",
-        name: "שחר חסון",
-        dateTime: "02/03/2024",
-        total: 46,
-        products: [{
-            name: "עגבניה",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/tomato.png",
-            amount: "1",
-            price: "14"
-        },
-        {
-            name: "חציל",
-            pic: "https://proj.ruppin.ac.il/cgroup64/test2/tar1/images/eggplant.png",
-            amount: "2",
-            price: "16"
-        }]
-    }
-]
-
-export default function SalePointsFarmer() {
-
+export default function OrdersFarmer({ route }) {
+    const { id } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
+    const { consumer, allFarms, getAllFarms } = useContext(UsersContext);
+    const { getOrdersByConsumer, orders, orderInPoint, getOrdersFarmerView } = useContext(OrderContext);
+    const [orderDetails, setOrderDetails] = useState([]);
+    const { products, getProducts } = useContext(ProductContext);
+    const [loading, setLoading] = useState(true);
+    const [currentFarm, setCurrentFarm] = useState();
+    const [status, setStatus] = useState(false);
 
     const OrdersList = () => {
-        return (<View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
-            {orders.map((item, index) => (
-                <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
-                    <Order
-                        key={index}
-                        img={item.img}
-                        name={item.name}
-                        dateTime={item.dateTime}
-                        products={item.products}
-                        total={item.total}
-                        style={{ flex: 1 }} />
+        if (orderDetails.length > 0) {
+            return (
+                <View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
+                    {
+                        orderDetails.map((item, index) => (
+                            <View key={index} style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between' }}>
+                                <OrderFarmer
+                                    key={index}
+                                    consumerPic={item.consumerPic}
+                                    consumerName={item.consumerName}
+                                    orderDateHour={item.orderDateHour}
+                                    products={item.products}
+                                    total={item.total} />
+                            </View>
+                        ))
+                    }
                 </View>
-            ))}
-        </View>
-        );
+            );
+        } else {
+            return (
+                <View style={[style.categorycontainer, { marginBottom: 10, flexDirection: 'column' }]}>
+                    <Text style={[style.s10, { color: theme.txt, fontSize: 18, textAlign: 'center' }]}>
+                        עוד לא בוצעו הזמנות בנקודת מכירה זו
+                    </Text>
+                </View>
+            );
+        }
     };
+
+    const init = async () => {
+        await getOrdersFarmerView(id);
+    };
+
+    const manipulateData = async () => {
+        if (!orders || orders.length === 0) {
+            setLoading(false);
+            return;
+        }
+        let newOrders = [];
+        let currentOrderID = orders[0].ordersId;
+        let newProducts = [];
+        let productsCount = 0;
+        let ordersCount = 0;
+        let total = 0;
+        for (let i = 0; i < orders.length; i++) {
+            if (currentOrderID !== orders[i].ordersId) {
+                newOrders.push({
+                    consumerPic: orders[i].consumerPic,
+                    consumerName: orders[i].consumerName,
+                    orderDateHour: orders[i].orderDateHour,
+                    products: newProducts,
+                    total: total
+                });
+                currentOrderID = orders[i].ordersId;
+                productsCount = 0;
+                ordersCount++;
+                total = 0;
+                newProducts = [];
+            }
+            newProducts.push({
+                name: orders[i].productName,
+                pic: orders[i].productPic,
+                amount: orders[i].productOrderAmount,
+                price: orders[i].unitPriceForSale
+            });
+            total += (orders[i].unitPriceForSale * orders[i].productOrderAmount);
+            productsCount++;
+        }
+        newOrders.push({
+            consumerPic: orders[orders.length - 1].consumerPic,
+            consumerName: orders[orders.length - 1].consumerName,
+            orderDateHour: orders[orders.length - 1].orderDateHour,
+            products: newProducts,
+            total: total
+        });
+        setStatus(true);
+        setOrderDetails(newOrders);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        if (orders) {
+            manipulateData();
+        }
+    }, [orders]);
+
+    useFocusEffect(useCallback(() => {
+        init();
+    }, [id]));
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -104,7 +150,7 @@ export default function SalePointsFarmer() {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name="arrow-forward" color={theme.txt} size={30} />
                 </TouchableOpacity>
-                <Text style={[style.s18, { marginStart: (width / 7), color: theme.txt, fontSize: 25 }]}>הזמנות</Text>
+                <Text style={[style.s18, { marginStart: (width / 3.5), color: theme.txt, fontSize: 25 }]}>הזמנות</Text>
             </View>
             <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]}></View>
 
@@ -113,9 +159,7 @@ export default function SalePointsFarmer() {
                 <ScrollView showsVerticalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: 10 }}>
                     <OrdersList />
                 </ScrollView>
-
             </View>
         </SafeAreaView>
-    )//return
-
-}//OrdersFarmer
+    );
+}

@@ -80,7 +80,16 @@ export default function OrderContextProvider(props) {
   }
 
   async function getOrdersConsumerView(id) {
-    let res = await read("orders/ConsumerView/"+id);
+    let res = await read("orders/ConsumerView/" + id);
+    if (res) {
+      setOrders(res);
+      return res;
+    }
+    else alert("something went wrong");
+  }
+
+  async function getOrdersFarmerView(id) {
+    let res = await read("orders/ConsumerView/" + id);
     if (res) {
       setOrders(res);
       return res;
@@ -89,7 +98,7 @@ export default function OrderContextProvider(props) {
   }
 
   return (
-    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint, getOrderInPoint,getOrdersConsumerView }}>
+    <OrderContext.Provider value={{ order, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer, orders, getOrders, ordersInPoint, getOrdersInPoint, getOrderInPoint, getOrdersConsumerView, getOrdersFarmerView }}>
       {props.children}
     </OrderContext.Provider>
   );

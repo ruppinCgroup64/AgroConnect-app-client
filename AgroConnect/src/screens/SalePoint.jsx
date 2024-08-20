@@ -39,71 +39,71 @@ export default function SalePoint({ route }) {
     const { item } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
-    const [categoryIndex, setcategoryIndex] = useState(-1);
     const [amounts, setAmounts] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [productsList, setProductsList] = useState(null);
+    const [productsList, setProductsList] = useState([]);
     const [image, setImage] = useState(null);
     const { salePoint, getSalePoint } = useContext(SalePointContext);
     const [farmPoint, setFarmPoint] = useState({});
-    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
+    const { getProductsInPoint, productsInPoint } = useContext(ProductContext);
     const { allFarms, getAllFarms } = useContext(UsersContext);
 
     const init = async () => {
-        await getProducts();
-        await getSalePoint(item.id);
-        await getProductsInPoint(item.id);
-        await getAllFarms();
-        await manipulateData();
-    };
-
-    const manipulateData = () => {
-        if (!productsInPoint || !Array.isArray(productsInPoint) || !allProducts || !Array.isArray(allProducts)) {
-            console.error("productsInPoint or allProducts is not an array or is undefined");
-            return;
-        }
-
-        console.log("allFarms: ",allFarms)
-        for (i = 0; i < allFarms.length; i++) {
-            console.log("Farm: ",allFarms[i].id)
-            if (allFarms[i].id == item.farmNum) {
-                setImage({ uri: allFarms[i].mainPic });
-                setFarmPoint(allFarms[i]);
-            }
-        }//for -> i
-
-        let tempProducts = [];
-        for (let i = 0; i < productsInPoint.length; i++) {
-            for (let j = 0; j < allProducts.length; j++) {
-                if (productsInPoint[i].productInFarmNum == allProducts[j].id) {
-                    tempProducts[i] = {
-                        i: i,
-                        id: allProducts[j].id,
-                        title: allProducts[j].name,
-                        price: productsInPoint[i].unitPrice,
-                        uri: allProducts[j].pic
-                    };
-                }
-            }
-        }
-        setProductsList(tempProducts);
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        if (allProducts.length != 0 && productsInPoint.length && salePoint?.address) {
+        // איפוס state לפני הטעינה
+        setProductsList([]);
+        setImage(null);
+        setFarmPoint({});
+        setTotal(0);
+        setLoading(true); // התחל טעינה
+    
+        try {
+            // טעינת נתונים
+            await getSalePoint(item.id);
+            await getProductsInPoint(item.id);
+            await getAllFarms();
+    
+            // עיבוד הנתונים לאחר הטעינה
             manipulateData();
+        } catch (error) {
+            console.error("Error in init function:", error);
+            setLoading(false); // עצור טעינה במקרה של שגיאה
         }
-    }, [allProducts, salePoint, productsInPoint]);
-
+    };
+    
+    const manipulateData = () => {
+        if (!productsInPoint || !Array.isArray(productsInPoint)) {
+            setProductsList([]); // אם אין מוצרים, ודא שהרשימה ריקה
+            setLoading(false);
+        } else {
+            const tempProducts = productsInPoint.map((product, index) => ({
+                i: index,
+                id: product.id,
+                title: product.name,
+                price: product.price,
+                uri: product.pic
+            }));
+    
+            setProductsList(tempProducts);
+        }
+    
+        if (Array.isArray(allFarms)) {
+            const farm = allFarms.find(farm => farm.id === item.farmNum);
+            if (farm) {
+                setImage({ uri: farm.mainPic });
+                setFarmPoint(farm);
+            }
+        }
+    
+        setLoading(false); // סיום טעינה
+    };
+    
     useFocusEffect(
         useCallback(() => {
-            setLoading(true);
-            setProductsList(null);
             init();
-        }, [item.id])
+        }, [item.id]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
     );
+    
 
     if (loading) {
         return <Loading />;
@@ -112,8 +112,8 @@ export default function SalePoint({ route }) {
     const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A";
 
     const ProductList = () => {
-        if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
-            return <Text>No products available</Text>;
+        if (!productsList || productsList.length === 0) {
+            return <Text style={[style.s18, { color: theme.txt, textAlign: 'center', marginTop: 20 }]}>No Products were found</Text>;
         }
 
         return (
@@ -135,6 +135,7 @@ export default function SalePoint({ route }) {
             </View>
         );
     };
+
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -165,7 +166,7 @@ export default function SalePoint({ route }) {
                         <Text style={[style.subtitle, { color: theme.txt }]}>{salePoint?.address}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(dateHour)}</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{dateHour}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RoundedImage url={farmPoint?.mainPic} wid={width / 7.2} hei={height / 16} />

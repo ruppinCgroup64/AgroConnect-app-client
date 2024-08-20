@@ -5,6 +5,8 @@ import { useContext, useState } from 'react';
 import themeContext from '../theme/themeContex';
 import RoundedImage from './RoundImage';
 import { Colors } from '../theme/color'
+import { OrderContext } from '../Context/OrderContext';
+
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#FFFFF',
         borderRadius: 100,
-        overflow: 'hidden', // Moved overflow style here
+        overflow: 'hidden',
     },
     image: {
         width: '100%',
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Order({ farmPic, salePointAddress, salePointDateHour, farmName, products, total }) {
+export default function OrderFarmer({ consumerPic, consumerName, orderDateHour, products, total }) {
 
     const theme = useContext(themeContext);
     const navigation = useNavigation();
@@ -63,18 +65,13 @@ export default function Order({ farmPic, salePointAddress, salePointDateHour, fa
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                                     {/* dateTime */}
                                     <Text style={[style.s10, { color: theme.txt, fontSize: 15, textAlign: 'center' }]}>
-                                        {salePointDateHour}
-                                    </Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                                    <Text style={[style.s10, { color: Colors.primary, fontSize: 22, textAlign: 'center' }]}>
-                                        {salePointAddress}
+                                        {orderDateHour}
                                     </Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <RoundedImage url={farmPic} wid={width / 7.2} hei={height / 16} justifyContent='flex-start' />
-                                    <Text style={[style.s10, {marginStart: 10, color: theme.txt, fontSize: 22, textAlign: 'right' }]}>
-                                        {farmName}
+                                    <RoundedImage url={consumerPic} wid={width / 7.2} hei={height / 16} justifyContent='flex-start' />
+                                    <Text style={[style.s10, { marginStart: 10, color: Colors.primary, fontSize: 22, textAlign: 'right' }]}>
+                                        {consumerName}
                                     </Text>
                                 </View>
 
@@ -93,10 +90,9 @@ export default function Order({ farmPic, salePointAddress, salePointDateHour, fa
                                         {total}₪
                                     </Text>
                                 </View>
-
-
                             </View>
                         </View>
+
                     </TouchableOpacity>
                 </View>
             </View>
@@ -104,4 +100,4 @@ export default function Order({ farmPic, salePointAddress, salePointDateHour, fa
         </TouchableOpacity>
     );//return
 
-}//Order
+}//OrderFarmer

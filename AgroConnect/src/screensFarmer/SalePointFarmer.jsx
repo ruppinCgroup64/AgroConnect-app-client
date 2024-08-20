@@ -5,27 +5,21 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ImageBackground,
-    StatusBar,
-    TextInput,
-    KeyboardAvoidingView,
     ScrollView,
-    Switch,
 } from 'react-native';
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { useFonts } from 'expo-font';
 import { Colors } from '../theme/color';
 import style from '../theme/style';
 import themeContext from '../theme/themeContex';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { AppBar } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Avatar } from 'react-native-paper';
-import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
-import { ProductContext } from "../Context/ProductsContext";
-import { UsersContext } from "../Context/UserContext";
 import RoundedImage from '../components/RoundImage';
 import SalePointProductFarmerReadOnly from '../components/SalePointProductFarmerReadOnly';
+import { ProductContext } from "../Context/ProductsContext";
+import { UsersContext } from "../Context/UserContext";
 import { SalePointContext } from '../Context/SalePointContext';
 import Loading from '../components/Loading';
 
@@ -41,78 +35,96 @@ export default function SalePointFarmer({ route }) {
     const { farm } = useContext(UsersContext);
     const { salePoint, getSalePoint } = useContext(SalePointContext);
     const [loading, setLoading] = useState(true);
-    const [productsList, setProductsList] = useState(null);
-    const { getProductsInPoint, getProducts, allProducts, productsInPoint } = useContext(ProductContext);
-    const [image,setImage] = useState(null);
+    const [productsList, setProductsList] = useState([]);
+    const [image, setImage] = useState(null);
+    const { getProductsInPoint, getProducts, productsInPoint } = useContext(ProductContext);
 
     const init = async () => {
-        //get all products
-        await getProducts();
+        // איפוס state לפני הטעינה
+        setProductsList([]);
+        setImage(null);
+        setLoading(true); // התחל טעינה
 
-        //get  all sales points 
-        await getSalePoint(item.id);
+        try {
+            // טעינת נתונים
+            await getSalePoint(item.id);
+            await getProductsInPoint(item.id);
 
-        //get all sales points 
-        await getSalePoint(item.id);
+            // הצגת תמונת המשק ופרטים
+            if (farm && farm.mainPic) {
+                setImage({ uri: farm.mainPic });
+            }
 
-        //get all combine
-        await getProductsInPoint(item.id);
-
-        //loads the farm's picture
-        await setImage({ uri: farm.mainPic });
-    }//init
+            // עיבוד נתונים לאחר הטעינה
+            manipulateData();
+        } catch (error) {
+            console.error("Error in init function:", error);
+            setLoading(false); // עצור טעינה במקרה של שגיאה
+        }
+    };
 
     const manipulateData = () => {
+        if (!productsInPoint || !Array.isArray(productsInPoint)) {
+            setProductsList([]); // אם אין מוצרים, ודא שהרשימה ריקה
+            setLoading(false);
+            return;
+        }
 
-        //loads the products info.
-        let tempProducts = [];
-        for (i = 0; i < productsInPoint.length; i++) {
-            for (j = 0; j < allProducts.length; j++) {
-                if (productsInPoint[i].productInFarmNum == allProducts[j].id)
-                    tempProducts[i] = {
-                        i: i,
-                        title: allProducts[j].name,
-                        price: productsInPoint[i].unitPrice,
-                        uri: allProducts[j].pic,
-                        amount: productsInPoint[i].productAmount,
-                        price: productsInPoint[i].unitPrice
-                    };
-            }//for -> j
-        }//for -> i
+        const tempProducts = productsInPoint.map((product, index) => ({
+            i: index,
+            id: product.id,
+            title: product.name,
+            price: product.price,
+            amount: product.amount,
+            uri: product.pic
+        }));
+
         setProductsList(tempProducts);
-        setLoading(false);
-    }//manipulateData
+        setLoading(false); // סיום טעינה
+    };
 
     useEffect(() => {
-        if (allProducts.length != 0 && productsInPoint.length && salePoint.address) {
+        if (productsInPoint.length && salePoint.address) {
             manipulateData();
         }
-    }, [allProducts, salePoint, productsInPoint])
-    useFocusEffect(useCallback(() => {
-        init();
-    }, []))
+    }, [productsInPoint, salePoint]);
 
-    if (loading)
-        return <Loading></Loading>
+    useFocusEffect(
+        useCallback(() => {
+            setLoading(true);
+            setProductsList([]); // איפוס רשימת המוצרים
+            init();
+        }, [item.id]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
+    );
+
+    if (loading) {
+        return <Loading />;
+    }
 
     const ProductList = () => {
+        if (!productsList || productsList.length === 0) {
+            return <Text style={[style.s18, { color: theme.txt, textAlign: 'center', marginTop: 20 }]}>No Products were found</Text>;
+        }
+
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 }}>
                 {productsList.map((product, index) => (
                    <View key={index} style={{ width: "100%" }}>
-                   <SalePointProductFarmerReadOnly
-                       i={index}
-                       title={product.title}
-                       measure={'ק"ג'}
-                       uri={product.uri}
-                       amount={product.amount}
-                       price={product.price}
-                   />
-               </View>
+                       <SalePointProductFarmerReadOnly
+                           i={index}
+                           title={product.title}
+                           measure={'ק"ג'}
+                           uri={product.uri}
+                           amount={product.amount}
+                           price={product.price}
+                       />
+                   </View>
                 ))}
             </View>
         );
     };
+
+    const dateHour = salePoint?.dateHour ? salePoint.dateHour.split(" ")[0] : "N/A";
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
@@ -143,13 +155,13 @@ export default function SalePointFarmer({ route }) {
                         <Text style={[style.subtitle, { color: theme.txt }]}>{salePoint.address}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(salePoint.dateHour.split(" "))[0]}</Text>
+                        <Text style={[style.subtitle, { color: theme.txt, fontSize: 20, marginTop: 5, marginEnd: 10 }]}>{(dateHour)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RoundedImage url={farm.mainPic} wid={width / 7.2} hei={height / 16} />
                         <Text style={[style.s18, { textAlign: 'right', color: theme.txt, justifyContent: 'center', marginTop: 5 }]}>  {farm.name}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='star-half-sharp' size={30} color={Colors.primary} style={{ marginHorizontal: 10 }} />
                             <Text style={[style.m14, { color: theme.txt3, fontSize: 24 }]}>{salePoint.rankPrice}</Text>
@@ -157,7 +169,7 @@ export default function SalePointFarmer({ route }) {
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name='logo-whatsapp' size={30} color={Colors.primary} />
                         </View>
-                    </View>
+                    </View> */}
 
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row' }}>
@@ -170,7 +182,7 @@ export default function SalePointFarmer({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',item.id)}
+                            <TouchableOpacity onPress={() => navigation.navigate('OrdersFarmer',{ id: salePoint.id })}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>הזמנות</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

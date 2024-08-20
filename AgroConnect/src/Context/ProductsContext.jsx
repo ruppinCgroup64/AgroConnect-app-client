@@ -14,7 +14,7 @@ export default function ProductContextProvider(props) {
 
   async function getProducts() {
     let res = await read("api/products");
-    if (res){
+    if (res) {
       setAllProducts(res);
       return res
     }
@@ -31,13 +31,33 @@ export default function ProductContextProvider(props) {
   }
 
   async function getProductsInPoint(point) {
-    let res = await read("api/FarmProductsInPoint/" + point);
-    if (res) {
-      setProductsInPoint(res)
-      return res;
+    try {
+        let newProducts = [];
+        let res = await read("api/Products/ProductsDetailsSalePoint/" + point);
+        let res2 = await read("api/FarmProductsInPoint/" + point);
+
+        if (Array.isArray(res) && Array.isArray(res2)) {
+            for (let i = 0; i < res.length; i++) {
+                for (let j = 0; j < res2.length; j++) {
+                    if (res[i].id === res2[j].productInFarmNum) {
+                        newProducts.push({
+                            id: res[i].id,
+                            pic: res[i].pic,
+                            name: res[i].name,
+                            amount: res2[j].productAmount,
+                            price: res2[j].unitPrice
+                        });
+                    }
+                }
+            }
+        }
+        setProductsInPoint(newProducts);
+        return newProducts;
+    } catch (error) {
+        console.error("Error in getProductsInPoint:", error);
+        setProductsInPoint([]); // איפוס state במקרה של שגיאה
     }
-    else alert("something went wrong");
-  }
+}//getProductsInPoint
 
   async function getProductAveragePrice(productID) {
     let res = await read("api/products");
@@ -54,7 +74,7 @@ export default function ProductContextProvider(props) {
   }
 
   return (
-    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts, getProductsByFarm, createProductInPoint ,getProductsInPoint ,productsInPoint, allProducts}}>
+    <ProductContext.Provider value={{ productsByFarm, getProductAveragePrice, getProducts, getProductsByFarm, createProductInPoint, getProductsInPoint, productsInPoint, allProducts }}>
       {props.children}
     </ProductContext.Provider>
   );
