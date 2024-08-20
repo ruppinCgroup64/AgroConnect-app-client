@@ -56,13 +56,13 @@ export default function SalePoint({ route }) {
         setFarmPoint({});
         setTotal(0);
         setLoading(true); // התחל טעינה
-    
+
         try {
             // טעינת נתונים
             await getSalePoint(item.id);
             await getProductsInPoint(item.id);
             await getAllFarms();
-    
+
             // עיבוד הנתונים לאחר הטעינה
             manipulateData();
         } catch (error) {
@@ -70,7 +70,7 @@ export default function SalePoint({ route }) {
             setLoading(false); // עצור טעינה במקרה של שגיאה
         }
     };
-    
+
     const manipulateData = () => {
         if (!productsInPoint || !Array.isArray(productsInPoint)) {
             setProductsList([]); // אם אין מוצרים, ודא שהרשימה ריקה
@@ -83,10 +83,10 @@ export default function SalePoint({ route }) {
                 price: product.price,
                 uri: product.pic
             }));
-    
+
             setProductsList(tempProducts);
         }
-    
+
         if (Array.isArray(allFarms)) {
             const farm = allFarms.find(farm => farm.id === item.farmNum);
             if (farm) {
@@ -94,16 +94,16 @@ export default function SalePoint({ route }) {
                 setFarmPoint(farm);
             }
         }
-    
+
         setLoading(false); // סיום טעינה
     };
-    
+
     useFocusEffect(
         useCallback(() => {
             init();
         }, [item.id]) // וודא שהפונקציה init מתבצעת מחדש בכל מעבר לנקודת מכירה אחרת
     );
-    
+
 
     if (loading) {
         return <Loading />;
@@ -183,7 +183,7 @@ export default function SalePoint({ route }) {
                     <View style={[style.divider, { backgroundColor: theme.border, marginVertical: 15 }]} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginBottom: 60 }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total, salePoint, productsInPoint, amounts })}
+                            <TouchableOpacity onPress={() => navigation.navigate('Payment1', { total, salePointID: item.id, productsList, amounts })}
                                 style={[style.btn, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
                                 <Text style={[style.btntxt, { marginRight: 5 }]}>ביצוע קנייה</Text>
                                 <Icons name='cart-outline' size={20} color={Colors.secondary} />

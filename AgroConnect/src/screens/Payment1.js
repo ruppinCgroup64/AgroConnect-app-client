@@ -32,7 +32,7 @@ const now = new Date();
 const formattedDateHour = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
 export default function Payment1({ route }) {
-    const { total, salePoint, productsInPoint, amounts } = route.params;
+    const { total, salePointID, productsList, amounts } = route.params;
     const navigation = useNavigation();
     const theme = useContext(themeContext);
     const [checked, setChecked] = useState(false);
@@ -40,7 +40,7 @@ export default function Payment1({ route }) {
     const [content, setContent] = useState("");
     const [navContinue, setNavContinue] = useState(false);
     const { consumer } = useContext(UsersContext);
-    const { orders, setOrder, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer } = useContext(OrderContext);
+    const { orders, createOrder, createOrderInPoint, orderInPoint, getOrdersByConsumer } = useContext(OrderContext);
 
     useEffect(() => {
         if (navContinue) {
@@ -68,28 +68,27 @@ export default function Payment1({ route }) {
             id: 0,
             dateHour: formattedDateHour,
             status: "שולם",
-            totalPrice: 0,
+            totalPrice: total,
             consumerNum: consumer.id
         };
         await createOrder(newOrder);
         await console.log("consumer: ", consumer.id);
-        await console.log("Created Order: ", orders[orders.length - 1]);
+        await getOrdersByConsumer(consumer.id);
         await makeProductsOrder();
     }//makeOrder
 
     const makeProductsOrder = async () => {
+        console.log("orders:",orders);
         let l = orders.length;
-        for (i = 0; i < productsInPoint.length; i++) {
+        for (i = 0; i < productsList.length; i++) {
             const newOrderInPoint = [{
                 id: 0,
-                salePointNum: salePoint.id,
-                productInFarmNum: productsInPoint[i].productInFarmNum,
-                orderNum: orders[l - 1].id,
+                salePointNum: salePointID,
+                productInFarmNum: productsList[i].id,
+                orderNum: orders[l-1].id,
                 amount: amounts[i],
                 rankProduct: 0
             }]
-            console.log("productsInPoint[i] ", productsInPoint[i]);
-            console.log("newOrderInPoint ", newOrderInPoint);
             await createOrderInPoint(newOrderInPoint);
             await console.log("orderInPoint ", orderInPoint);
         }//for -> i
