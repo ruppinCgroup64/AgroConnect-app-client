@@ -2,7 +2,8 @@ import {
   View, Text,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  LogBox
 } from 'react-native'
 import React, { useState, useContext, Component, useEffect } from 'react'
 import themeContext from '../theme/themeContex'
@@ -13,8 +14,8 @@ import { TenderContext } from '../Context/TenderContext';
 import { UsersContext } from '../Context/UserContext';
 import style from '../theme/style';
 import ValInput from './ValInput';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+LogBox.ignoreAllLogs();
 
 export default function LeadTable({ tenderId, closeTime, minPrice, offeredPacks }) {
   const theme = useContext(themeContext);
@@ -130,15 +131,15 @@ useEffect(()=>{
 
 const validateForm = () => {
   const errors = {};
-  if(unitprice<minPrice)
+  if(Number(unitprice)<Number(minPrice))
   {
     errors.min = "המחיר חייב להיות גבוהה מהמחיר המינימלי להצעה";
   }
-  if(amount<=0)
+  if(Number(amount)<=0)
     {
       errors.pack = "הכמות המוצעת חייבת להיות גדולה מ-0";
     }
-  else if(amount>offeredPacks)
+  else if(Number(amount)>Number(offeredPacks))
     {
       errors.pack = "לא ניתן לבחור כמות גדולה מהכמות המוצעת";
     }
@@ -174,15 +175,15 @@ const checkIfTimePassed = () => {
     <KeyboardAvoidingView behavior='padding'>
       <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.primary }}>
-              <Row data={arr.tableHead} style={styles.head} textStyle={styles.text} />
-              <Rows data={arr.tableData} textStyle={styles.text} />
+              <Row data={arr.tableHead} style={styles.head} textStyle={{...styles.text}} />
+              <Rows data={arr.tableData} textStyle={{...styles.text}} />
           </Table>
           {lastBid.length == 0?
           <View>
             <ValInput
             val={amount}
             setVal={setAmount}
-            content={"כמות מוצעת"}
+            content={"כמות מארזים"}
             keyboardType={"numeric"}
           />
           {errors.pack ? (
@@ -230,7 +231,7 @@ const checkIfTimePassed = () => {
                         <Icons name='trash-can-outline' size={20} color={Colors.secondary}></Icons>
           </TouchableOpacity>
           <Text style={[style.m16, { color: theme.txt, fontSize: 10, textAlign: 'left', flex: 1, marginLeft: 5, color:"red", marginTop:5 }]}
-                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקונס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
+                                    >שים לב כי במידה ותמחק הצעה ותגיש מחדש המחיר שהגשת ייקנס ויהיה גדול יותר ככל שתמחק ותגיש יותר הצעות</Text>
           </View>:null}
           </View>:null}
       </View>

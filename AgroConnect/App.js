@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, LogBox} from "react-native";
 import StackNavigator from "./src/navigator/StackNavigator";
 import { I18nManager } from "react-native";
 import UsersContextProvider from "./src/Context/UserContext";
 import ProductContextProvider from "./src/Context/ProductsContext";
 import SalePointContextProvider, { SalePointContext } from "./src/Context/SalePointContext";
-import { LogBox } from 'react-native';
 import TenderContextProvider from "./src/Context/TenderContext";
 import OrderContextProvider from "./src/Context/OrderContext";
+
 
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);

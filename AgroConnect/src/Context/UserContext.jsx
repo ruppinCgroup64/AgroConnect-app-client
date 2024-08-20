@@ -12,6 +12,7 @@ export default function UsersContextProvider(props) {
   const [consumer, setConsumer] = useState(null);
   const [alerts, setAlerts] = useState([]);
   const [farm, setFarm] = useState(null);
+  const [allFarms, setAllFarms] = useState(null);
   const [farmPoint, setFarmPoint] = useState(null);
   const [allConsumers, setAllConsumers] = useState(null);
   const [allFarms, setAllFarms] = useState(null);
@@ -96,15 +97,25 @@ export default function UsersContextProvider(props) {
   async function getAlerts(consumerId) {
     let res = await read(`api/Tenders/alerts/${consumerId}`);
     if (res) {
-      setAlerts(res); 
+      setAlerts(res);
       return res
     }
     else alert("something went wrong");
     console.log("Alerts: ", res);
   }
 
+  async function getFarms() {
+    let res = await read(`api/Farms`);
+    if (res) {
+      setAllFarms(res)
+      return res
+    }
+    else alert("something went wrong");
+    console.log("Farms: ", res);
+  }
+
   return (
-    <UsersContext.Provider value={{ alerts,getAlerts,consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint,farmPoint, getAllConsumers, allConsumers ,getAllFarms, allFarms}}>
+    <UsersContext.Provider value={{ alerts, getAlerts, getFarms, consumer, setConsumer, farm, setFarm, register, registerFarm, login, updateUser, updateFarm, getFarmBySalePoint, farmPoint, getAllConsumers, allConsumers, getAllFarms, allFarms }}>
       {props.children}
     </UsersContext.Provider>
   );

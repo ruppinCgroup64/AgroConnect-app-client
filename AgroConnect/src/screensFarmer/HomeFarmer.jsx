@@ -37,7 +37,7 @@ const height = Dimensions.get("screen").height;
 export default function HomeFarmer() {
   const theme = useContext(themeContext);
   const navigation = useNavigation();
-  const { consumer, farm } = useContext(UsersContext);
+  const { consumer, farm, getFarms } = useContext(UsersContext);
   const { salePoints, getSalePoints } = useContext(SalePointContext);
   const { getTendersByFarm, TendersByFarm } = useContext(TenderContext);
   const [farmPictures, setFarmPictures] = useState({});
@@ -86,6 +86,7 @@ const calculateTimeRemaining = (dateTime) => {
 
   async function loadTendersFarm() {
     var result = await getTendersByFarm(farm.id);
+    let res1= await getFarms();
     if (result != {}) {
       setLoading(false);
       console.log("result", result);

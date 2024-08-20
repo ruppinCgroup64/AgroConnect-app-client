@@ -14,6 +14,8 @@ import MyWallet from "../screens/MyWallet";
 import HomeFarmer from "../screensFarmer/HomeFarmer";
 import SettingsFarmer from "../screensFarmer/SettingsFarmer";
 import OrdersFarmer from "../screensFarmer/OrdersFarmer";
+import SalePointsFarmer from "../screensFarmer/SalePointsFarmer";
+import MapScreenFarm from "../screensFarmer/MapScreenFarm";
 
 const Tab = createBottomTabNavigator();
 
@@ -97,6 +99,35 @@ export default function MyTabsFarmer() {
           headerShown: false,
         }}
       /> */}
+      <Tab.Screen
+        name="MapFarmer"
+        component={MapScreenFarm}
+        options={{
+          exptabBarShowLabel: true,
+          tabBarLabel: ({ focused, color }) => (
+            <Text
+              style={{
+                color: focused ? Colors.primary : Colors.disable,
+                fontFamily: "Urbanist-Medium",
+                fontSize: 10,
+              }}
+            >
+              {focused ? "" : ""}
+            </Text>
+          ),
+          tabBarIcon: ({ focused, color }) => {
+            return (
+              <Icons
+                name="map"
+                size={30}
+                color={focused ? Colors.primary : Colors.disable}
+              />
+            );
+          },
+          headerShown: false,
+        }}
+      />
+
       <Tab.Screen
         name="HomeFarmer"
         component={HomeFarmer}

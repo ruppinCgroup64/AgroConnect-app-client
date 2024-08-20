@@ -96,7 +96,7 @@ export default function Notification() {
           }
           else return null;
           return (
-            <TouchableOpacity
+            <TouchableOpacity key={index}
               onPress={() =>
                 navigation.navigate("Tender", { item: TenderToShow })
               }

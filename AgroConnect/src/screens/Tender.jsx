@@ -85,6 +85,8 @@ export default function Tender({ route }) {
     <SafeAreaView style={[style.area, { backgroundColor: theme.bg }]}>
       <AppBar
         elevation={0}
+        title='מכרז'
+        titleStyle={[style.apptitle,{ color: theme.txt, textAlign:"center", paddingRight:50 }]}
         style={{
           paddingHorizontal: 20,
           backgroundColor: "transparent",
@@ -240,11 +242,13 @@ export default function Tender({ route }) {
             </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity onPress={() => navigation.navigate("FarmPage", {item:item.farmNum})}>
             <RoundedImage
               url={item.farmPic}
               wid={width / 9}
               hei={height / 20}
             />
+            </TouchableOpacity>
             <Text
               style={[
                 style.s18,

@@ -12,11 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get('window');
 
-const markers = [
-  { id: 1, latitude: 32.0784725, longitude: 34.8062229, color: 'red' },
-  { id: 2, latitude: 32.0597256, longitude: 34.7638647, color: 'green' },
-];
-
 export default function MapScreen() {
     const { Tenders } = useContext(TenderContext);
     const { salePoints } = useContext(SalePointContext);

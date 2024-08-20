@@ -47,7 +47,7 @@ const settings_details = [
     i: "person-outline",
     key: 1,
   },
-  { navTo: "Farmer", t: "העמוד שלי", i: "id-card-outline", key: 2 },
+  { navTo: "FarmPage", t: "העמוד שלי", i: "id-card-outline", key: 2, },
   { navTo: "EditProfileFarm", t: "עריכת פרטי המשק", i: "id-card", key: 3 },
   { navTo: "About", t: "אודות", i: "alert-circle-outline", key: 4 },
 ];
@@ -61,6 +61,7 @@ export default function SettingsFarmer() {
   const [mainPic, setMainPic] = useState(farm.mainPic);
   const [show, setShow] = useState(false);
   const [content, setContent] = useState("");
+
 
   // states and an eddect to eneble navigation to the costumers's settings, when pressed
   const [open, setOpen] = useState(false);
@@ -194,6 +195,9 @@ export default function SettingsFarmer() {
           <View>
             <View style={[style.divider, { backgroundColor: theme.border }]} />
           </View>
+          <View>
+            <Text style={{paddingBottom: 1}} ></Text>
+          </View>
           {/* Adding the first Settings option using the array "settings_details" and the component "Settings_option" */}
 
           <View style={{ paddingBottom: 20, paddingTop: 20 }}>
@@ -210,12 +214,13 @@ export default function SettingsFarmer() {
           {/* Adding the second Settings option using the array "settings_details" and the component "Settings_option" */}
 
           <View style={{ paddingBottom: 20 }}>
-            <Settings_option
-              theme
-              navTo={settings_details[1].navTo}
-              t={settings_details[1].t}
-              i={settings_details[1].i}
-            />
+          <TouchableOpacity onPress={() => navigation.navigate("FarmPage", { item: farm.id })}>
+            <View style={{ flexDirection: 'row' }}>
+              <Icons name='chevron-back' size={20} color={theme.txt}></Icons>
+              <Text style={[style.s18, { textAlign: 'right', color: theme.txt, marginRight: 10 }]}>  העמוד שלי</Text> 
+              <Icons name={"id-card-outline"} size={25} color={theme.txt} style={[{flex: 1 }]}/>
+            </View>
+          </TouchableOpacity>
           </View>
 
 
@@ -357,7 +362,7 @@ export default function SettingsFarmer() {
               </RBSheet>
               <View style={{ flexDirection: "row" }}>
                 <Icon name="logout" size={25} color="#F75555" />
-                <Text style={[style.txt, { color: "#F75555", marginLeft: 10 }]}>
+                <Text style={[style.s14, { color: "#F75555", marginLeft: 10 }]}>
                   התנתק
                 </Text>
               </View>
