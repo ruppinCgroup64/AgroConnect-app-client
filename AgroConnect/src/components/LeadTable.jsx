@@ -32,6 +32,8 @@ export default function LeadTable({ tenderId, closeTime, minPrice, offeredPacks 
   const [newUnitprice, setNewUnitprice] = useState(0) 
   const [flag, setFlag] = useState(false);
   const [arr, setArr] = useState({});
+  const [isWinner, setIsWinner] = useState(false);
+
 
   function filterByStatus(inputArray) {
     return inputArray.filter(item => item.consumerNum==consumer.id && item.status  !== 'Deleted');
@@ -208,21 +210,29 @@ const checkIfTimePassed = () => {
           {lastBid.length > 0 ?
           <View>
             <View style={{ 
-              flexDirection: 'row', 
+              flexDirection: 'column', 
               justifyContent: 'center',
-              alignItems: 'center', 
               borderColor: '#01B763', 
               borderWidth: 1, 
               borderRadius: 5,
               padding: 5, 
-              margin: 5
+              margin: 5,
+              flex:1
           }}>
-    <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'left', marginLeft: 5 }]}>
+    <Text style={[style.s18, { color: theme.txt, fontSize: 15, textAlign: 'center', marginLeft: 5,  }]}>
         ההצעה שלי:
     </Text>
-    <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'left', marginLeft: 5 }]}>
-        {lastBid[0].status.split(" ")[1] !== undefined ? lastBid[0].status.split(" ")[1] : lastBid[0].amount} מארזים במחיר של {lastBid[0].unitPrice}
+    <Text style={[style.m18, { color: theme.txt, fontSize: 14, textAlign: 'center', marginLeft: 5, width:"100%" }]}>
+        {lastBid[0].status.split(" ")[1] !== undefined ? lastBid[0].status.split(" ")[1] : lastBid[0].amount} מארזים במחיר של {lastBid[0].unitPrice} למארז
     </Text>
+    {lastBid[0].status.split(" ")[0]=="win"?
+     <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'center', marginLeft: 5, width:"100%" }]}>
+     כרגע אתה ברשימת הזוכים, אך זה עשוי להשתנות
+   </Text>:null}
+   {lastBid[0].status.split(" ")[0]!="win"?
+     <Text style={[style.m18, { color: theme.txt, fontSize: 12, textAlign: 'center', marginLeft: 5 }]}>
+     אינך ברשימת הזוכים, כדאי שתנסה שוב ותגיש הצעה מחדש
+   </Text>:null}
 </View>
           {checkIfTimePassed()?
           <View><TouchableOpacity onPress={handleDelete}

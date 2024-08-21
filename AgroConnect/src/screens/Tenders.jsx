@@ -234,6 +234,12 @@ export default function Tenders() {
                 <TendersListWin />
             </View>
                 ) : null}
+                <View
+            style={[
+              style.divider,
+              { backgroundColor: theme.border, marginVertical: 15 },
+            ]}
+          ></View>
                 <Text style={[style.m18, { color: theme.txt, fontSize: 15, textAlign: 'left', flex: 1, marginLeft: 5, textDecorationLine: 'underline' }]}
                 >כל המכרזים</Text>
                     <TendersList />

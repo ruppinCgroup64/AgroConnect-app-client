@@ -154,7 +154,7 @@ export default function Tender({ route }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               style={[
-                style.subtitle,
+                style.m16,
                 {
                   color: theme.txt,
                   fontSize: 15,
@@ -172,7 +172,7 @@ export default function Tender({ route }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               style={[
-                style.subtitle,
+                style.m16,
                 {
                   color: theme.txt,
                   fontSize: 15,
@@ -190,7 +190,7 @@ export default function Tender({ route }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               style={[
-                style.subtitle,
+                style.m16,
                 {
                   color: theme.txt,
                   fontSize: 15,
@@ -208,7 +208,7 @@ export default function Tender({ route }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               style={[
-                style.subtitle,
+                style.m16,
                 {
                   color: theme.txt,
                   fontSize: 15,
@@ -226,7 +226,7 @@ export default function Tender({ route }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               style={[
-                style.subtitle,
+                style.m16,
                 {
                   color: theme.txt,
                   fontSize: 15,
